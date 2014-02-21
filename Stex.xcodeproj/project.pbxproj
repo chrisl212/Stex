@@ -36,6 +36,7 @@
 		6333F48518B7F7CF00DDC490 /* ACViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ACViewController.m; sourceTree = "<group>"; };
 		6333F48718B7F7CF00DDC490 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		6333F48E18B7F7CF00DDC490 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		6333F4A418B7F97200DDC490 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +56,7 @@
 		6333F46018B7F7CF00DDC490 = {
 			isa = PBXGroup;
 			children = (
+				6333F4A418B7F97200DDC490 /* README.md */,
 				6333F47218B7F7CF00DDC490 /* Stex */,
 				6333F46B18B7F7CF00DDC490 /* Frameworks */,
 				6333F46A18B7F7CF00DDC490 /* Products */,
