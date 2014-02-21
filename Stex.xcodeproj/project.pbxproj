@@ -17,22 +17,7 @@
 		6333F48318B7F7CF00DDC490 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6333F48118B7F7CF00DDC490 /* Main_iPad.storyboard */; };
 		6333F48618B7F7CF00DDC490 /* ACViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6333F48518B7F7CF00DDC490 /* ACViewController.m */; };
 		6333F48818B7F7CF00DDC490 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6333F48718B7F7CF00DDC490 /* Images.xcassets */; };
-		6333F48F18B7F7CF00DDC490 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6333F48E18B7F7CF00DDC490 /* XCTest.framework */; };
-		6333F49018B7F7CF00DDC490 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6333F46C18B7F7CF00DDC490 /* Foundation.framework */; };
-		6333F49118B7F7CF00DDC490 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6333F47018B7F7CF00DDC490 /* UIKit.framework */; };
-		6333F49918B7F7CF00DDC490 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6333F49718B7F7CF00DDC490 /* InfoPlist.strings */; };
-		6333F49B18B7F7CF00DDC490 /* StexTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6333F49A18B7F7CF00DDC490 /* StexTests.m */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		6333F49218B7F7CF00DDC490 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 6333F46118B7F7CF00DDC490 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 6333F46818B7F7CF00DDC490;
-			remoteInfo = Stex;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		6333F46918B7F7CF00DDC490 /* Stex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stex.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -50,11 +35,7 @@
 		6333F48418B7F7CF00DDC490 /* ACViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACViewController.h; sourceTree = "<group>"; };
 		6333F48518B7F7CF00DDC490 /* ACViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ACViewController.m; sourceTree = "<group>"; };
 		6333F48718B7F7CF00DDC490 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		6333F48D18B7F7CF00DDC490 /* StexTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StexTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6333F48E18B7F7CF00DDC490 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		6333F49618B7F7CF00DDC490 /* StexTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "StexTests-Info.plist"; sourceTree = "<group>"; };
-		6333F49818B7F7CF00DDC490 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		6333F49A18B7F7CF00DDC490 /* StexTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StexTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,16 +49,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		6333F48A18B7F7CF00DDC490 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				6333F48F18B7F7CF00DDC490 /* XCTest.framework in Frameworks */,
-				6333F49118B7F7CF00DDC490 /* UIKit.framework in Frameworks */,
-				6333F49018B7F7CF00DDC490 /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -85,7 +56,6 @@
 			isa = PBXGroup;
 			children = (
 				6333F47218B7F7CF00DDC490 /* Stex */,
-				6333F49418B7F7CF00DDC490 /* StexTests */,
 				6333F46B18B7F7CF00DDC490 /* Frameworks */,
 				6333F46A18B7F7CF00DDC490 /* Products */,
 			);
@@ -95,7 +65,6 @@
 			isa = PBXGroup;
 			children = (
 				6333F46918B7F7CF00DDC490 /* Stex.app */,
-				6333F48D18B7F7CF00DDC490 /* StexTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -137,24 +106,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		6333F49418B7F7CF00DDC490 /* StexTests */ = {
-			isa = PBXGroup;
-			children = (
-				6333F49A18B7F7CF00DDC490 /* StexTests.m */,
-				6333F49518B7F7CF00DDC490 /* Supporting Files */,
-			);
-			path = StexTests;
-			sourceTree = "<group>";
-		};
-		6333F49518B7F7CF00DDC490 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				6333F49618B7F7CF00DDC490 /* StexTests-Info.plist */,
-				6333F49718B7F7CF00DDC490 /* InfoPlist.strings */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -175,24 +126,6 @@
 			productReference = 6333F46918B7F7CF00DDC490 /* Stex.app */;
 			productType = "com.apple.product-type.application";
 		};
-		6333F48C18B7F7CF00DDC490 /* StexTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 6333F4A118B7F7CF00DDC490 /* Build configuration list for PBXNativeTarget "StexTests" */;
-			buildPhases = (
-				6333F48918B7F7CF00DDC490 /* Sources */,
-				6333F48A18B7F7CF00DDC490 /* Frameworks */,
-				6333F48B18B7F7CF00DDC490 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				6333F49318B7F7CF00DDC490 /* PBXTargetDependency */,
-			);
-			name = StexTests;
-			productName = StexTests;
-			productReference = 6333F48D18B7F7CF00DDC490 /* StexTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -202,11 +135,6 @@
 				CLASSPREFIX = AC;
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "A and C Studios";
-				TargetAttributes = {
-					6333F48C18B7F7CF00DDC490 = {
-						TestTargetID = 6333F46818B7F7CF00DDC490;
-					};
-				};
 			};
 			buildConfigurationList = 6333F46418B7F7CF00DDC490 /* Build configuration list for PBXProject "Stex" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -222,7 +150,6 @@
 			projectRoot = "";
 			targets = (
 				6333F46818B7F7CF00DDC490 /* Stex */,
-				6333F48C18B7F7CF00DDC490 /* StexTests */,
 			);
 		};
 /* End PBXProject section */
@@ -239,14 +166,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		6333F48B18B7F7CF00DDC490 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				6333F49918B7F7CF00DDC490 /* InfoPlist.strings in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -260,23 +179,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		6333F48918B7F7CF00DDC490 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				6333F49B18B7F7CF00DDC490 /* StexTests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		6333F49318B7F7CF00DDC490 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 6333F46818B7F7CF00DDC490 /* Stex */;
-			targetProxy = 6333F49218B7F7CF00DDC490 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		6333F47518B7F7CF00DDC490 /* InfoPlist.strings */ = {
@@ -301,14 +204,6 @@
 				6333F48218B7F7CF00DDC490 /* Base */,
 			);
 			name = Main_iPad.storyboard;
-			sourceTree = "<group>";
-		};
-		6333F49718B7F7CF00DDC490 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				6333F49818B7F7CF00DDC490 /* en */,
-			);
-			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -414,48 +309,6 @@
 			};
 			name = Release;
 		};
-		6333F4A218B7F7CF00DDC490 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Stex.app/Stex";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Stex/Stex-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = "StexTests/StexTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Debug;
-		};
-		6333F4A318B7F7CF00DDC490 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Stex.app/Stex";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Stex/Stex-Prefix.pch";
-				INFOPLIST_FILE = "StexTests/StexTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -473,14 +326,6 @@
 			buildConfigurations = (
 				6333F49F18B7F7CF00DDC490 /* Debug */,
 				6333F4A018B7F7CF00DDC490 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-		};
-		6333F4A118B7F7CF00DDC490 /* Build configuration list for PBXNativeTarget "StexTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				6333F4A218B7F7CF00DDC490 /* Debug */,
-				6333F4A318B7F7CF00DDC490 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
