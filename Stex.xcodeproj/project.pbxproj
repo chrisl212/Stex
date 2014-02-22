@@ -15,7 +15,7 @@
 		6333F47D18B7F7CF00DDC490 /* ACAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6333F47C18B7F7CF00DDC490 /* ACAppDelegate.m */; };
 		6333F48018B7F7CF00DDC490 /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6333F47E18B7F7CF00DDC490 /* Main_iPhone.storyboard */; };
 		6333F48318B7F7CF00DDC490 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6333F48118B7F7CF00DDC490 /* Main_iPad.storyboard */; };
-		6333F48618B7F7CF00DDC490 /* ACViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6333F48518B7F7CF00DDC490 /* ACViewController.m */; };
+		6333F48618B7F7CF00DDC490 /* ACSummaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6333F48518B7F7CF00DDC490 /* ACSummaryViewController.m */; };
 		6333F48818B7F7CF00DDC490 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6333F48718B7F7CF00DDC490 /* Images.xcassets */; };
 		6333F4A818B7FA0600DDC490 /* ACLoginController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6333F4A618B7FA0600DDC490 /* ACLoginController.m */; };
 		6333F4AC18B7FBC500DDC490 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6333F4AB18B7FBC500DDC490 /* libz.dylib */; };
@@ -50,8 +50,8 @@
 		6333F47C18B7F7CF00DDC490 /* ACAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ACAppDelegate.m; sourceTree = "<group>"; };
 		6333F47F18B7F7CF00DDC490 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
 		6333F48218B7F7CF00DDC490 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
-		6333F48418B7F7CF00DDC490 /* ACViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACViewController.h; sourceTree = "<group>"; };
-		6333F48518B7F7CF00DDC490 /* ACViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ACViewController.m; sourceTree = "<group>"; };
+		6333F48418B7F7CF00DDC490 /* ACSummaryViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACSummaryViewController.h; sourceTree = "<group>"; };
+		6333F48518B7F7CF00DDC490 /* ACSummaryViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ACSummaryViewController.m; sourceTree = "<group>"; };
 		6333F48718B7F7CF00DDC490 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		6333F48E18B7F7CF00DDC490 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		6333F4A418B7F97200DDC490 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
@@ -139,8 +139,8 @@
 				6333F47C18B7F7CF00DDC490 /* ACAppDelegate.m */,
 				6333F47E18B7F7CF00DDC490 /* Main_iPhone.storyboard */,
 				6333F48118B7F7CF00DDC490 /* Main_iPad.storyboard */,
-				6333F48418B7F7CF00DDC490 /* ACViewController.h */,
-				6333F48518B7F7CF00DDC490 /* ACViewController.m */,
+				6333F48418B7F7CF00DDC490 /* ACSummaryViewController.h */,
+				6333F48518B7F7CF00DDC490 /* ACSummaryViewController.m */,
 				6333F48718B7F7CF00DDC490 /* Images.xcassets */,
 				6333F47318B7F7CF00DDC490 /* Supporting Files */,
 			);
@@ -268,7 +268,7 @@
 			files = (
 				6333F47D18B7F7CF00DDC490 /* ACAppDelegate.m in Sources */,
 				6333F4B318B7FE3C00DDC490 /* ACButton.m in Sources */,
-				6333F48618B7F7CF00DDC490 /* ACViewController.m in Sources */,
+				6333F48618B7F7CF00DDC490 /* ACSummaryViewController.m in Sources */,
 				6333F4CF18B811E600DDC490 /* ACAlertView.m in Sources */,
 				6333F47918B7F7CF00DDC490 /* main.m in Sources */,
 				6333F4A818B7FA0600DDC490 /* ACLoginController.m in Sources */,

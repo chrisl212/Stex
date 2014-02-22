@@ -1,5 +1,5 @@
 //
-//  ACViewController.h
+//  ACSummaryViewController.h
 //  Stex
 //
 //  Created by Chris on 2/21/14.
@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "ACLoginController.h"
 
-@interface ACViewController : UIViewController <ACLoginDelegate>
+@interface ACSummaryViewController : UITableViewController <ACLoginDelegate>
 
 @property (strong, nonatomic) NSString *accessToken;
 
