@@ -8,22 +8,42 @@
 
 #import "ACViewController.h"
 
-@interface ACViewController ()
-
-@end
-
 @implementation ACViewController
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    if (!self.accessToken)
+    {
+        ACLoginController *loginController = [[ACLoginController alloc] initWithDelegate:self];
+        [self presentViewController:loginController animated:NO completion:nil];
+    }
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Login Delegate
+
+- (void)loginController:(ACLoginController *)controller receivedAccessCode:(NSString *)code
+{
+    self.accessToken = code;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self dismissViewControllerAnimated:YES completion:nil];
+    });
+}
+
+- (void)loginController:(ACLoginController *)controller failedWithError:(NSString *)err
+{
+    
 }
 
 @end

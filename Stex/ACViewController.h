@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ACLoginController.h"
 
-@interface ACViewController : UIViewController
+@interface ACViewController : UIViewController <ACLoginDelegate>
+
+@property (strong, nonatomic) NSString *accessToken;
 
 @end

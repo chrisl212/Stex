@@ -17,6 +17,24 @@
 		6333F48318B7F7CF00DDC490 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6333F48118B7F7CF00DDC490 /* Main_iPad.storyboard */; };
 		6333F48618B7F7CF00DDC490 /* ACViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6333F48518B7F7CF00DDC490 /* ACViewController.m */; };
 		6333F48818B7F7CF00DDC490 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6333F48718B7F7CF00DDC490 /* Images.xcassets */; };
+		6333F4A818B7FA0600DDC490 /* ACLoginController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6333F4A618B7FA0600DDC490 /* ACLoginController.m */; };
+		6333F4AC18B7FBC500DDC490 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6333F4AB18B7FBC500DDC490 /* libz.dylib */; };
+		6333F4AE18B7FBD200DDC490 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6333F4AD18B7FBD200DDC490 /* QuartzCore.framework */; };
+		6333F4B018B7FCB900DDC490 /* login-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 6333F4AF18B7FCB900DDC490 /* login-bg.png */; };
+		6333F4B318B7FE3C00DDC490 /* ACButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 6333F4B218B7FE3C00DDC490 /* ACButton.m */; };
+		6333F4B518B80A0200DDC490 /* inner-shadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 6333F4B418B80A0200DDC490 /* inner-shadow.png */; };
+		6333F4C218B8108100DDC490 /* Icon-512@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6333F4B718B8108100DDC490 /* Icon-512@2x.png */; };
+		6333F4C318B8108100DDC490 /* Icon-76.png in Resources */ = {isa = PBXBuildFile; fileRef = 6333F4B818B8108100DDC490 /* Icon-76.png */; };
+		6333F4C418B8108100DDC490 /* Icon-76@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6333F4B918B8108100DDC490 /* Icon-76@2x.png */; };
+		6333F4C518B8108100DDC490 /* Icon-Small-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 6333F4BA18B8108100DDC490 /* Icon-Small-50.png */; };
+		6333F4C618B8108100DDC490 /* Icon-Small-50@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6333F4BB18B8108100DDC490 /* Icon-Small-50@2x.png */; };
+		6333F4C718B8108100DDC490 /* Icon-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = 6333F4BC18B8108100DDC490 /* Icon-Small.png */; };
+		6333F4C818B8108100DDC490 /* Icon-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6333F4BD18B8108100DDC490 /* Icon-Small@2x.png */; };
+		6333F4C918B8108100DDC490 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 6333F4BE18B8108100DDC490 /* Icon.png */; };
+		6333F4CA18B8108100DDC490 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6333F4BF18B8108100DDC490 /* Icon@2x.png */; };
+		6333F4CB18B8108100DDC490 /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = 6333F4C018B8108100DDC490 /* iTunesArtwork */; };
+		6333F4CC18B8108100DDC490 /* iTunesArtwork@2x in Resources */ = {isa = PBXBuildFile; fileRef = 6333F4C118B8108100DDC490 /* iTunesArtwork@2x */; };
+		6333F4CF18B811E600DDC490 /* ACAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6333F4CE18B811E600DDC490 /* ACAlertView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +55,27 @@
 		6333F48718B7F7CF00DDC490 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		6333F48E18B7F7CF00DDC490 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		6333F4A418B7F97200DDC490 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		6333F4A518B7FA0600DDC490 /* ACLoginController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACLoginController.h; sourceTree = "<group>"; };
+		6333F4A618B7FA0600DDC490 /* ACLoginController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACLoginController.m; sourceTree = "<group>"; };
+		6333F4AB18B7FBC500DDC490 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		6333F4AD18B7FBD200DDC490 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		6333F4AF18B7FCB900DDC490 /* login-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login-bg.png"; sourceTree = SOURCE_ROOT; };
+		6333F4B118B7FE3C00DDC490 /* ACButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACButton.h; sourceTree = "<group>"; };
+		6333F4B218B7FE3C00DDC490 /* ACButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACButton.m; sourceTree = "<group>"; };
+		6333F4B418B80A0200DDC490 /* inner-shadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "inner-shadow.png"; sourceTree = SOURCE_ROOT; };
+		6333F4B718B8108100DDC490 /* Icon-512@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-512@2x.png"; sourceTree = "<group>"; };
+		6333F4B818B8108100DDC490 /* Icon-76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-76.png"; sourceTree = "<group>"; };
+		6333F4B918B8108100DDC490 /* Icon-76@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-76@2x.png"; sourceTree = "<group>"; };
+		6333F4BA18B8108100DDC490 /* Icon-Small-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small-50.png"; sourceTree = "<group>"; };
+		6333F4BB18B8108100DDC490 /* Icon-Small-50@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small-50@2x.png"; sourceTree = "<group>"; };
+		6333F4BC18B8108100DDC490 /* Icon-Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small.png"; sourceTree = "<group>"; };
+		6333F4BD18B8108100DDC490 /* Icon-Small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small@2x.png"; sourceTree = "<group>"; };
+		6333F4BE18B8108100DDC490 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		6333F4BF18B8108100DDC490 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
+		6333F4C018B8108100DDC490 /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
+		6333F4C118B8108100DDC490 /* iTunesArtwork@2x */ = {isa = PBXFileReference; lastKnownFileType = file; path = "iTunesArtwork@2x"; sourceTree = "<group>"; };
+		6333F4CD18B811E600DDC490 /* ACAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACAlertView.h; sourceTree = "<group>"; };
+		6333F4CE18B811E600DDC490 /* ACAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACAlertView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,6 +83,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6333F4AE18B7FBD200DDC490 /* QuartzCore.framework in Frameworks */,
+				6333F4AC18B7FBC500DDC490 /* libz.dylib in Frameworks */,
 				6333F46F18B7F7CF00DDC490 /* CoreGraphics.framework in Frameworks */,
 				6333F47118B7F7CF00DDC490 /* UIKit.framework in Frameworks */,
 				6333F46D18B7F7CF00DDC490 /* Foundation.framework in Frameworks */,
@@ -56,6 +97,7 @@
 		6333F46018B7F7CF00DDC490 = {
 			isa = PBXGroup;
 			children = (
+				6333F4B618B8108100DDC490 /* Icons */,
 				6333F4A418B7F97200DDC490 /* README.md */,
 				6333F47218B7F7CF00DDC490 /* Stex */,
 				6333F46B18B7F7CF00DDC490 /* Frameworks */,
@@ -74,6 +116,8 @@
 		6333F46B18B7F7CF00DDC490 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6333F4AD18B7FBD200DDC490 /* QuartzCore.framework */,
+				6333F4AB18B7FBC500DDC490 /* libz.dylib */,
 				6333F46C18B7F7CF00DDC490 /* Foundation.framework */,
 				6333F46E18B7F7CF00DDC490 /* CoreGraphics.framework */,
 				6333F47018B7F7CF00DDC490 /* UIKit.framework */,
@@ -85,6 +129,12 @@
 		6333F47218B7F7CF00DDC490 /* Stex */ = {
 			isa = PBXGroup;
 			children = (
+				6333F4CD18B811E600DDC490 /* ACAlertView.h */,
+				6333F4CE18B811E600DDC490 /* ACAlertView.m */,
+				6333F4B118B7FE3C00DDC490 /* ACButton.h */,
+				6333F4B218B7FE3C00DDC490 /* ACButton.m */,
+				6333F4B418B80A0200DDC490 /* inner-shadow.png */,
+				6333F4AA18B7FA0C00DDC490 /* Login Controller */,
 				6333F47B18B7F7CF00DDC490 /* ACAppDelegate.h */,
 				6333F47C18B7F7CF00DDC490 /* ACAppDelegate.m */,
 				6333F47E18B7F7CF00DDC490 /* Main_iPhone.storyboard */,
@@ -106,6 +156,34 @@
 				6333F47A18B7F7CF00DDC490 /* Stex-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		6333F4AA18B7FA0C00DDC490 /* Login Controller */ = {
+			isa = PBXGroup;
+			children = (
+				6333F4A518B7FA0600DDC490 /* ACLoginController.h */,
+				6333F4A618B7FA0600DDC490 /* ACLoginController.m */,
+				6333F4AF18B7FCB900DDC490 /* login-bg.png */,
+			);
+			name = "Login Controller";
+			sourceTree = "<group>";
+		};
+		6333F4B618B8108100DDC490 /* Icons */ = {
+			isa = PBXGroup;
+			children = (
+				6333F4B718B8108100DDC490 /* Icon-512@2x.png */,
+				6333F4B818B8108100DDC490 /* Icon-76.png */,
+				6333F4B918B8108100DDC490 /* Icon-76@2x.png */,
+				6333F4BA18B8108100DDC490 /* Icon-Small-50.png */,
+				6333F4BB18B8108100DDC490 /* Icon-Small-50@2x.png */,
+				6333F4BC18B8108100DDC490 /* Icon-Small.png */,
+				6333F4BD18B8108100DDC490 /* Icon-Small@2x.png */,
+				6333F4BE18B8108100DDC490 /* Icon.png */,
+				6333F4BF18B8108100DDC490 /* Icon@2x.png */,
+				6333F4C018B8108100DDC490 /* iTunesArtwork */,
+				6333F4C118B8108100DDC490 /* iTunesArtwork@2x */,
+			);
+			path = Icons;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -161,10 +239,23 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6333F4B518B80A0200DDC490 /* inner-shadow.png in Resources */,
+				6333F4CA18B8108100DDC490 /* Icon@2x.png in Resources */,
 				6333F48318B7F7CF00DDC490 /* Main_iPad.storyboard in Resources */,
+				6333F4C518B8108100DDC490 /* Icon-Small-50.png in Resources */,
+				6333F4C718B8108100DDC490 /* Icon-Small.png in Resources */,
+				6333F4C418B8108100DDC490 /* Icon-76@2x.png in Resources */,
+				6333F4C318B8108100DDC490 /* Icon-76.png in Resources */,
+				6333F4C218B8108100DDC490 /* Icon-512@2x.png in Resources */,
+				6333F4C618B8108100DDC490 /* Icon-Small-50@2x.png in Resources */,
+				6333F4B018B7FCB900DDC490 /* login-bg.png in Resources */,
 				6333F48818B7F7CF00DDC490 /* Images.xcassets in Resources */,
+				6333F4CC18B8108100DDC490 /* iTunesArtwork@2x in Resources */,
 				6333F48018B7F7CF00DDC490 /* Main_iPhone.storyboard in Resources */,
+				6333F4C918B8108100DDC490 /* Icon.png in Resources */,
 				6333F47718B7F7CF00DDC490 /* InfoPlist.strings in Resources */,
+				6333F4C818B8108100DDC490 /* Icon-Small@2x.png in Resources */,
+				6333F4CB18B8108100DDC490 /* iTunesArtwork in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -176,8 +267,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				6333F47D18B7F7CF00DDC490 /* ACAppDelegate.m in Sources */,
+				6333F4B318B7FE3C00DDC490 /* ACButton.m in Sources */,
 				6333F48618B7F7CF00DDC490 /* ACViewController.m in Sources */,
+				6333F4CF18B811E600DDC490 /* ACAlertView.m in Sources */,
 				6333F47918B7F7CF00DDC490 /* main.m in Sources */,
+				6333F4A818B7FA0600DDC490 /* ACLoginController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
