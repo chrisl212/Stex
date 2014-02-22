@@ -35,6 +35,8 @@
 		6333F4CB18B8108100DDC490 /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = 6333F4C018B8108100DDC490 /* iTunesArtwork */; };
 		6333F4CC18B8108100DDC490 /* iTunesArtwork@2x in Resources */ = {isa = PBXBuildFile; fileRef = 6333F4C118B8108100DDC490 /* iTunesArtwork@2x */; };
 		6333F4CF18B811E600DDC490 /* ACAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6333F4CE18B811E600DDC490 /* ACAlertView.m */; };
+		633D394E18B8A1EA001EABFD /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 633D394A18B8A1E9001EABFD /* LICENSE.txt */; };
+		633D394F18B8A1EA001EABFD /* XYPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 633D394D18B8A1EA001EABFD /* XYPieChart.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -76,6 +78,9 @@
 		6333F4C118B8108100DDC490 /* iTunesArtwork@2x */ = {isa = PBXFileReference; lastKnownFileType = file; path = "iTunesArtwork@2x"; sourceTree = "<group>"; };
 		6333F4CD18B811E600DDC490 /* ACAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACAlertView.h; sourceTree = "<group>"; };
 		6333F4CE18B811E600DDC490 /* ACAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACAlertView.m; sourceTree = "<group>"; };
+		633D394A18B8A1E9001EABFD /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
+		633D394C18B8A1EA001EABFD /* XYPieChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYPieChart.h; sourceTree = "<group>"; };
+		633D394D18B8A1EA001EABFD /* XYPieChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYPieChart.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,6 +134,7 @@
 		6333F47218B7F7CF00DDC490 /* Stex */ = {
 			isa = PBXGroup;
 			children = (
+				633D395018B8A1EE001EABFD /* Pie Chart */,
 				6333F4CD18B811E600DDC490 /* ACAlertView.h */,
 				6333F4CE18B811E600DDC490 /* ACAlertView.m */,
 				6333F4B118B7FE3C00DDC490 /* ACButton.h */,
@@ -184,6 +190,24 @@
 				6333F4C118B8108100DDC490 /* iTunesArtwork@2x */,
 			);
 			path = Icons;
+			sourceTree = "<group>";
+		};
+		633D394B18B8A1EA001EABFD /* XYPieChart */ = {
+			isa = PBXGroup;
+			children = (
+				633D394C18B8A1EA001EABFD /* XYPieChart.h */,
+				633D394D18B8A1EA001EABFD /* XYPieChart.m */,
+			);
+			path = XYPieChart;
+			sourceTree = "<group>";
+		};
+		633D395018B8A1EE001EABFD /* Pie Chart */ = {
+			isa = PBXGroup;
+			children = (
+				633D394A18B8A1E9001EABFD /* LICENSE.txt */,
+				633D394B18B8A1EA001EABFD /* XYPieChart */,
+			);
+			name = "Pie Chart";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -251,6 +275,7 @@
 				6333F4B018B7FCB900DDC490 /* login-bg.png in Resources */,
 				6333F48818B7F7CF00DDC490 /* Images.xcassets in Resources */,
 				6333F4CC18B8108100DDC490 /* iTunesArtwork@2x in Resources */,
+				633D394E18B8A1EA001EABFD /* LICENSE.txt in Resources */,
 				6333F48018B7F7CF00DDC490 /* Main_iPhone.storyboard in Resources */,
 				6333F4C918B8108100DDC490 /* Icon.png in Resources */,
 				6333F47718B7F7CF00DDC490 /* InfoPlist.strings in Resources */,
@@ -271,6 +296,7 @@
 				6333F48618B7F7CF00DDC490 /* ACSummaryViewController.m in Sources */,
 				6333F4CF18B811E600DDC490 /* ACAlertView.m in Sources */,
 				6333F47918B7F7CF00DDC490 /* main.m in Sources */,
+				633D394F18B8A1EA001EABFD /* XYPieChart.m in Sources */,
 				6333F4A818B7FA0600DDC490 /* ACLoginController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -424,6 +450,7 @@
 				6333F4A018B7F7CF00DDC490 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
