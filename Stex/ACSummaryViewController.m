@@ -8,26 +8,38 @@
 
 #import "ACSummaryViewController.h"
 #import "ACAlertView.h"
+#import "ACSiteViewController.h"
 
 #define rgb(x) x/255.0
+#define ANIMATION_DURATION 0.5
+#define SLIDING_X_VAL 620
 
 @implementation ACSummaryViewController
+{
+    CGPoint originalCenter;
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.badgeCounts = [NSMutableArray array];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+
+    self.slideViewController = [[ACSlideViewController alloc] init];
+    self.slideViewController.delegate = self;
+    [self.view insertSubview:self.slideViewController.view belowSubview:self.contentView];
+    [self addChildViewController:self.slideViewController];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
-    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:rgb(63.0) green:rgb(105.0) blue:rgb(179.0) alpha:1.0];
+    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:rgb(41.0) green:rgb(75.0) blue:rgb(125.0) alpha:1.0];
     
     self.pieChart.delegate = self;
     self.pieChart.dataSource = self;
-    [self.pieChart setShowPercentage:YES];
+    [self.pieChart setShowPercentage:NO];
     [self.pieChart setLabelFont:[UIFont fontWithName:@"Verdana" size:16.0]];
     [self.pieChart reloadData];
     
@@ -64,7 +76,7 @@
         [self.avatarImageView performSelectorOnMainThread:@selector(setImage:) withObject:userImage waitUntilDone:NO];
     });
     
-    /* Fetch total user rep using associated accounts */
+    /* Fetch total user rep and total badge count using associated accounts */
     NSString *associatedRequestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/me/associated?access_token=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((", self.accessToken];
     NSData *associatedInfo = [NSData dataWithContentsOfURL:[NSURL URLWithString:associatedRequestURLString]];
     NSDictionary *associatedWrapper = [NSJSONSerialization JSONObjectWithData:associatedInfo options:NSJSONReadingMutableLeaves error:nil];
@@ -92,7 +104,7 @@
         [self.pieChart reloadData];
     });
     
-    NSString *reputationString = [NSString stringWithFormat:@"%d reputation", finalReputation];
+    NSString *reputationString = [NSString stringWithFormat:@"%ld reputation", (long)finalReputation];
     [self.reputationLabel performSelectorOnMainThread:@selector(setText:) withObject:reputationString waitUntilDone:NO];
     
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -113,6 +125,28 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
     ACLoginController *loginController = [[ACLoginController alloc] initWithDelegate:self];
     [self presentViewController:loginController animated:YES completion:nil];
+}
+
+- (void)displayAboutMe:(id)sender
+{
+    
+}
+
+- (void)slideMenu:(id)sender
+{
+    if (self.contentView.center.x != SLIDING_X_VAL)
+    {
+        [UIView animateWithDuration:ANIMATION_DURATION animations:^{
+            originalCenter = self.contentView.center;
+            self.contentView.center = CGPointMake(SLIDING_X_VAL, self.contentView.center.y);
+        }];
+    }
+    else
+    {
+        [UIView animateWithDuration:ANIMATION_DURATION animations:^{
+            self.contentView.center = originalCenter;
+        }];
+    }
 }
 
 #pragma mark - Login Delegate
@@ -142,7 +176,8 @@
 
 - (NSString *)pieChart:(XYPieChart *)pieChart textForSliceAtIndex:(NSUInteger)index
 {
-    switch (index) {
+    switch (index)
+    {
         case 0:
             return @"Bronze";
             break;
@@ -168,7 +203,8 @@
 
 - (UIColor *)pieChart:(XYPieChart *)pieChart colorForSliceAtIndex:(NSUInteger)index
 {
-    switch (index) {
+    switch (index)
+    {
         case 0:
             return [UIColor colorWithRed:rgb(205.0) green:rgb(127.0) blue:rgb(50.0) alpha:1.0];
             break;
@@ -185,6 +221,29 @@
             break;
     }
     return [UIColor whiteColor];
+}
+
+#pragma mark - Slide View Delegate
+
+- (void)siteWasSelected:(NSString *)site
+{
+    for (UIViewController *vc in self.childViewControllers)
+    {
+        if ([vc isKindOfClass:[ACSiteViewController class]])
+        {
+            [vc removeFromParentViewController];
+            [vc.view removeFromSuperview];
+        }
+    }
+    ACSiteViewController *siteViewController = [[ACSiteViewController alloc] initWithSite:site];
+    [self addChildViewController:siteViewController];
+    [self.contentView addSubview:siteViewController.view];
+    [self slideMenu:nil];
+}
+
+- (void)userInfoCellWasSelected:(NSString *)info
+{
+    
 }
 
 @end

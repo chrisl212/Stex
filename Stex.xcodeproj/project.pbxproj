@@ -37,6 +37,10 @@
 		6333F4CF18B811E600DDC490 /* ACAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6333F4CE18B811E600DDC490 /* ACAlertView.m */; };
 		633D394E18B8A1EA001EABFD /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 633D394A18B8A1E9001EABFD /* LICENSE.txt */; };
 		633D394F18B8A1EA001EABFD /* XYPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 633D394D18B8A1EA001EABFD /* XYPieChart.m */; };
+		633D395318B9A1AD001EABFD /* ACSlideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 633D395218B9A1AD001EABFD /* ACSlideViewController.m */; };
+		633D395718B9AEDE001EABFD /* ACSiteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 633D395518B9AEDE001EABFD /* ACSiteViewController.m */; };
+		633D395818B9AEDE001EABFD /* ACSiteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 633D395618B9AEDE001EABFD /* ACSiteViewController.xib */; };
+		633D395A18B9BB7C001EABFD /* open-slide@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633D395918B9BB7C001EABFD /* open-slide@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -81,6 +85,12 @@
 		633D394A18B8A1E9001EABFD /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		633D394C18B8A1EA001EABFD /* XYPieChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYPieChart.h; sourceTree = "<group>"; };
 		633D394D18B8A1EA001EABFD /* XYPieChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYPieChart.m; sourceTree = "<group>"; };
+		633D395118B9A1AD001EABFD /* ACSlideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACSlideViewController.h; sourceTree = "<group>"; };
+		633D395218B9A1AD001EABFD /* ACSlideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACSlideViewController.m; sourceTree = "<group>"; };
+		633D395418B9AEDE001EABFD /* ACSiteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACSiteViewController.h; sourceTree = "<group>"; };
+		633D395518B9AEDE001EABFD /* ACSiteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACSiteViewController.m; sourceTree = "<group>"; };
+		633D395618B9AEDE001EABFD /* ACSiteViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACSiteViewController.xib; sourceTree = "<group>"; };
+		633D395918B9BB7C001EABFD /* open-slide@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "open-slide@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,6 +157,12 @@
 				6333F48118B7F7CF00DDC490 /* Main_iPad.storyboard */,
 				6333F48418B7F7CF00DDC490 /* ACSummaryViewController.h */,
 				6333F48518B7F7CF00DDC490 /* ACSummaryViewController.m */,
+				633D395918B9BB7C001EABFD /* open-slide@2x.png */,
+				633D395118B9A1AD001EABFD /* ACSlideViewController.h */,
+				633D395218B9A1AD001EABFD /* ACSlideViewController.m */,
+				633D395418B9AEDE001EABFD /* ACSiteViewController.h */,
+				633D395518B9AEDE001EABFD /* ACSiteViewController.m */,
+				633D395618B9AEDE001EABFD /* ACSiteViewController.xib */,
 				6333F48718B7F7CF00DDC490 /* Images.xcassets */,
 				6333F47318B7F7CF00DDC490 /* Supporting Files */,
 			);
@@ -265,6 +281,7 @@
 			files = (
 				6333F4B518B80A0200DDC490 /* inner-shadow.png in Resources */,
 				6333F4CA18B8108100DDC490 /* Icon@2x.png in Resources */,
+				633D395A18B9BB7C001EABFD /* open-slide@2x.png in Resources */,
 				6333F48318B7F7CF00DDC490 /* Main_iPad.storyboard in Resources */,
 				6333F4C518B8108100DDC490 /* Icon-Small-50.png in Resources */,
 				6333F4C718B8108100DDC490 /* Icon-Small.png in Resources */,
@@ -281,6 +298,7 @@
 				6333F47718B7F7CF00DDC490 /* InfoPlist.strings in Resources */,
 				6333F4C818B8108100DDC490 /* Icon-Small@2x.png in Resources */,
 				6333F4CB18B8108100DDC490 /* iTunesArtwork in Resources */,
+				633D395818B9AEDE001EABFD /* ACSiteViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -292,11 +310,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				6333F47D18B7F7CF00DDC490 /* ACAppDelegate.m in Sources */,
+				633D395718B9AEDE001EABFD /* ACSiteViewController.m in Sources */,
 				6333F4B318B7FE3C00DDC490 /* ACButton.m in Sources */,
 				6333F48618B7F7CF00DDC490 /* ACSummaryViewController.m in Sources */,
 				6333F4CF18B811E600DDC490 /* ACAlertView.m in Sources */,
 				6333F47918B7F7CF00DDC490 /* main.m in Sources */,
 				633D394F18B8A1EA001EABFD /* XYPieChart.m in Sources */,
+				633D395318B9A1AD001EABFD /* ACSlideViewController.m in Sources */,
 				6333F4A818B7FA0600DDC490 /* ACLoginController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
