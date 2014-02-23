@@ -15,9 +15,9 @@
 
 - (id)init
 {
-    if (self= [super init])
+    if (self= [super initWithStyle:UITableViewStyleGrouped])
     {
-        self.userInfoCellTitles = @[@"Inbox", @"Notifications", @"Questions", @"Answers"];
+        self.userInfoCellTitles = @[@"Summary", @"Inbox", @"Notifications", @"Questions", @"Answers"];
         self.sitesArray = @[];
         self.siteAPIParameters = @[];
         self.iconsArray = @[];
@@ -72,6 +72,13 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 2;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    if (section == USER_INFO_SECTION)
+        return @"Account";
+    return @"Sites";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section

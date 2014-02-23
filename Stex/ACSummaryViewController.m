@@ -236,6 +236,7 @@
         }
     }
     ACSiteViewController *siteViewController = [[ACSiteViewController alloc] initWithSite:site];
+    siteViewController.accessToken = self.accessToken;
     [self addChildViewController:siteViewController];
     [self.contentView addSubview:siteViewController.view];
     [self slideMenu:nil];
@@ -243,7 +244,19 @@
 
 - (void)userInfoCellWasSelected:(NSString *)info
 {
+    if ([info isEqualToString:@"Summary"])
+    {
+        for (UIViewController *vc in self.childViewControllers)
+        {
+            if (![vc isKindOfClass:[ACSlideViewController class]])
+            {
+                [vc.view removeFromSuperview];
+                [vc removeFromParentViewController];
+            }
+        }
+    }
     
+    [self slideMenu:nil];
 }
 
 @end

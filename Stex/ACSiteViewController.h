@@ -13,6 +13,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *siteLogoImageView;
 @property (strong, nonatomic) NSString *siteName;
 @property (strong, nonatomic) NSString *siteAPIName;
+@property (strong, nonatomic) NSString *accessToken;
 
 - (id)initWithSite:(NSString *)site;
 
