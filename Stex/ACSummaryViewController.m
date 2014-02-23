@@ -13,10 +13,13 @@
 #define rgb(x) x/255.0
 #define ANIMATION_DURATION 0.5
 #define SLIDING_X_VAL 620
+#define SLIDING_SITE_X_VAL -620
 
 @implementation ACSummaryViewController
 {
     CGPoint originalCenter;
+    CGPoint originalSlideCenter;
+    CGPoint originalSiteSlideCenter;
 }
 
 - (void)viewDidLoad
@@ -24,11 +27,47 @@
     [super viewDidLoad];
     self.badgeCounts = [NSMutableArray array];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-
+    
+    UISwipeGestureRecognizer *swipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(slideMenu:)];
+    swipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
+    [self.contentView addGestureRecognizer:swipeGestureRecognizer];
+    
+    [self.avatarImageView.layer setMasksToBounds:YES];
+    [self.avatarImageView.layer setCornerRadius:15.0];
+    
+    UIBarButtonItem *logOut = [[UIBarButtonItem alloc] initWithTitle:@"Log Out" style:UIBarButtonItemStyleBordered target:self action:@selector(logOut:)];
+    [logOut setTintColor:[UIColor whiteColor]];
+    [logOut setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"Verdana" size:14]} forState:UIControlStateNormal];
+    [self.navigationItem setRightBarButtonItem:logOut animated:YES];
+    
+    UIFont *font = [UIFont fontWithName:@"Verdana" size:16];
+    CGRect frame = CGRectMake(0, 0, [@"Stex" sizeWithAttributes:@{NSFontAttributeName: font}].width, 44);
+    UILabel *label = [[UILabel alloc] initWithFrame:frame];
+    label.backgroundColor = [UIColor clearColor];
+    label.font = font;
+    label.textAlignment = NSTextAlignmentCenter;
+    label.textColor = [UIColor whiteColor];
+    label.text = @"Stex";
+    self.navigationItem.titleView = label;
+    
     self.slideViewController = [[ACSlideViewController alloc] init];
     self.slideViewController.delegate = self;
     [self.view insertSubview:self.slideViewController.view belowSubview:self.contentView];
     [self addChildViewController:self.slideViewController];
+    UISwipeGestureRecognizer *slideGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(slideMenu:)];
+    slideGestureRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
+    [self.slideViewController.view addGestureRecognizer:slideGestureRecognizer];
+    
+    self.siteSlideController = [[ACSiteSlideController alloc] init];
+    [self.view insertSubview:self.siteSlideController.view belowSubview:self.slideViewController.view];
+    [self addChildViewController:self.siteSlideController];
+    UISwipeGestureRecognizer *siteSlideGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(slideSiteMenu)];
+    siteSlideGestureRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
+    [self.siteSlideController.view addGestureRecognizer:siteSlideGestureRecognizer];
+    
+    originalCenter = self.view.center;
+    originalSlideCenter = self.slideViewController.view.center;
+    originalSiteSlideCenter = self.siteSlideController.view.center;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -68,6 +107,9 @@
         NSLog(@"%@", error);
     NSDictionary *items = [[wrapper objectForKey:@"items"] objectAtIndex:0];
     NSString *username = [items objectForKey:@"display_name"];
+    
+    self.siteSlideController.username = username;
+    
     NSString *imageURL = [items objectForKey:@"profile_image"];
     [self.usernameLabel performSelectorOnMainThread:@selector(setText:) withObject:username waitUntilDone:NO];
     dispatch_async(dispatch_queue_create("com.a-cstudios.lazyimage", NULL), ^{
@@ -137,7 +179,8 @@
     if (self.contentView.center.x != SLIDING_X_VAL)
     {
         [UIView animateWithDuration:ANIMATION_DURATION animations:^{
-            originalCenter = self.contentView.center;
+            self.siteSlideController.view.center = originalSiteSlideCenter;
+            self.slideViewController.view.center = originalSlideCenter;
             self.contentView.center = CGPointMake(SLIDING_X_VAL, self.contentView.center.y);
         }];
     }
@@ -145,6 +188,25 @@
     {
         [UIView animateWithDuration:ANIMATION_DURATION animations:^{
             self.contentView.center = originalCenter;
+        }];
+    }
+}
+
+- (void)slideSiteMenu
+{
+    if (self.contentView.center.x != SLIDING_SITE_X_VAL)
+    {
+        [UIView animateWithDuration:ANIMATION_DURATION animations:^{
+            self.siteSlideController.view.center = originalSiteSlideCenter;
+            self.contentView.center = CGPointMake(SLIDING_SITE_X_VAL, self.contentView.center.y);
+            self.slideViewController.view.center = CGPointMake(SLIDING_SITE_X_VAL, self.contentView.center.y);
+        }];
+    }
+    else
+    {
+        [UIView animateWithDuration:ANIMATION_DURATION animations:^{
+            self.contentView.center = originalCenter;
+            self.slideViewController.view.center = originalSlideCenter;
         }];
     }
 }
@@ -244,6 +306,11 @@
 
 - (void)userInfoCellWasSelected:(NSString *)info
 {
+    UIBarButtonItem *logOut = [[UIBarButtonItem alloc] initWithTitle:@"Log Out" style:UIBarButtonItemStyleBordered target:self action:@selector(logOut:)];
+    [logOut setTintColor:[UIColor whiteColor]];
+    [logOut setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"Verdana" size:14]} forState:UIControlStateNormal];
+    [self.navigationItem setRightBarButtonItem:logOut animated:YES];
+    
     if ([info isEqualToString:@"Summary"])
     {
         for (UIViewController *vc in self.childViewControllers)

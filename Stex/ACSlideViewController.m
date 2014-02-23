@@ -17,7 +17,7 @@
 {
     if (self= [super initWithStyle:UITableViewStyleGrouped])
     {
-        self.userInfoCellTitles = @[@"Summary", @"Inbox", @"Notifications", @"Questions", @"Answers"];
+        self.userInfoCellTitles = @[@"Summary", @"Inbox", @"Notifications"];
         self.sitesArray = @[];
         self.siteAPIParameters = @[];
         self.iconsArray = @[];
@@ -26,11 +26,22 @@
             NSMutableArray *sitesArray = [NSMutableArray array];
             NSMutableArray *iconsArray = [NSMutableArray array];
             NSMutableArray *siteAPIParams = [NSMutableArray array];
+            NSArray *allSites;
             
-            NSString *requestURLString = @"https://api.stackexchange.com/2.2/sites";
-            NSData *responseData = [NSData dataWithContentsOfURL:[NSURL URLWithString:requestURLString]];
-            NSDictionary *rootDictionary = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableLeaves error:nil];
-            NSArray *allSites = [rootDictionary objectForKey:@"items"];
+            NSString *cachedSitesPath = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"sites_cache.json"];
+            if (![[NSFileManager defaultManager] fileExistsAtPath:cachedSitesPath])
+            {
+                NSString *requestURLString = @"https://api.stackexchange.com/2.2/sites";
+                NSData *responseData = [NSData dataWithContentsOfURL:[NSURL URLWithString:requestURLString]];
+                NSDictionary *rootDictionary = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableLeaves error:nil];
+                allSites = [rootDictionary objectForKey:@"items"];
+            }
+            else
+            {
+                NSData *fileData = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:cachedSitesPath]];
+                NSDictionary *rootDictionary = [NSJSONSerialization JSONObjectWithData:fileData options:NSJSONReadingMutableLeaves error:nil];
+                allSites = [rootDictionary objectForKey:@"items"];
+            }
             for (NSDictionary *site in allSites)
             {
                 NSString *siteName = [site objectForKey:@"name"];

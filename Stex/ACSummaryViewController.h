@@ -11,6 +11,7 @@
 #import "ACLoginController.h"
 #import "XYPieChart/XYPieChart.h"
 #import "ACSlideViewController.h"
+#import "ACSiteSlideController.h"
 
 @class ACAlertView;
 
@@ -26,9 +27,11 @@
 @property (strong, nonatomic) NSString *aboutUser;
 @property (strong, nonatomic) NSMutableArray *badgeCounts;
 @property (strong, nonatomic) ACSlideViewController *slideViewController;
+@property (strong, nonatomic) ACSiteSlideController *siteSlideController;
 
 - (IBAction)logOut:(id)sender;
 - (IBAction)displayAboutMe:(id)sender;
 - (IBAction)slideMenu:(id)sender;
+- (void)slideSiteMenu;
 
 @end

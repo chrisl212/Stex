@@ -41,6 +41,7 @@
 		633D395718B9AEDE001EABFD /* ACSiteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 633D395518B9AEDE001EABFD /* ACSiteViewController.m */; };
 		633D395818B9AEDE001EABFD /* ACSiteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 633D395618B9AEDE001EABFD /* ACSiteViewController.xib */; };
 		633D395A18B9BB7C001EABFD /* open-slide@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633D395918B9BB7C001EABFD /* open-slide@2x.png */; };
+		63A3F54C18BA84CC00D159CF /* ACSiteSlideController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A3F54B18BA84CC00D159CF /* ACSiteSlideController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -91,6 +92,8 @@
 		633D395518B9AEDE001EABFD /* ACSiteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACSiteViewController.m; sourceTree = "<group>"; };
 		633D395618B9AEDE001EABFD /* ACSiteViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACSiteViewController.xib; sourceTree = "<group>"; };
 		633D395918B9BB7C001EABFD /* open-slide@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "open-slide@2x.png"; sourceTree = "<group>"; };
+		63A3F54A18BA84CC00D159CF /* ACSiteSlideController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACSiteSlideController.h; sourceTree = "<group>"; };
+		63A3F54B18BA84CC00D159CF /* ACSiteSlideController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACSiteSlideController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -160,9 +163,7 @@
 				633D395918B9BB7C001EABFD /* open-slide@2x.png */,
 				633D395118B9A1AD001EABFD /* ACSlideViewController.h */,
 				633D395218B9A1AD001EABFD /* ACSlideViewController.m */,
-				633D395418B9AEDE001EABFD /* ACSiteViewController.h */,
-				633D395518B9AEDE001EABFD /* ACSiteViewController.m */,
-				633D395618B9AEDE001EABFD /* ACSiteViewController.xib */,
+				63A3F54D18BA84D300D159CF /* Site Controllers */,
 				6333F48718B7F7CF00DDC490 /* Images.xcassets */,
 				6333F47318B7F7CF00DDC490 /* Supporting Files */,
 			);
@@ -224,6 +225,18 @@
 				633D394B18B8A1EA001EABFD /* XYPieChart */,
 			);
 			name = "Pie Chart";
+			sourceTree = "<group>";
+		};
+		63A3F54D18BA84D300D159CF /* Site Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				63A3F54A18BA84CC00D159CF /* ACSiteSlideController.h */,
+				63A3F54B18BA84CC00D159CF /* ACSiteSlideController.m */,
+				633D395418B9AEDE001EABFD /* ACSiteViewController.h */,
+				633D395518B9AEDE001EABFD /* ACSiteViewController.m */,
+				633D395618B9AEDE001EABFD /* ACSiteViewController.xib */,
+			);
+			name = "Site Controllers";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -317,6 +330,7 @@
 				6333F47918B7F7CF00DDC490 /* main.m in Sources */,
 				633D394F18B8A1EA001EABFD /* XYPieChart.m in Sources */,
 				633D395318B9A1AD001EABFD /* ACSlideViewController.m in Sources */,
+				63A3F54C18BA84CC00D159CF /* ACSiteSlideController.m in Sources */,
 				6333F4A818B7FA0600DDC490 /* ACLoginController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

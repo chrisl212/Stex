@@ -6,9 +6,10 @@
 //  Copyright (c) 2014 A and C Studios. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import UIKit;
+#import "ACSiteSlideController.h"
 
-@interface ACSiteViewController : UIViewController
+@interface ACSiteViewController : UIViewController <ACSiteSlideControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *siteLogoImageView;
 @property (strong, nonatomic) NSString *siteName;
