@@ -188,6 +188,7 @@
     {
         [UIView animateWithDuration:ANIMATION_DURATION animations:^{
             self.contentView.center = originalCenter;
+            self.siteSlideController.view.center = originalSiteSlideCenter;
         }];
     }
 }
@@ -207,6 +208,7 @@
         [UIView animateWithDuration:ANIMATION_DURATION animations:^{
             self.contentView.center = originalCenter;
             self.slideViewController.view.center = originalSlideCenter;
+            self.siteSlideController.view.center = originalSiteSlideCenter;
         }];
     }
 }
@@ -315,14 +317,14 @@
     {
         for (UIViewController *vc in self.childViewControllers)
         {
-            if (![vc isKindOfClass:[ACSlideViewController class]])
+            if (![vc isKindOfClass:[ACSlideViewController class]] && ![vc isKindOfClass:[ACSiteSlideController class]])
             {
                 [vc.view removeFromSuperview];
                 [vc removeFromParentViewController];
             }
         }
     }
-    
+
     [self slideMenu:nil];
 }
 

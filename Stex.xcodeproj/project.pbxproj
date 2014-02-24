@@ -42,6 +42,8 @@
 		633D395818B9AEDE001EABFD /* ACSiteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 633D395618B9AEDE001EABFD /* ACSiteViewController.xib */; };
 		633D395A18B9BB7C001EABFD /* open-slide@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633D395918B9BB7C001EABFD /* open-slide@2x.png */; };
 		63A3F54C18BA84CC00D159CF /* ACSiteSlideController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A3F54B18BA84CC00D159CF /* ACSiteSlideController.m */; };
+		63C5175318BADA9C006420A4 /* ACQuestionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C5175218BADA9C006420A4 /* ACQuestionCell.m */; };
+		63C5175518BADAAA006420A4 /* ACQuestionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63C5175418BADAAA006420A4 /* ACQuestionCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -94,6 +96,9 @@
 		633D395918B9BB7C001EABFD /* open-slide@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "open-slide@2x.png"; sourceTree = "<group>"; };
 		63A3F54A18BA84CC00D159CF /* ACSiteSlideController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACSiteSlideController.h; sourceTree = "<group>"; };
 		63A3F54B18BA84CC00D159CF /* ACSiteSlideController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACSiteSlideController.m; sourceTree = "<group>"; };
+		63C5175118BADA9C006420A4 /* ACQuestionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACQuestionCell.h; sourceTree = "<group>"; };
+		63C5175218BADA9C006420A4 /* ACQuestionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACQuestionCell.m; sourceTree = "<group>"; };
+		63C5175418BADAAA006420A4 /* ACQuestionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACQuestionCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -232,6 +237,9 @@
 			children = (
 				63A3F54A18BA84CC00D159CF /* ACSiteSlideController.h */,
 				63A3F54B18BA84CC00D159CF /* ACSiteSlideController.m */,
+				63C5175118BADA9C006420A4 /* ACQuestionCell.h */,
+				63C5175218BADA9C006420A4 /* ACQuestionCell.m */,
+				63C5175418BADAAA006420A4 /* ACQuestionCell.xib */,
 				633D395418B9AEDE001EABFD /* ACSiteViewController.h */,
 				633D395518B9AEDE001EABFD /* ACSiteViewController.m */,
 				633D395618B9AEDE001EABFD /* ACSiteViewController.xib */,
@@ -297,6 +305,7 @@
 				633D395A18B9BB7C001EABFD /* open-slide@2x.png in Resources */,
 				6333F48318B7F7CF00DDC490 /* Main_iPad.storyboard in Resources */,
 				6333F4C518B8108100DDC490 /* Icon-Small-50.png in Resources */,
+				63C5175518BADAAA006420A4 /* ACQuestionCell.xib in Resources */,
 				6333F4C718B8108100DDC490 /* Icon-Small.png in Resources */,
 				6333F4C418B8108100DDC490 /* Icon-76@2x.png in Resources */,
 				6333F4C318B8108100DDC490 /* Icon-76.png in Resources */,
@@ -322,6 +331,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63C5175318BADA9C006420A4 /* ACQuestionCell.m in Sources */,
 				6333F47D18B7F7CF00DDC490 /* ACAppDelegate.m in Sources */,
 				633D395718B9AEDE001EABFD /* ACSiteViewController.m in Sources */,
 				6333F4B318B7FE3C00DDC490 /* ACButton.m in Sources */,

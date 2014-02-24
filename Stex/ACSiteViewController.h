@@ -9,12 +9,15 @@
 @import UIKit;
 #import "ACSiteSlideController.h"
 
-@interface ACSiteViewController : UIViewController <ACSiteSlideControllerDelegate>
+@interface ACSiteViewController : UIViewController <ACSiteSlideControllerDelegate, UITableViewDataSource, UITableViewDelegate>
 
-@property (weak, nonatomic) IBOutlet UIImageView *siteLogoImageView;
 @property (strong, nonatomic) NSString *siteName;
 @property (strong, nonatomic) NSString *siteAPIName;
+@property (strong, nonatomic) NSString *openTagName;
 @property (strong, nonatomic) NSString *accessToken;
+@property (strong, nonatomic) NSArray *questionsArray;
+@property (strong, nonatomic) NSArray *avatarArray;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 - (id)initWithSite:(NSString *)site;
 

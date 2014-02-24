@@ -28,26 +28,44 @@
             NSMutableArray *siteAPIParams = [NSMutableArray array];
             NSArray *allSites;
             
-            NSString *cachedSitesPath = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"sites_cache.json"];
+            NSString *cachesDirectory = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+            
+            NSString *cachedSitesPath = [cachesDirectory stringByAppendingPathComponent:@"sites_cache.json"];
+            /* Check if cache exists, and if it does not, fetch the list of sites */
             if (![[NSFileManager defaultManager] fileExistsAtPath:cachedSitesPath])
             {
                 NSString *requestURLString = @"https://api.stackexchange.com/2.2/sites";
                 NSData *responseData = [NSData dataWithContentsOfURL:[NSURL URLWithString:requestURLString]];
+                [[NSFileManager defaultManager] createFileAtPath:cachedSitesPath contents:responseData attributes:nil];
                 NSDictionary *rootDictionary = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableLeaves error:nil];
                 allSites = [rootDictionary objectForKey:@"items"];
             }
+            /* The cache does exist, so fetch the data from the cache */
             else
             {
                 NSData *fileData = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:cachedSitesPath]];
                 NSDictionary *rootDictionary = [NSJSONSerialization JSONObjectWithData:fileData options:NSJSONReadingMutableLeaves error:nil];
                 allSites = [rootDictionary objectForKey:@"items"];
             }
+            
+            
+            /* Go through sites array and get information for each site */
             for (NSDictionary *site in allSites)
             {
                 NSString *siteName = [site objectForKey:@"name"];
                 NSString *iconURLString = [site objectForKey:@"icon_url"];
                 NSString *APIParameter = [site objectForKey:@"api_site_parameter"];
-                NSData *iconData = [NSData dataWithContentsOfURL:[NSURL URLWithString:iconURLString]];
+                
+                NSString *iconCachePath = [cachesDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_icon.png", APIParameter]];
+                
+                NSData *iconData;
+                if (![[NSFileManager defaultManager] fileExistsAtPath:iconCachePath])
+                {
+                    iconData = [NSData dataWithContentsOfURL:[NSURL URLWithString:iconURLString]];
+                    [[NSFileManager defaultManager] createFileAtPath:iconCachePath contents:iconData attributes:nil];
+                }
+                else
+                    iconData = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:iconCachePath]];
                 UIImage *iconImage = [UIImage imageWithData:iconData];
                 
                 [sitesArray addObject:siteName];

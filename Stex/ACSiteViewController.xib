@@ -6,7 +6,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ACSiteViewController">
             <connections>
-                <outlet property="siteLogoImageView" destination="cBa-OB-DbL" id="BVG-RV-XYS"/>
+                <outlet property="tableView" destination="tPs-Ah-BlW" id="fQh-sB-SDE"/>
                 <outlet property="view" destination="1" id="3"/>
             </connections>
         </placeholder>
@@ -15,14 +15,14 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cBa-OB-DbL">
-                    <rect key="frame" x="0.0" y="68" width="320" height="78"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                </imageView>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="tPs-Ah-BlW">
-                    <rect key="frame" x="0.0" y="178" width="320" height="390"/>
+                    <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="6bg-Pi-tvI"/>
+                        <outlet property="delegate" destination="-1" id="iWe-3a-bYI"/>
+                    </connections>
                 </tableView>
             </subviews>
             <color key="backgroundColor" red="0.93725496530532837" green="0.93725496530532837" blue="0.95686280727386475" alpha="1" colorSpace="deviceRGB"/>
