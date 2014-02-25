@@ -8,6 +8,8 @@
 
 #import "ACTagView.h"
 
+#define rgb(x) x/255.0
+
 @implementation ACTagView
 
 - (id)initWithFrame:(CGRect)frame
@@ -27,24 +29,28 @@
     {
         [view removeFromSuperview];
     }
-    CGFloat x_val = 0;
+    CGFloat x_val = 5.0;
+    CGFloat y_val = 0.0;
     
     for (NSString *tagName in self.tagsArray)
     {
         UIFont *labelFont = [UIFont fontWithName:@"Verdana" size:12];
         CGSize labelSize = [tagName sizeWithAttributes:@{NSFontAttributeName: labelFont}];
-        UILabel *tagLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, labelSize.width, labelSize.height)];
+        UILabel *tagLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, labelSize.width + 10, labelSize.height)];
         tagLabel.textColor = [UIColor whiteColor];
         tagLabel.font = labelFont;
         tagLabel.text = tagName;
         tagLabel.textAlignment = NSTextAlignmentCenter;
         
-        UIView *tag = [[UIView alloc] initWithFrame:CGRectMake(x_val, 0, labelSize.width + 10, labelSize.height)];
-        tag.backgroundColor = [UIColor blackColor];
+        if (x_val + labelSize.width > self.frame.size.width)
+            x_val = 5.0, y_val += labelSize.height + 7.5;
+        
+        UIView *tag = [[UIView alloc] initWithFrame:CGRectMake(x_val, y_val, labelSize.width + 10, labelSize.height + 2.5)];
+        tag.backgroundColor = [UIColor colorWithRed:rgb(41.0) green:rgb(75.0) blue:rgb(125.0) alpha:1.0];
         [tag addSubview:tagLabel];
         
         [self addSubview:tag];
-        x_val += labelSize.width + 20;
+        x_val += labelSize.width + 20.0;
 
     }
 }
