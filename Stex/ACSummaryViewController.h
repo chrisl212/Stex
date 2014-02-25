@@ -8,14 +8,13 @@
 
 @import UIKit;
 @import QuartzCore;
-#import "ACLoginController.h"
 #import "XYPieChart/XYPieChart.h"
 #import "ACSlideViewController.h"
 #import "ACSiteSlideController.h"
 
 @class ACAlertView;
 
-@interface ACSummaryViewController : UIViewController <ACLoginDelegate, NSURLConnectionDataDelegate, NSURLConnectionDelegate, XYPieChartDataSource, XYPieChartDelegate, ACSlideControllerDelegate>
+@interface ACSummaryViewController : UIViewController <NSURLConnectionDataDelegate, NSURLConnectionDelegate, XYPieChartDataSource, XYPieChartDelegate, ACSlideControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *avatarImageView;
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
@@ -23,7 +22,6 @@
 @property (weak, nonatomic) IBOutlet XYPieChart *pieChart;
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (strong, nonatomic) ACAlertView *alertView;
-@property (strong, nonatomic) NSString *accessToken;
 @property (strong, nonatomic) NSString *aboutUser;
 @property (strong, nonatomic) NSMutableArray *badgeCounts;
 @property (strong, nonatomic) ACSlideViewController *slideViewController;
@@ -33,5 +31,6 @@
 - (IBAction)displayAboutMe:(id)sender;
 - (IBAction)slideMenu:(id)sender;
 - (void)slideSiteMenu;
+- (void)fetchUserInfo;
 
 @end

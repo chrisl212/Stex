@@ -8,8 +8,9 @@
 
 @import UIKit;
 #import "ACSiteSlideController.h"
+#import "ACTagView.h"
 
-@interface ACSiteViewController : UIViewController <ACSiteSlideControllerDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface ACSiteViewController : UIViewController <ACSiteSlideControllerDelegate, UITableViewDataSource, UITableViewDelegate, ACTagViewDelegate>
 
 @property (strong, nonatomic) NSString *siteName;
 @property (strong, nonatomic) NSString *siteAPIName;

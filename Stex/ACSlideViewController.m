@@ -17,7 +17,7 @@
 {
     if (self= [super initWithStyle:UITableViewStyleGrouped])
     {
-        self.userInfoCellTitles = @[@"Summary", @"Inbox", @"Notifications"];
+        self.userInfoCellTitles = @[@"Summary", @"Inbox", @"Notifications", @"Settings"];
         self.sitesArray = @[];
         self.siteAPIParameters = @[];
         self.iconsArray = @[];
@@ -26,7 +26,7 @@
             NSMutableArray *sitesArray = [NSMutableArray array];
             NSMutableArray *iconsArray = [NSMutableArray array];
             NSMutableArray *siteAPIParams = [NSMutableArray array];
-            NSArray *allSites;
+            NSMutableArray *allSites;
             
             NSString *cachesDirectory = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
             
@@ -34,18 +34,29 @@
             /* Check if cache exists, and if it does not, fetch the list of sites */
             if (![[NSFileManager defaultManager] fileExistsAtPath:cachedSitesPath])
             {
-                NSString *requestURLString = @"https://api.stackexchange.com/2.2/sites";
+                NSString *requestURLString = @"https://api.stackexchange.com/2.2/sites&key=XB*FUGU0f4Ju9RCNhlRQ3A((";
                 NSData *responseData = [NSData dataWithContentsOfURL:[NSURL URLWithString:requestURLString]];
-                [[NSFileManager defaultManager] createFileAtPath:cachedSitesPath contents:responseData attributes:nil];
                 NSDictionary *rootDictionary = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableLeaves error:nil];
-                allSites = [rootDictionary objectForKey:@"items"];
+                allSites = [[rootDictionary objectForKey:@"items"] mutableCopy];
+                int current_page = 2;
+                BOOL more_sites = [[rootDictionary objectForKey:@"has_more"] boolValue];
+                while (more_sites)
+                {
+                    requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/sites?page=%d&key=XB*FUGU0f4Ju9RCNhlRQ3A((", current_page];
+                    responseData = [NSData dataWithContentsOfURL:[NSURL URLWithString:requestURLString]];
+                    rootDictionary = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableLeaves error:nil];
+                    more_sites = [[rootDictionary objectForKey:@"has_more"] boolValue];
+                    [allSites addObjectsFromArray:[rootDictionary objectForKey:@"items"]];
+                    current_page++;
+                }
+                
+                [[NSFileManager defaultManager] createFileAtPath:cachedSitesPath contents:nil attributes:nil];
+                [allSites writeToFile:cachedSitesPath atomically:YES];
             }
             /* The cache does exist, so fetch the data from the cache */
             else
             {
-                NSData *fileData = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:cachedSitesPath]];
-                NSDictionary *rootDictionary = [NSJSONSerialization JSONObjectWithData:fileData options:NSJSONReadingMutableLeaves error:nil];
-                allSites = [rootDictionary objectForKey:@"items"];
+                allSites = [NSMutableArray arrayWithContentsOfURL:[NSURL fileURLWithPath:cachedSitesPath]];
             }
             
             

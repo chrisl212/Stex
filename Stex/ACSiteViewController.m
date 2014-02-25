@@ -10,6 +10,8 @@
 #import "ACAlertView.h"
 #import "ACSummaryViewController.h"
 #import "ACQuestionCell.h"
+#import "ACQuestionViewController.h"
+#import "ACAppDelegate.h"
 
 @implementation ACSiteViewController
 
@@ -34,7 +36,7 @@
         self.openTagName = @"All Questions";
         
         dispatch_async(dispatch_queue_create("com.a-cstudios.siteload", NULL), ^{
-            NSString *requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/info?site=%@&filter=!9WgJff6fP", site];
+            NSString *requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/info?site=%@&filter=!9WgJff6fP&key=XB*FUGU0f4Ju9RCNhlRQ3A((", site];
             
             NSString *cachesDir = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
             NSString *wrapperCache = [cachesDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_sitecache.json", site]];
@@ -71,7 +73,7 @@
             NSMutableArray *questionsArray = [NSMutableArray array];
             NSMutableArray *avatarURLSArray = [NSMutableArray array];
             
-            NSString *questionsRequestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/questions?order=desc&sort=creation&site=%@", site];
+            NSString *questionsRequestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/questions?order=desc&sort=creation&site=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((", site];
             NSData *questionData = [NSData dataWithContentsOfURL:[NSURL URLWithString:questionsRequestURLString]];
             NSDictionary *questionsWrapper = [NSJSONSerialization JSONObjectWithData:questionData options:NSJSONReadingMutableLeaves error:nil];
             NSArray *questions = [questionsWrapper objectForKey:@"items"];
@@ -122,6 +124,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    UISwipeGestureRecognizer *swipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(slideSiteOptions)];
+    swipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
+    [self.view addGestureRecognizer:swipeGestureRecognizer];
+    
     [self.tableView registerClass:[ACQuestionCell class] forCellReuseIdentifier:@"QuestionCell"];
     [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([ACQuestionCell class]) bundle:nil] forCellReuseIdentifier:@"QuestionCell"];
 }
@@ -134,17 +140,62 @@
 
 #pragma mark - Site Slide Delegate
 
-- (void)didSelectTag:(NSString *)tag
+- (void)tagWasSelected:(NSString *)tag
 {
     ACAlertView *alertView = [ACAlertView alertWithTitle:@"Loading..." style:ACAlertViewStyleSpinner delegate:nil buttonTitles:nil];
     [alertView show];
     
+    self.avatarArray = nil;
+    
+    self.avatarArray = @[];
     dispatch_async(dispatch_queue_create("com.a-cstudios.siteload", NULL), ^{
         self.openTagName = tag;
         
         NSMutableArray *questionsArray = [NSMutableArray array];
         NSMutableArray *avatarURLSArray = [NSMutableArray array];
-        NSString *questionsRequestURLString = [[NSString stringWithFormat:@"https://api.stackexchange.com/2.2/search?site=%@&order=desc&sort=creation&tagged=%@", self.siteAPIName, tag] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSString *questionsRequestURLString = [[NSString stringWithFormat:@"https://api.stackexchange.com/2.2/search?site=%@&order=desc&sort=creation&tagged=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((", self.siteAPIName, tag] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSData *questionData = [NSData dataWithContentsOfURL:[NSURL URLWithString:questionsRequestURLString]];
+        NSDictionary *questionsWrapper = [NSJSONSerialization JSONObjectWithData:questionData options:NSJSONReadingMutableLeaves error:nil];
+        NSArray *questions = [questionsWrapper objectForKey:@"items"];
+        for (NSDictionary *questionDictionary in questions)
+        {
+            [questionsArray addObject:questionDictionary];
+            [avatarURLSArray addObject:[[questionDictionary objectForKey:@"owner"] objectForKey:@"profile_image"]];
+        }
+        self.questionsArray = [NSArray arrayWithArray:questionsArray];
+        
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+            [alertView dismiss];
+        });
+        NSMutableArray *avatarArray = [NSMutableArray array];
+        for (NSString *imageURLString in avatarURLSArray)
+        {
+            NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:imageURLString]];
+            UIImage *avatar = [UIImage imageWithData:imageData];
+            [avatarArray addObject:avatar];
+        }
+        self.avatarArray = [NSArray arrayWithArray:avatarArray];
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+        });
+    });
+}
+
+- (void)didSelectTag:(NSString *)tag
+{
+    ACAlertView *alertView = [ACAlertView alertWithTitle:@"Loading..." style:ACAlertViewStyleSpinner delegate:nil buttonTitles:nil];
+    [alertView show];
+    
+    self.avatarArray = nil;
+    
+    self.avatarArray = @[];
+    dispatch_async(dispatch_queue_create("com.a-cstudios.siteload", NULL), ^{
+        self.openTagName = tag;
+        
+        NSMutableArray *questionsArray = [NSMutableArray array];
+        NSMutableArray *avatarURLSArray = [NSMutableArray array];
+        NSString *questionsRequestURLString = [[NSString stringWithFormat:@"https://api.stackexchange.com/2.2/search?site=%@&order=desc&sort=creation&tagged=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((", self.siteAPIName, tag] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         NSData *questionData = [NSData dataWithContentsOfURL:[NSURL URLWithString:questionsRequestURLString]];
         NSDictionary *questionsWrapper = [NSJSONSerialization JSONObjectWithData:questionData options:NSJSONReadingMutableLeaves error:nil];
         NSArray *questions = [questionsWrapper objectForKey:@"items"];
@@ -176,7 +227,50 @@
 
 - (void)didSelectAccountArea:(NSString *)aa
 {
-    NSLog(@"%@", aa);
+    NSString *accessToken = [(ACAppDelegate *)[UIApplication sharedApplication].delegate accessToken];
+    if ([aa isEqualToString:@"My Questions"])
+    {
+        ACAlertView *alertView = [ACAlertView alertWithTitle:@"Loading..." style:ACAlertViewStyleSpinner delegate:nil buttonTitles:nil];
+        [alertView show];
+        
+        self.avatarArray = nil;
+        
+        self.avatarArray = @[];
+        
+        dispatch_async(dispatch_queue_create("com.a-cstudios.siteload", NULL), ^{
+            self.openTagName = @"My Questions";
+            
+            NSMutableArray *questionsArray = [NSMutableArray array];
+            NSMutableArray *avatarURLSArray = [NSMutableArray array];
+            NSString *questionsRequestURLString = [[NSString stringWithFormat:@"https://api.stackexchange.com/2.2/me/questions?site=%@&order=desc&sort=creation&access_token=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((", self.siteAPIName, accessToken] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            NSData *questionData = [NSData dataWithContentsOfURL:[NSURL URLWithString:questionsRequestURLString]];
+            NSDictionary *questionsWrapper = [NSJSONSerialization JSONObjectWithData:questionData options:NSJSONReadingMutableLeaves error:nil];
+            NSArray *questions = [questionsWrapper objectForKey:@"items"];
+            for (NSDictionary *questionDictionary in questions)
+            {
+                [questionsArray addObject:questionDictionary];
+                [avatarURLSArray addObject:[[questionDictionary objectForKey:@"owner"] objectForKey:@"profile_image"]];
+            }
+            self.questionsArray = [NSArray arrayWithArray:questionsArray];
+            
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                [self.tableView reloadData];
+                [self slideSiteOptions];
+                [alertView dismiss];
+            });
+            NSMutableArray *avatarArray = [NSMutableArray array];
+            for (NSString *imageURLString in avatarURLSArray)
+            {
+                NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:imageURLString]];
+                UIImage *avatar = [UIImage imageWithData:imageData];
+                [avatarArray addObject:avatar];
+            }
+            self.avatarArray = [NSArray arrayWithArray:avatarArray];
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                [self.tableView reloadData];
+            });
+        });
+    }
 }
 
 #pragma mark - Table View Delegate/Data Source
@@ -188,7 +282,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 140;
+    return 165;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -206,21 +300,27 @@
     cell.questionTextView.text = [self.questionsArray[indexPath.row] objectForKey:@"title"];
     cell.usernameLabel.text = [[self.questionsArray[indexPath.row] objectForKey:@"owner"] objectForKey:@"display_name"];
     cell.userReputationLabel.text = [[[self.questionsArray[indexPath.row] objectForKey:@"owner"] objectForKey:@"reputation"] stringValue];
+    cell.tagView.tagsArray = self.questionsArray[indexPath.row][@"tags"];
+    cell.tagView.delegate = self;
     if (self.avatarArray.count > 0)
     {
         cell.userAvatarImageView.image = self.avatarArray[indexPath.row];
     }
     cell.answerCountLabel.text = [[self.questionsArray[indexPath.row] objectForKey:@"answer_count"] stringValue];
     cell.voteCountLabel.text = [[self.questionsArray[indexPath.row] objectForKey:@"score"] stringValue];
-    
+    if ([self.questionsArray[indexPath.row][@"is_answered"] boolValue])
+    {
+        cell.answerCountLabel.backgroundColor = [UIColor colorWithRed:64.0/255.0 green:128.0/255.0 blue:0.0 alpha:1.0];
+        cell.answerCountLabel.textColor = [UIColor whiteColor];
+    }
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ACAlertView *alertView = [ACAlertView alertWithTitle:@"Question" style:ACAlertViewStyleTextView delegate:nil buttonTitles:@[@"Close"]];
-    alertView.textView.text = @"You clicked a question. Congrats.";
-    [alertView show];
+    ACQuestionViewController *questionViewController = [[ACQuestionViewController alloc] initWithQuestionID:self.questionsArray[indexPath.row][@"question_id"] site:self.siteAPIName];
+    questionViewController.siteAPIName = self.siteAPIName;
+    [self.parentViewController.navigationController pushViewController:questionViewController animated:YES];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 

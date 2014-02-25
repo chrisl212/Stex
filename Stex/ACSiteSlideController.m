@@ -30,10 +30,10 @@
     dispatch_async(dispatch_queue_create("com.a-cstudios.site-load", NULL), ^{
         NSMutableArray *popularTagsArray = [NSMutableArray array];
         
-        NSString *requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/tags?order=desc&sort=popular&site=%@", siteAPIName];
+        NSString *requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/tags?order=desc&sort=popular&site=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((", siteAPIName];
         NSData *requestData = [NSData dataWithContentsOfURL:[NSURL URLWithString:requestURLString]];
         NSDictionary *wrapper = [NSJSONSerialization JSONObjectWithData:requestData options:NSJSONReadingMutableLeaves error:nil];
-        NSArray *items = [wrapper objectForKey:@"items"];
+        NSMutableArray *items = [wrapper objectForKey:@"items"];
         for (NSDictionary *tagDictionary in items)
         {
             NSNumber *count = [tagDictionary objectForKey:@"count"];

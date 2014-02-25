@@ -44,6 +44,22 @@
 		63A3F54C18BA84CC00D159CF /* ACSiteSlideController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A3F54B18BA84CC00D159CF /* ACSiteSlideController.m */; };
 		63C5175318BADA9C006420A4 /* ACQuestionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C5175218BADA9C006420A4 /* ACQuestionCell.m */; };
 		63C5175518BADAAA006420A4 /* ACQuestionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63C5175418BADAAA006420A4 /* ACQuestionCell.xib */; };
+		63C5175918BB0D77006420A4 /* ACQuestionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C5175718BB0D77006420A4 /* ACQuestionViewController.m */; };
+		63C5175D18BB100F006420A4 /* ACQuestionDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C5175C18BB100F006420A4 /* ACQuestionDetailCell.m */; };
+		63C5175F18BB1023006420A4 /* ACQuestionDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63C5175E18BB1023006420A4 /* ACQuestionDetailCell.xib */; };
+		63C5177318BB1339006420A4 /* MMDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C5176218BB1339006420A4 /* MMDocument.m */; };
+		63C5177418BB1339006420A4 /* MMElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C5176518BB1339006420A4 /* MMElement.m */; };
+		63C5177518BB1339006420A4 /* MMGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C5176718BB1339006420A4 /* MMGenerator.m */; };
+		63C5177618BB1339006420A4 /* MMHTMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C5176918BB1339006420A4 /* MMHTMLParser.m */; };
+		63C5177718BB1339006420A4 /* MMMarkdown.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C5176C18BB1339006420A4 /* MMMarkdown.m */; };
+		63C5177818BB1339006420A4 /* MMParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C5176E18BB1339006420A4 /* MMParser.m */; };
+		63C5177918BB1339006420A4 /* MMScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C5177018BB1339006420A4 /* MMScanner.m */; };
+		63C5177A18BB1339006420A4 /* MMSpanParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C5177218BB1339006420A4 /* MMSpanParser.m */; };
+		63C5177E18BBEFDF006420A4 /* ACTagView.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C5177D18BBEFDF006420A4 /* ACTagView.m */; };
+		63C5178318BC1BAA006420A4 /* downvote-selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 63C5177F18BC1BAA006420A4 /* downvote-selected@2x.png */; };
+		63C5178418BC1BAA006420A4 /* downvote@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 63C5178018BC1BAA006420A4 /* downvote@2x.png */; };
+		63C5178518BC1BAA006420A4 /* upvote-selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 63C5178118BC1BAA006420A4 /* upvote-selected@2x.png */; };
+		63C5178618BC1BAA006420A4 /* upvote@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 63C5178218BC1BAA006420A4 /* upvote@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -99,6 +115,35 @@
 		63C5175118BADA9C006420A4 /* ACQuestionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACQuestionCell.h; sourceTree = "<group>"; };
 		63C5175218BADA9C006420A4 /* ACQuestionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACQuestionCell.m; sourceTree = "<group>"; };
 		63C5175418BADAAA006420A4 /* ACQuestionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACQuestionCell.xib; sourceTree = "<group>"; };
+		63C5175618BB0D77006420A4 /* ACQuestionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACQuestionViewController.h; sourceTree = "<group>"; };
+		63C5175718BB0D77006420A4 /* ACQuestionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACQuestionViewController.m; sourceTree = "<group>"; };
+		63C5175B18BB100F006420A4 /* ACQuestionDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACQuestionDetailCell.h; sourceTree = "<group>"; };
+		63C5175C18BB100F006420A4 /* ACQuestionDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACQuestionDetailCell.m; sourceTree = "<group>"; };
+		63C5175E18BB1023006420A4 /* ACQuestionDetailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACQuestionDetailCell.xib; sourceTree = "<group>"; };
+		63C5176118BB1339006420A4 /* MMDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMDocument.h; sourceTree = "<group>"; };
+		63C5176218BB1339006420A4 /* MMDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMDocument.m; sourceTree = "<group>"; };
+		63C5176318BB1339006420A4 /* MMDocument_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMDocument_Private.h; sourceTree = "<group>"; };
+		63C5176418BB1339006420A4 /* MMElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMElement.h; sourceTree = "<group>"; };
+		63C5176518BB1339006420A4 /* MMElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMElement.m; sourceTree = "<group>"; };
+		63C5176618BB1339006420A4 /* MMGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMGenerator.h; sourceTree = "<group>"; };
+		63C5176718BB1339006420A4 /* MMGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMGenerator.m; sourceTree = "<group>"; };
+		63C5176818BB1339006420A4 /* MMHTMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMHTMLParser.h; sourceTree = "<group>"; };
+		63C5176918BB1339006420A4 /* MMHTMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMHTMLParser.m; sourceTree = "<group>"; };
+		63C5176A18BB1339006420A4 /* MMMarkdown-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MMMarkdown-Prefix.pch"; sourceTree = "<group>"; };
+		63C5176B18BB1339006420A4 /* MMMarkdown.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMMarkdown.h; sourceTree = "<group>"; };
+		63C5176C18BB1339006420A4 /* MMMarkdown.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMMarkdown.m; sourceTree = "<group>"; };
+		63C5176D18BB1339006420A4 /* MMParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMParser.h; sourceTree = "<group>"; };
+		63C5176E18BB1339006420A4 /* MMParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMParser.m; sourceTree = "<group>"; };
+		63C5176F18BB1339006420A4 /* MMScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMScanner.h; sourceTree = "<group>"; };
+		63C5177018BB1339006420A4 /* MMScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMScanner.m; sourceTree = "<group>"; };
+		63C5177118BB1339006420A4 /* MMSpanParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMSpanParser.h; sourceTree = "<group>"; };
+		63C5177218BB1339006420A4 /* MMSpanParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMSpanParser.m; sourceTree = "<group>"; };
+		63C5177C18BBEFDF006420A4 /* ACTagView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACTagView.h; sourceTree = "<group>"; };
+		63C5177D18BBEFDF006420A4 /* ACTagView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACTagView.m; sourceTree = "<group>"; };
+		63C5177F18BC1BAA006420A4 /* downvote-selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "downvote-selected@2x.png"; sourceTree = "<group>"; };
+		63C5178018BC1BAA006420A4 /* downvote@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "downvote@2x.png"; sourceTree = "<group>"; };
+		63C5178118BC1BAA006420A4 /* upvote-selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "upvote-selected@2x.png"; sourceTree = "<group>"; };
+		63C5178218BC1BAA006420A4 /* upvote@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "upvote@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -235,16 +280,61 @@
 		63A3F54D18BA84D300D159CF /* Site Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				63C5176018BB1339006420A4 /* MMMarkdown */,
 				63A3F54A18BA84CC00D159CF /* ACSiteSlideController.h */,
 				63A3F54B18BA84CC00D159CF /* ACSiteSlideController.m */,
-				63C5175118BADA9C006420A4 /* ACQuestionCell.h */,
-				63C5175218BADA9C006420A4 /* ACQuestionCell.m */,
-				63C5175418BADAAA006420A4 /* ACQuestionCell.xib */,
+				63C5177C18BBEFDF006420A4 /* ACTagView.h */,
+				63C5177D18BBEFDF006420A4 /* ACTagView.m */,
+				63C5177B18BBEFB4006420A4 /* Question Cells */,
+				63C5175618BB0D77006420A4 /* ACQuestionViewController.h */,
+				63C5175718BB0D77006420A4 /* ACQuestionViewController.m */,
 				633D395418B9AEDE001EABFD /* ACSiteViewController.h */,
 				633D395518B9AEDE001EABFD /* ACSiteViewController.m */,
 				633D395618B9AEDE001EABFD /* ACSiteViewController.xib */,
 			);
 			name = "Site Controllers";
+			sourceTree = "<group>";
+		};
+		63C5176018BB1339006420A4 /* MMMarkdown */ = {
+			isa = PBXGroup;
+			children = (
+				63C5176118BB1339006420A4 /* MMDocument.h */,
+				63C5176218BB1339006420A4 /* MMDocument.m */,
+				63C5176318BB1339006420A4 /* MMDocument_Private.h */,
+				63C5176418BB1339006420A4 /* MMElement.h */,
+				63C5176518BB1339006420A4 /* MMElement.m */,
+				63C5176618BB1339006420A4 /* MMGenerator.h */,
+				63C5176718BB1339006420A4 /* MMGenerator.m */,
+				63C5176818BB1339006420A4 /* MMHTMLParser.h */,
+				63C5176918BB1339006420A4 /* MMHTMLParser.m */,
+				63C5176A18BB1339006420A4 /* MMMarkdown-Prefix.pch */,
+				63C5176B18BB1339006420A4 /* MMMarkdown.h */,
+				63C5176C18BB1339006420A4 /* MMMarkdown.m */,
+				63C5176D18BB1339006420A4 /* MMParser.h */,
+				63C5176E18BB1339006420A4 /* MMParser.m */,
+				63C5176F18BB1339006420A4 /* MMScanner.h */,
+				63C5177018BB1339006420A4 /* MMScanner.m */,
+				63C5177118BB1339006420A4 /* MMSpanParser.h */,
+				63C5177218BB1339006420A4 /* MMSpanParser.m */,
+			);
+			path = MMMarkdown;
+			sourceTree = "<group>";
+		};
+		63C5177B18BBEFB4006420A4 /* Question Cells */ = {
+			isa = PBXGroup;
+			children = (
+				63C5177F18BC1BAA006420A4 /* downvote-selected@2x.png */,
+				63C5178018BC1BAA006420A4 /* downvote@2x.png */,
+				63C5178118BC1BAA006420A4 /* upvote-selected@2x.png */,
+				63C5178218BC1BAA006420A4 /* upvote@2x.png */,
+				63C5175118BADA9C006420A4 /* ACQuestionCell.h */,
+				63C5175218BADA9C006420A4 /* ACQuestionCell.m */,
+				63C5175418BADAAA006420A4 /* ACQuestionCell.xib */,
+				63C5175B18BB100F006420A4 /* ACQuestionDetailCell.h */,
+				63C5175C18BB100F006420A4 /* ACQuestionDetailCell.m */,
+				63C5175E18BB1023006420A4 /* ACQuestionDetailCell.xib */,
+			);
+			name = "Question Cells";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -303,6 +393,7 @@
 				6333F4B518B80A0200DDC490 /* inner-shadow.png in Resources */,
 				6333F4CA18B8108100DDC490 /* Icon@2x.png in Resources */,
 				633D395A18B9BB7C001EABFD /* open-slide@2x.png in Resources */,
+				63C5178618BC1BAA006420A4 /* upvote@2x.png in Resources */,
 				6333F48318B7F7CF00DDC490 /* Main_iPad.storyboard in Resources */,
 				6333F4C518B8108100DDC490 /* Icon-Small-50.png in Resources */,
 				63C5175518BADAAA006420A4 /* ACQuestionCell.xib in Resources */,
@@ -311,6 +402,7 @@
 				6333F4C318B8108100DDC490 /* Icon-76.png in Resources */,
 				6333F4C218B8108100DDC490 /* Icon-512@2x.png in Resources */,
 				6333F4C618B8108100DDC490 /* Icon-Small-50@2x.png in Resources */,
+				63C5178518BC1BAA006420A4 /* upvote-selected@2x.png in Resources */,
 				6333F4B018B7FCB900DDC490 /* login-bg.png in Resources */,
 				6333F48818B7F7CF00DDC490 /* Images.xcassets in Resources */,
 				6333F4CC18B8108100DDC490 /* iTunesArtwork@2x in Resources */,
@@ -318,6 +410,9 @@
 				6333F48018B7F7CF00DDC490 /* Main_iPhone.storyboard in Resources */,
 				6333F4C918B8108100DDC490 /* Icon.png in Resources */,
 				6333F47718B7F7CF00DDC490 /* InfoPlist.strings in Resources */,
+				63C5178418BC1BAA006420A4 /* downvote@2x.png in Resources */,
+				63C5178318BC1BAA006420A4 /* downvote-selected@2x.png in Resources */,
+				63C5175F18BB1023006420A4 /* ACQuestionDetailCell.xib in Resources */,
 				6333F4C818B8108100DDC490 /* Icon-Small@2x.png in Resources */,
 				6333F4CB18B8108100DDC490 /* iTunesArtwork in Resources */,
 				633D395818B9AEDE001EABFD /* ACSiteViewController.xib in Resources */,
@@ -331,17 +426,28 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63C5177718BB1339006420A4 /* MMMarkdown.m in Sources */,
+				63C5175918BB0D77006420A4 /* ACQuestionViewController.m in Sources */,
 				63C5175318BADA9C006420A4 /* ACQuestionCell.m in Sources */,
+				63C5177618BB1339006420A4 /* MMHTMLParser.m in Sources */,
+				63C5177818BB1339006420A4 /* MMParser.m in Sources */,
+				63C5177A18BB1339006420A4 /* MMSpanParser.m in Sources */,
 				6333F47D18B7F7CF00DDC490 /* ACAppDelegate.m in Sources */,
 				633D395718B9AEDE001EABFD /* ACSiteViewController.m in Sources */,
 				6333F4B318B7FE3C00DDC490 /* ACButton.m in Sources */,
+				63C5177418BB1339006420A4 /* MMElement.m in Sources */,
 				6333F48618B7F7CF00DDC490 /* ACSummaryViewController.m in Sources */,
 				6333F4CF18B811E600DDC490 /* ACAlertView.m in Sources */,
 				6333F47918B7F7CF00DDC490 /* main.m in Sources */,
+				63C5177518BB1339006420A4 /* MMGenerator.m in Sources */,
+				63C5177318BB1339006420A4 /* MMDocument.m in Sources */,
+				63C5177918BB1339006420A4 /* MMScanner.m in Sources */,
 				633D394F18B8A1EA001EABFD /* XYPieChart.m in Sources */,
+				63C5177E18BBEFDF006420A4 /* ACTagView.m in Sources */,
 				633D395318B9A1AD001EABFD /* ACSlideViewController.m in Sources */,
 				63A3F54C18BA84CC00D159CF /* ACSiteSlideController.m in Sources */,
 				6333F4A818B7FA0600DDC490 /* ACLoginController.m in Sources */,
+				63C5175D18BB100F006420A4 /* ACQuestionDetailCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

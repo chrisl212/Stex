@@ -9,6 +9,7 @@
 #import "ACSummaryViewController.h"
 #import "ACAlertView.h"
 #import "ACSiteViewController.h"
+#import "ACAppDelegate.h"
 
 #define rgb(x) x/255.0
 #define ANIMATION_DURATION 0.5
@@ -27,7 +28,8 @@
     [super viewDidLoad];
     self.badgeCounts = [NSMutableArray array];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-    
+    [[UIBarButtonItem appearance] setTintColor:[UIColor whiteColor]];
+
     UISwipeGestureRecognizer *swipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(slideMenu:)];
     swipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
     [self.contentView addGestureRecognizer:swipeGestureRecognizer];
@@ -54,6 +56,7 @@
     self.slideViewController.delegate = self;
     [self.view insertSubview:self.slideViewController.view belowSubview:self.contentView];
     [self addChildViewController:self.slideViewController];
+    
     UISwipeGestureRecognizer *slideGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(slideMenu:)];
     slideGestureRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
     [self.slideViewController.view addGestureRecognizer:slideGestureRecognizer];
@@ -61,6 +64,8 @@
     self.siteSlideController = [[ACSiteSlideController alloc] init];
     [self.view insertSubview:self.siteSlideController.view belowSubview:self.slideViewController.view];
     [self addChildViewController:self.siteSlideController];
+    self.slideViewController.view.frame = CGRectMake(0, 44, 320, [UIScreen mainScreen].bounds.size.height - 44);
+    
     UISwipeGestureRecognizer *siteSlideGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(slideSiteMenu)];
     siteSlideGestureRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
     [self.siteSlideController.view addGestureRecognizer:siteSlideGestureRecognizer];
@@ -81,12 +86,6 @@
     [self.pieChart setShowPercentage:NO];
     [self.pieChart setLabelFont:[UIFont fontWithName:@"Verdana" size:16.0]];
     [self.pieChart reloadData];
-    
-    if (!self.accessToken)
-    {
-        ACLoginController *loginController = [[ACLoginController alloc] initWithDelegate:self];
-        [self presentViewController:loginController animated:NO completion:nil];
-    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -98,7 +97,8 @@
 - (void)fetchUserInfo
 {
     /* Fetch basic user info */
-    NSString *requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/me?access_token=%@&order=desc&sort=reputation&site=stackoverflow&key=XB*FUGU0f4Ju9RCNhlRQ3A((", self.accessToken];
+    NSString *accessToken = [(ACAppDelegate *)[UIApplication sharedApplication].delegate accessToken];
+    NSString *requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/me?access_token=%@&order=desc&sort=reputation&site=stackoverflow&key=XB*FUGU0f4Ju9RCNhlRQ3A((", accessToken];
     NSURL *requestURL = [NSURL URLWithString:requestURLString];
     NSData *info = [NSData dataWithContentsOfURL:requestURL];
     NSError *error;
@@ -119,7 +119,7 @@
     });
     
     /* Fetch total user rep and total badge count using associated accounts */
-    NSString *associatedRequestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/me/associated?access_token=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((", self.accessToken];
+    NSString *associatedRequestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/me/associated?access_token=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((", accessToken];
     NSData *associatedInfo = [NSData dataWithContentsOfURL:[NSURL URLWithString:associatedRequestURLString]];
     NSDictionary *associatedWrapper = [NSJSONSerialization JSONObjectWithData:associatedInfo options:NSJSONReadingMutableLeaves error:nil];
     NSArray *allAccounts = [associatedWrapper objectForKey:@"items"];
@@ -156,7 +156,8 @@
 
 - (void)logOut:(id)sender
 {
-    NSString *deauthenticateURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/access-tokens/%@/invalidate", self.accessToken];
+    NSString *accessToken = [(ACAppDelegate *)[UIApplication sharedApplication].delegate accessToken];
+    NSString *deauthenticateURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/access-tokens/%@/invalidate", accessToken];
     NSURLConnection *conn = [NSURLConnection connectionWithRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:deauthenticateURLString]] delegate:nil];
     [conn start];
     NSHTTPCookie *cookie;
@@ -165,8 +166,9 @@
         [storage deleteCookie:cookie];
     }
     [[NSUserDefaults standardUserDefaults] synchronize];
-    ACLoginController *loginController = [[ACLoginController alloc] initWithDelegate:self];
-    [self presentViewController:loginController animated:YES completion:nil];
+    ACAppDelegate *delegate = (ACAppDelegate *)[UIApplication sharedApplication].delegate;
+    ACLoginController *loginController = [[ACLoginController alloc] initWithDelegate:delegate];
+    [self.navigationController pushViewController:loginController animated:YES];
 }
 
 - (void)displayAboutMe:(id)sender
@@ -211,24 +213,6 @@
             self.siteSlideController.view.center = originalSiteSlideCenter;
         }];
     }
-}
-
-#pragma mark - Login Delegate
-
-- (void)loginController:(ACLoginController *)controller receivedAccessCode:(NSString *)code
-{
-    self.accessToken = code;
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self dismissViewControllerAnimated:YES completion:nil];
-        self.alertView = [ACAlertView alertWithTitle:@"Loading..." style:ACAlertViewStyleSpinner delegate:nil buttonTitles:nil];
-        [self.alertView show];
-    });
-    [self fetchUserInfo];
-}
-
-- (void)loginController:(ACLoginController *)controller failedWithError:(NSString *)err
-{
-    
 }
 
 #pragma mark - Pie Chart Delegate/Data source
@@ -299,8 +283,9 @@
             [vc.view removeFromSuperview];
         }
     }
+    NSString *accessToken = [(ACAppDelegate *)[UIApplication sharedApplication].delegate accessToken];
     ACSiteViewController *siteViewController = [[ACSiteViewController alloc] initWithSite:site];
-    siteViewController.accessToken = self.accessToken;
+    siteViewController.accessToken = accessToken;
     [self addChildViewController:siteViewController];
     [self.contentView addSubview:siteViewController.view];
     [self slideMenu:nil];
