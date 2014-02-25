@@ -27,7 +27,7 @@
                         <color key="textColor" red="0.25098040699958801" green="0.50196081399917603" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" text="Example question text?" translatesAutoresizingMaskIntoConstraints="NO" id="SMK-Dn-qey">
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" bounces="NO" editable="NO" text="Example question text?" translatesAutoresizingMaskIntoConstraints="NO" id="SMK-Dn-qey">
                         <rect key="frame" x="68" y="0.0" width="252" height="61"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" name="Verdana" family="Verdana" pointSize="14"/>

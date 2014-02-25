@@ -21,6 +21,30 @@
     return [UIImage imageWithData:imageData];
 }
 
+- (id)initWithAnswerID:(NSString *)answer site:(NSString *)site
+{
+    if (self = [super initWithStyle:UITableViewStyleGrouped])
+    {
+        self.answerArray = @[];
+        [self.tableView registerClass:[ACQuestionDetailCell class] forCellReuseIdentifier:@"QuestionCell"];
+        [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([ACQuestionDetailCell class]) bundle:nil] forCellReuseIdentifier:@"QuestionCell"];
+        [self.tableView registerClass:[ACQuestionDetailCell class] forCellReuseIdentifier:@"AnswerCell"];
+        [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([ACQuestionDetailCell class]) bundle:nil] forCellReuseIdentifier:@"AnswerCell"];
+        
+        dispatch_async(dispatch_queue_create("com.a-cstudios.answerload", NULL), ^{
+            NSString *requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/answers/%@?order=desc&sort=activity&site=%@&filter=!9WgJfj3zM&key=XB*FUGU0f4Ju9RCNhlRQ3A((", answer, site];
+            NSData *requestData = [NSData dataWithContentsOfURL:[NSURL URLWithString:requestURLString]];
+            NSDictionary *wrapper = [NSJSONSerialization JSONObjectWithData:requestData options:NSJSONReadingMutableLeaves error:nil];
+            NSDictionary *items = [[wrapper objectForKey:@"items"] objectAtIndex:0];
+
+            id o = [self initWithQuestionID:[items[@"question_id"] stringValue] site:site];
+            o = nil;
+        });
+    }
+    return self;
+
+}
+
 - (id)initWithQuestionID:(NSString *)question site:(NSString *)site
 {
     if (self = [super initWithStyle:UITableViewStyleGrouped])

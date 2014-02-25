@@ -30,7 +30,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSURL *requestURL = [NSURL URLWithString:@"https://stackexchange.com/oauth?client_id=2652&scope=no_expiry,write_access,private_info&redirect_uri=http://stex.a-cstudios.com/accept.php"];
+    NSURL *requestURL = [NSURL URLWithString:@"https://stackexchange.com/oauth?client_id=2652&scope=no_expiry,write_access,private_info,read_inbox&redirect_uri=http://stex.a-cstudios.com/accept.php"];
     NSURLRequest *request = [NSURLRequest requestWithURL:requestURL];
     self.webView = [[UIWebView alloc] initWithFrame:self.view.frame];
     self.webView.delegate = self;

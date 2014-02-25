@@ -16,5 +16,6 @@
 @property (strong, nonatomic) NSDictionary *questionInfoDictionary;
 
 - (id)initWithQuestionID:(NSString *)question site:(NSString *)site;
+- (id)initWithAnswerID:(NSString *)answer site:(NSString *)site;
 
 @end

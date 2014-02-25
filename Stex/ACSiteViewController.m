@@ -313,6 +313,11 @@
         cell.answerCountLabel.backgroundColor = [UIColor colorWithRed:64.0/255.0 green:128.0/255.0 blue:0.0 alpha:1.0];
         cell.answerCountLabel.textColor = [UIColor whiteColor];
     }
+    else
+    {
+        cell.answerCountLabel.backgroundColor = [UIColor clearColor];
+        cell.answerCountLabel.textColor = [UIColor colorWithRed:64.0/255.0 green:128.0/255.0 blue:0.0 alpha:1.0];
+    }
     return cell;
 }
 

@@ -10,6 +10,7 @@
 #import "ACAlertView.h"
 #import "ACSiteViewController.h"
 #import "ACAppDelegate.h"
+#import "ACInboxController.h"
 
 #define rgb(x) x/255.0
 #define ANIMATION_DURATION 0.5
@@ -98,7 +99,7 @@
 {
     /* Fetch basic user info */
     NSString *accessToken = [(ACAppDelegate *)[UIApplication sharedApplication].delegate accessToken];
-    NSString *requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/me?access_token=%@&order=desc&sort=reputation&site=stackoverflow&key=XB*FUGU0f4Ju9RCNhlRQ3A((", accessToken];
+    NSString *requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/me?access_token=%@&order=desc&sort=reputation&site=stackoverflow&key=XB*FUGU0f4Ju9RCNhlRQ3A((&filter=!9WgJf_Hqu", accessToken];
     NSURL *requestURL = [NSURL URLWithString:requestURLString];
     NSData *info = [NSData dataWithContentsOfURL:requestURL];
     NSError *error;
@@ -117,6 +118,7 @@
         UIImage *userImage = [UIImage imageWithData:imageData];
         [self.avatarImageView performSelectorOnMainThread:@selector(setImage:) withObject:userImage waitUntilDone:NO];
     });
+    self.aboutUser = items[@"about_me"];
     
     /* Fetch total user rep and total badge count using associated accounts */
     NSString *associatedRequestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/me/associated?access_token=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((", accessToken];
@@ -173,7 +175,13 @@
 
 - (void)displayAboutMe:(id)sender
 {
+    ACAlertView *alertView = [ACAlertView alertWithTitle:@"About me" style:ACAlertViewStyleTextView delegate:nil buttonTitles:@[@"Close"]];
+    NSMutableAttributedString *HTMLString = [[NSMutableAttributedString alloc] initWithData:[self.aboutUser dataUsingEncoding:NSUTF8StringEncoding] options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType, NSCharacterEncodingDocumentAttribute: [NSNumber numberWithInt:NSUTF8StringEncoding]} documentAttributes:nil error:nil];
+    [HTMLString setAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"Verdana" size:14], NSStrokeColorAttributeName : [UIColor whiteColor]} range:NSMakeRange(0, HTMLString.length)];
+    alertView.textView.attributedText = HTMLString;
+    alertView.textView.textColor = [UIColor whiteColor];
     
+    [alertView show];
 }
 
 - (void)slideMenu:(id)sender
@@ -298,16 +306,19 @@
     [logOut setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"Verdana" size:14]} forState:UIControlStateNormal];
     [self.navigationItem setRightBarButtonItem:logOut animated:YES];
     
-    if ([info isEqualToString:@"Summary"])
+    for (UIViewController *vc in self.childViewControllers)
     {
-        for (UIViewController *vc in self.childViewControllers)
+        if (![vc isKindOfClass:[ACSlideViewController class]] && ![vc isKindOfClass:[ACSiteSlideController class]])
         {
-            if (![vc isKindOfClass:[ACSlideViewController class]] && ![vc isKindOfClass:[ACSiteSlideController class]])
-            {
-                [vc.view removeFromSuperview];
-                [vc removeFromParentViewController];
-            }
+            [vc.view removeFromSuperview];
+            [vc removeFromParentViewController];
         }
+    }
+    if ([info isEqualToString:@"Inbox"])
+    {
+        ACInboxController *inboxController = [[ACInboxController alloc] init];
+        [self addChildViewController:inboxController];
+        [self.contentView addSubview:inboxController.view];
     }
 
     [self slideMenu:nil];
