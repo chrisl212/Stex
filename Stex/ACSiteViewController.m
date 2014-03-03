@@ -12,6 +12,7 @@
 #import "ACQuestionCell.h"
 #import "ACQuestionViewController.h"
 #import "ACAppDelegate.h"
+#import "ACAnswersViewController.h"
 
 @implementation ACSiteViewController
 
@@ -184,6 +185,12 @@
 
 - (void)didSelectTag:(NSString *)tag
 {
+    for (UIViewController *vc in self.parentViewController.childViewControllers)
+    {
+        if ([vc isKindOfClass:[ACAnswersViewController class]])
+            [vc removeFromParentViewController], [vc.view removeFromSuperview];
+    }
+    
     ACAlertView *alertView = [ACAlertView alertWithTitle:@"Loading..." style:ACAlertViewStyleSpinner delegate:nil buttonTitles:nil];
     [alertView show];
     
@@ -227,6 +234,12 @@
 
 - (void)didSelectAccountArea:(NSString *)aa
 {
+    for (UIViewController *vc in self.parentViewController.childViewControllers)
+    {
+        if ([vc isKindOfClass:[ACAnswersViewController class]])
+            [vc removeFromParentViewController], [vc.view removeFromSuperview];
+    }
+    
     NSString *accessToken = [(ACAppDelegate *)[UIApplication sharedApplication].delegate accessToken];
     if ([aa isEqualToString:@"My Questions"])
     {
@@ -270,6 +283,14 @@
                 [self.tableView reloadData];
             });
         });
+    }
+    if ([aa isEqualToString:@"My Answers"])
+    {
+        ACAnswersViewController *answersViewController = [[ACAnswersViewController alloc] init];
+        ACSummaryViewController *parentViewController = (ACSummaryViewController *)self.parentViewController;
+        [parentViewController addChildViewController:answersViewController];
+        [parentViewController.contentView addSubview:answersViewController.view];
+        [self slideSiteOptions];
     }
 }
 

@@ -34,7 +34,7 @@
             /* Check if cache exists, and if it does not, fetch the list of sites */
             if (![[NSFileManager defaultManager] fileExistsAtPath:cachedSitesPath])
             {
-                NSString *requestURLString = @"https://api.stackexchange.com/2.2/sites&key=XB*FUGU0f4Ju9RCNhlRQ3A((";
+                NSString *requestURLString = @"https://api.stackexchange.com/2.2/sites?key=XB*FUGU0f4Ju9RCNhlRQ3A((";
                 NSData *responseData = [NSData dataWithContentsOfURL:[NSURL URLWithString:requestURLString]];
                 NSDictionary *rootDictionary = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableLeaves error:nil];
                 allSites = [[rootDictionary objectForKey:@"items"] mutableCopy];

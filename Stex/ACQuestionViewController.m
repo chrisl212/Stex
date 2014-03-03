@@ -9,6 +9,9 @@
 #import "ACQuestionViewController.h"
 #import "MMMarkdown.h"
 #import "ACAppDelegate.h"
+#import "ACAlertView.h"
+#import "ACAnswerCell.h"
+#import "ACSummaryViewController.h"
 
 #define QUESTION_SECTION 0
 #define ANSWER_SECTION 1
@@ -28,8 +31,9 @@
         self.answerArray = @[];
         [self.tableView registerClass:[ACQuestionDetailCell class] forCellReuseIdentifier:@"QuestionCell"];
         [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([ACQuestionDetailCell class]) bundle:nil] forCellReuseIdentifier:@"QuestionCell"];
-        [self.tableView registerClass:[ACQuestionDetailCell class] forCellReuseIdentifier:@"AnswerCell"];
-        [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([ACQuestionDetailCell class]) bundle:nil] forCellReuseIdentifier:@"AnswerCell"];
+        
+        [self.tableView registerClass:[ACAnswerCell class] forCellReuseIdentifier:@"AnswerCell"];
+        [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([ACAnswerCell class]) bundle:nil] forCellReuseIdentifier:@"AnswerCell"];
         
         dispatch_async(dispatch_queue_create("com.a-cstudios.answerload", NULL), ^{
             NSString *requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/answers/%@?order=desc&sort=activity&site=%@&filter=!9WgJfj3zM&key=XB*FUGU0f4Ju9RCNhlRQ3A((", answer, site];
@@ -42,7 +46,6 @@
         });
     }
     return self;
-
 }
 
 - (id)initWithQuestionID:(NSString *)question site:(NSString *)site
@@ -52,17 +55,28 @@
         self.answerArray = @[];
         [self.tableView registerClass:[ACQuestionDetailCell class] forCellReuseIdentifier:@"QuestionCell"];
         [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([ACQuestionDetailCell class]) bundle:nil] forCellReuseIdentifier:@"QuestionCell"];
-        [self.tableView registerClass:[ACQuestionDetailCell class] forCellReuseIdentifier:@"AnswerCell"];
-        [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([ACQuestionDetailCell class]) bundle:nil] forCellReuseIdentifier:@"AnswerCell"];
+        
+        [self.tableView registerClass:[ACAnswerCell class] forCellReuseIdentifier:@"AnswerCell"];
+        [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([ACAnswerCell class]) bundle:nil] forCellReuseIdentifier:@"AnswerCell"];
         
         dispatch_async(dispatch_queue_create("com.a-cstudios.questionload", NULL), ^{
             NSString *requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/questions/%@?order=desc&sort=activity&site=%@&filter=!9WgJfj3zM&key=XB*FUGU0f4Ju9RCNhlRQ3A((", question, site];
             NSData *requestData = [NSData dataWithContentsOfURL:[NSURL URLWithString:requestURLString]];
             NSDictionary *wrapper = [NSJSONSerialization JSONObjectWithData:requestData options:NSJSONReadingMutableLeaves error:nil];
+            if (!wrapper[@"items"] || !wrapper || [wrapper[@"items"] count] == 0)
+            {
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    ACAlertView *alertView = [ACAlertView alertWithTitle:@"Error" style:ACAlertViewStyleTextView delegate:nil buttonTitles:@[@"Close"]];
+                    alertView.textView.text = @"An error occured loading the data";
+                    [alertView show];
+                });
+                return;
+            }
             NSDictionary *items = [[wrapper objectForKey:@"items"] objectAtIndex:0];
             NSMutableDictionary *questionInfo = [NSMutableDictionary dictionary];
             
             NSDictionary *ownerInfo = [items objectForKey:@"owner"];
+            questionInfo[@"user_id"] = ownerInfo[@"user_id"];
             [questionInfo setObject:[ownerInfo objectForKey:@"display_name"] forKey:@"username"];
             [questionInfo setObject:[self imageWithContentsOfURL:[NSURL URLWithString:[ownerInfo objectForKey:@"profile_image"]]] forKey:@"avatar"];
             [questionInfo setObject:[ownerInfo objectForKey:@"reputation"] forKey:@"reputation"];
@@ -99,6 +113,16 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userSelected:) name:@"UserClicked" object:nil];
+}
+
+- (void)userSelected:(NSNotification *)notif
+{
+    NSString *userID = notif.object;
+    ACSummaryViewController *summaryViewController = [[self.navigationController viewControllers] objectAtIndex:0];
+    [self.navigationController popToRootViewControllerAnimated:YES];
+    [summaryViewController displayUser:userID site:self.siteAPIName];
+    [summaryViewController slideMenu:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -120,13 +144,13 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 375;
+    return (indexPath.section) ? 309 : 375;//375;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == QUESTION_SECTION && self.questionInfoDictionary)
-        return 1;
+    if (section == QUESTION_SECTION)
+        return (self.questionInfoDictionary) ? 1 : 0;
     return self.answerArray.count;
 }
 
@@ -141,6 +165,7 @@
         cell.questionTitleLabel.text = self.questionInfoDictionary[@"title"];
         cell.usernameLabel.text = self.questionInfoDictionary[@"username"];
         cell.userAvatarImageView.image = self.questionInfoDictionary[@"avatar"];
+        cell.userAvatarImageView.userID = self.questionInfoDictionary[@"user_id"];
         cell.userReputationLabel.text = [self.questionInfoDictionary[@"reputation"] stringValue];
         cell.viewsLabel.text = [NSString stringWithFormat:@"%@ views", self.questionInfoDictionary[@"views"]];
         cell.voteCountLabel.text = [self.questionInfoDictionary[@"votes"] stringValue];
@@ -152,8 +177,7 @@
         
         NSString *markdownText = self.questionInfoDictionary[@"body"];
         NSString *htmlString = [MMMarkdown HTMLStringWithMarkdown:markdownText error:nil];
-        cell.questionMarkdownView.scrollView.bounces = NO;
-        [cell.questionMarkdownView loadHTMLString:htmlString baseURL:nil];
+        cell.questionMarkdownView.attributedText = [[NSAttributedString alloc] initWithData:[htmlString dataUsingEncoding:NSUTF8StringEncoding] options:@{NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType, NSCharacterEncodingDocumentAttribute : @(NSUTF8StringEncoding)} documentAttributes:nil error:nil];
         
         cell.delegate = self;
         return cell;
@@ -161,14 +185,13 @@
     static NSString *answerCellID = @"AnswerCell";
     
     NSDictionary *answerDictionary = self.answerArray[indexPath.row];
-    ACQuestionDetailCell *cell = [tableView dequeueReusableCellWithIdentifier:answerCellID forIndexPath:indexPath];
+    ACAnswerCell *cell = [tableView dequeueReusableCellWithIdentifier:answerCellID forIndexPath:indexPath];
     if (!cell)
-        cell = [[ACQuestionDetailCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:answerCellID];
-    cell.questionTitleLabel.text = @"";
+        cell = [[ACAnswerCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:answerCellID];
     cell.usernameLabel.text = [answerDictionary[@"owner"] objectForKey:@"display_name"];
     cell.userAvatarImageView.image = answerDictionary[@"avatar"];
+    cell.userAvatarImageView.userID = answerDictionary[@"owner"][@"user_id"];
     cell.userReputationLabel.text = [answerDictionary[@"owner"][@"reputation"] stringValue];
-    cell.viewsLabel.text = @"";
     cell.voteCountLabel.text = [answerDictionary[@"score"] stringValue];
     cell.postIDLabel.text = [answerDictionary[@"answer_id"] stringValue];
     if ([answerDictionary[@"is_accepted"] boolValue])
@@ -178,8 +201,8 @@
     
     NSString *markdownText = answerDictionary[@"body_markdown"];
     NSString *htmlString = [MMMarkdown HTMLStringWithMarkdown:markdownText error:nil];
-    cell.questionMarkdownView.scrollView.bounces = NO;
-    [cell.questionMarkdownView loadHTMLString:htmlString baseURL:nil];
+    cell.bodyMarkdownView.attributedText = [[NSAttributedString alloc] initWithData:[htmlString dataUsingEncoding:NSUTF8StringEncoding] options:@{NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType, NSCharacterEncodingDocumentAttribute : @(NSUTF8StringEncoding)} documentAttributes:nil error:nil];
+
     cell.delegate = self;
     return cell;
 }

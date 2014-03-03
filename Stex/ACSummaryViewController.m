@@ -314,6 +314,8 @@
             [vc removeFromParentViewController];
         }
     }
+    if ([info isEqualToString:@"Summary"])
+        [self fetchUserInfo];
     if ([info isEqualToString:@"Inbox"])
     {
         ACInboxController *inboxController = [[ACInboxController alloc] init];
@@ -322,6 +324,70 @@
     }
 
     [self slideMenu:nil];
+}
+
+#pragma mark -
+
+- (void)displayUser:(NSString *)userID site:(NSString *)site
+{
+    /* Fetch basic user info */
+    NSString *accessToken = [(ACAppDelegate *)[UIApplication sharedApplication].delegate accessToken];
+    NSString *requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/users/%@?access_token=%@&order=desc&sort=reputation&site=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((&filter=!9WgJf_Hqu", userID, accessToken, site];
+    NSURL *requestURL = [NSURL URLWithString:requestURLString];
+    NSData *info = [NSData dataWithContentsOfURL:requestURL];
+    NSError *error;
+    NSDictionary *wrapper = [NSJSONSerialization JSONObjectWithData:info options:NSJSONReadingMutableLeaves error:&error];
+    if (error)
+        NSLog(@"%@", error);
+    NSDictionary *items = [[wrapper objectForKey:@"items"] objectAtIndex:0];
+    NSString *username = [items objectForKey:@"display_name"];
+    
+    self.siteSlideController.username = username;
+    
+    NSString *imageURL = [items objectForKey:@"profile_image"];
+    [self.usernameLabel performSelectorOnMainThread:@selector(setText:) withObject:username waitUntilDone:NO];
+    dispatch_async(dispatch_queue_create("com.a-cstudios.lazyimage", NULL), ^{
+        NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:imageURL]];
+        UIImage *userImage = [UIImage imageWithData:imageData];
+        [self.avatarImageView performSelectorOnMainThread:@selector(setImage:) withObject:userImage waitUntilDone:NO];
+    });
+    self.aboutUser = items[@"about_me"];
+    
+    /* Fetch total user rep and total badge count using associated accounts */
+    NSString *associatedRequestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/users/%@/associated?access_token=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((", userID, accessToken];
+    NSData *associatedInfo = [NSData dataWithContentsOfURL:[NSURL URLWithString:associatedRequestURLString]];
+    NSDictionary *associatedWrapper = [NSJSONSerialization JSONObjectWithData:associatedInfo options:NSJSONReadingMutableLeaves error:nil];
+    NSArray *allAccounts = [associatedWrapper objectForKey:@"items"];
+    NSInteger finalReputation = 0;
+    NSInteger goldCount, bronzeCount, silverCount;
+    goldCount = 0;
+    bronzeCount = 0;
+    silverCount = 0;
+    for (NSDictionary *accountDictionary in allAccounts)
+    {
+        NSNumber *rep = [accountDictionary objectForKey:@"reputation"];
+        finalReputation += rep.integerValue;
+        
+        NSNumber *bronze = [[accountDictionary objectForKey:@"badge_counts"] objectForKey:@"bronze"];
+        NSNumber *silver = [[accountDictionary objectForKey:@"badge_counts"] objectForKey:@"silver"];
+        NSNumber *gold = [[accountDictionary objectForKey:@"badge_counts"] objectForKey:@"gold"];
+        bronzeCount += bronze.integerValue;
+        silverCount += silver.integerValue;
+        goldCount += gold.integerValue;
+    }
+    self.badgeCounts = [NSMutableArray arrayWithArray:@[[NSNumber numberWithInteger:bronzeCount], [NSNumber numberWithInteger:silverCount], [NSNumber numberWithInteger:goldCount]]];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.pieChart reloadData];
+    });
+    
+    NSString *reputationString = [NSString stringWithFormat:@"%ld reputation", (long)finalReputation];
+    [self.reputationLabel performSelectorOnMainThread:@selector(setText:) withObject:reputationString waitUntilDone:NO];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.alertView dismiss];
+    });
+    [self userInfoCellWasSelected:nil];
 }
 
 @end

@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 A and C Studios. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import <QuartzCore/QuartzCore.h>
+@import UIKit;
+@import QuartzCore;
 
 typedef NS_ENUM(NSInteger, ACAlertViewStyle)
 {

@@ -27,7 +27,7 @@
 //  OTHER DEALINGS IN THE SOFTWARE.
 
 #import "XYPieChart.h"
-#import <QuartzCore/QuartzCore.h>
+@import QuartzCore;
 
 @interface SliceLayer : CAShapeLayer
 @property (nonatomic, assign) CGFloat   value;

@@ -21,6 +21,7 @@
         ACLoginController *loginController = [[ACLoginController alloc] initWithDelegate:self];
         [(UINavigationController *)self.window.rootViewController pushViewController:loginController animated:YES];
     }
+    
     return YES;
 }
 

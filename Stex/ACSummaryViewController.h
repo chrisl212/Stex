@@ -27,6 +27,7 @@
 @property (strong, nonatomic) ACSlideViewController *slideViewController;
 @property (strong, nonatomic) ACSiteSlideController *siteSlideController;
 
+- (void)displayUser:(NSString *)userID site:(NSString *)site;
 - (IBAction)logOut:(id)sender;
 - (IBAction)displayAboutMe:(id)sender;
 - (IBAction)slideMenu:(id)sender;

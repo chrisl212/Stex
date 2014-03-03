@@ -9,7 +9,7 @@
 @import UIKit;
 #import "ACQuestionDetailCell.h"
 
-@interface ACQuestionViewController : UITableViewController <ACQuestionDetailCellDelegate>
+@interface ACQuestionViewController : UITableViewController <ACPostCellDelegate>
 
 @property (strong, nonatomic) NSArray *answerArray;
 @property (strong, nonatomic) NSString *siteAPIName;

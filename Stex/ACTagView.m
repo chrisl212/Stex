@@ -11,6 +11,9 @@
 #define rgb(x) x/255.0
 
 @implementation ACTagView
+{
+    UILabel *selectedLabel;
+}
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -69,9 +72,18 @@
     for (UILabel *label in view.subviews)
     {
         if ([label isKindOfClass:[UILabel class]])
-            if ([self.delegate respondsToSelector:@selector(tagWasSelected:)])
-                [self.delegate tagWasSelected:label.text];
+        {
+            selectedLabel = label;
+            
+        }
     }
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [super touchesEnded:touches withEvent:event];
+    if ([self.delegate respondsToSelector:@selector(tagWasSelected:)])
+        [self.delegate tagWasSelected:selectedLabel.text];
 }
 
 @end

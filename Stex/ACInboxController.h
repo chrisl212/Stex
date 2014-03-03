@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 A and C Studios. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 
 @interface ACInboxController : UITableViewController
 
