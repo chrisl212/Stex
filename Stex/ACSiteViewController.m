@@ -98,6 +98,8 @@
             {
                 NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:imageURLString]];
                 UIImage *avatar = [UIImage imageWithData:imageData];
+                if (!avatar)
+                    avatar = [UIImage imageNamed:@"Icon@2x.png"];
                 [avatarArray addObject:avatar];
             }
             self.avatarArray = [NSArray arrayWithArray:avatarArray];
@@ -165,8 +167,10 @@
         for (NSDictionary *questionDictionary in questions)
         {
             [questionsArray addObject:questionDictionary];
-            [avatarURLSArray addObject:[[questionDictionary objectForKey:@"owner"] objectForKey:@"profile_image"]];
+            if (![[[questionDictionary objectForKey:@"owner"] objectForKey:@"user_type"] isEqualToString:@"does_not_exist"])
+                [avatarURLSArray addObject:[[questionDictionary objectForKey:@"owner"] objectForKey:@"profile_image"]];
         }
+
         self.questionsArray = [NSArray arrayWithArray:questionsArray];
         
         dispatch_sync(dispatch_get_main_queue(), ^{
@@ -216,7 +220,8 @@
         for (NSDictionary *questionDictionary in questions)
         {
             [questionsArray addObject:questionDictionary];
-            [avatarURLSArray addObject:[[questionDictionary objectForKey:@"owner"] objectForKey:@"profile_image"]];
+            if (![[[questionDictionary objectForKey:@"owner"] objectForKey:@"user_type"] isEqualToString:@"does_not_exist"])
+                [avatarURLSArray addObject:[[questionDictionary objectForKey:@"owner"] objectForKey:@"profile_image"]];
         }
         self.questionsArray = [NSArray arrayWithArray:questionsArray];
         

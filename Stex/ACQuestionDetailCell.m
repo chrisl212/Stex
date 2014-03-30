@@ -76,4 +76,10 @@
     }
 }
 
+- (void)openComments:(id)sender
+{
+    if ([self.delegate respondsToSelector:@selector(userDidSelectQuestionComments:)])
+        [self.delegate userDidSelectQuestionComments:self.postIDLabel.text];
+}
+
 @end

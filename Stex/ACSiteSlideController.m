@@ -8,6 +8,7 @@
 
 #import "ACSiteSlideController.h"
 #import "ACAppDelegate.h"
+#import "ACAlertView.h"
 
 #define SITE_REGISTER_SECTION 0
 #define ACCOUNT_AREAS_SECTION 1
@@ -149,7 +150,10 @@
     {
         if (self.registered)
             return;
-        
+        ACAlertView *alertView = [ACAlertView alertWithTitle:@"Not Supported" style:ACAlertViewStyleTextView delegate:nil buttonTitles:@[@"Close"]];
+        alertView.textView.text = @"Currently, registering for sites is not supported.";
+        [alertView show];
+        return;
     }
     
     if (indexPath.section == ACCOUNT_AREAS_SECTION)

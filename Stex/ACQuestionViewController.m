@@ -12,6 +12,7 @@
 #import "ACAlertView.h"
 #import "ACAnswerCell.h"
 #import "ACSummaryViewController.h"
+#import "ACCommentsViewController.h"
 
 #define QUESTION_SECTION 0
 #define ANSWER_SECTION 1
@@ -266,6 +267,12 @@
 - (BOOL)userDidUpvoteQuestion:(NSString *)question
 {
     return [self vote:question postType:@"questions" voteType:@"upvote"];
+}
+
+- (void)userDidSelectQuestionComments:(NSString *)question
+{
+    ACCommentsViewController *commentsViewController = [[ACCommentsViewController alloc] initWithPostID:question isQuestion:YES site:self.siteAPIName];
+    [self.navigationController pushViewController:commentsViewController animated:YES];
 }
 
 @end

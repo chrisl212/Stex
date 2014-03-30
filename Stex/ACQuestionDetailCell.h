@@ -16,6 +16,8 @@
 - (BOOL)userDidUpvoteAnswer:(NSString *)answer;
 - (BOOL)userDidDownvoteQuestion:(NSString *)question;
 - (BOOL)userDidDownvoteAnswer:(NSString *)answer;
+- (void)userDidSelectQuestionComments:(NSString *)question;
+- (void)userDidSelectAnswerComments:(NSString *)answer;
 
 @end
 
@@ -33,5 +35,6 @@
 
 - (IBAction)upvote:(id)sender;
 - (IBAction)downvote:(id)sender;
+- (IBAction)openComments:(id)sender;
 
 @end
