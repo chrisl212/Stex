@@ -21,78 +21,84 @@
         self.sitesArray = @[];
         self.siteAPIParameters = @[];
         self.iconsArray = @[];
-        
-        dispatch_async(dispatch_queue_create("com.a-cstudios.infoloader", NULL), ^{
-            NSMutableArray *sitesArray = [NSMutableArray array];
-            NSMutableArray *iconsArray = [NSMutableArray array];
-            NSMutableArray *siteAPIParams = [NSMutableArray array];
-            NSMutableArray *allSites;
-            
-            NSString *cachesDirectory = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-            
-            NSString *cachedSitesPath = [cachesDirectory stringByAppendingPathComponent:@"sites_cache.json"];
-            /* Check if cache exists, and if it does not, fetch the list of sites */
-            if (![[NSFileManager defaultManager] fileExistsAtPath:cachedSitesPath])
-            {
-                NSString *requestURLString = @"https://api.stackexchange.com/2.2/sites?key=XB*FUGU0f4Ju9RCNhlRQ3A((";
-                NSData *responseData = [NSData dataWithContentsOfURL:[NSURL URLWithString:requestURLString]];
-                NSDictionary *rootDictionary = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableLeaves error:nil];
-                allSites = [[rootDictionary objectForKey:@"items"] mutableCopy];
-                int current_page = 2;
-                BOOL more_sites = [[rootDictionary objectForKey:@"has_more"] boolValue];
-                while (more_sites)
-                {
-                    requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/sites?page=%d&key=XB*FUGU0f4Ju9RCNhlRQ3A((", current_page];
-                    responseData = [NSData dataWithContentsOfURL:[NSURL URLWithString:requestURLString]];
-                    rootDictionary = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableLeaves error:nil];
-                    more_sites = [[rootDictionary objectForKey:@"has_more"] boolValue];
-                    [allSites addObjectsFromArray:[rootDictionary objectForKey:@"items"]];
-                    current_page++;
-                }
-                
-                [[NSFileManager defaultManager] createFileAtPath:cachedSitesPath contents:nil attributes:nil];
-                [allSites writeToFile:cachedSitesPath atomically:YES];
-            }
-            /* The cache does exist, so fetch the data from the cache */
-            else
-            {
-                allSites = [NSMutableArray arrayWithContentsOfURL:[NSURL fileURLWithPath:cachedSitesPath]];
-            }
-            
-            
-            /* Go through sites array and get information for each site */
-            for (NSDictionary *site in allSites)
-            {
-                NSString *siteName = [site objectForKey:@"name"];
-                NSString *iconURLString = [site objectForKey:@"icon_url"];
-                NSString *APIParameter = [site objectForKey:@"api_site_parameter"];
-                
-                NSString *iconCachePath = [cachesDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_icon.png", APIParameter]];
-                
-                NSData *iconData;
-                if (![[NSFileManager defaultManager] fileExistsAtPath:iconCachePath])
-                {
-                    iconData = [NSData dataWithContentsOfURL:[NSURL URLWithString:iconURLString]];
-                    [[NSFileManager defaultManager] createFileAtPath:iconCachePath contents:iconData attributes:nil];
-                }
-                else
-                    iconData = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:iconCachePath]];
-                UIImage *iconImage = [UIImage imageWithData:iconData];
-                
-                [sitesArray addObject:siteName];
-                [iconsArray addObject:iconImage];
-                [siteAPIParams addObject:APIParameter];
-            }
-            self.sitesArray = [NSArray arrayWithArray:sitesArray];
-            self.iconsArray = [NSArray arrayWithArray:iconsArray];
-            self.siteAPIParameters = [NSArray arrayWithArray:siteAPIParams];
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.tableView reloadData];
-            });
-        });
+        [self loadSites];
     }
     return self;
+}
+
+- (void)loadSites
+{
+    
+    dispatch_async(dispatch_queue_create("com.a-cstudios.infoloader", NULL), ^{
+        NSMutableArray *sitesArray = [NSMutableArray array];
+        NSMutableArray *iconsArray = [NSMutableArray array];
+        NSMutableArray *siteAPIParams = [NSMutableArray array];
+        NSMutableArray *allSites;
+        
+        NSString *cachesDirectory = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        
+        NSString *cachedSitesPath = [cachesDirectory stringByAppendingPathComponent:@"sites_cache.json"];
+        /* Check if cache exists, and if it does not, fetch the list of sites */
+        if (![[NSFileManager defaultManager] fileExistsAtPath:cachedSitesPath])
+        {
+            NSString *requestURLString = @"https://api.stackexchange.com/2.2/sites?key=XB*FUGU0f4Ju9RCNhlRQ3A((";
+            NSData *responseData = [NSData dataWithContentsOfURL:[NSURL URLWithString:requestURLString]];
+            NSDictionary *rootDictionary = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableLeaves error:nil];
+            allSites = [[rootDictionary objectForKey:@"items"] mutableCopy];
+            int current_page = 2;
+            BOOL more_sites = [[rootDictionary objectForKey:@"has_more"] boolValue];
+            while (more_sites)
+            {
+                requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/sites?page=%d&key=XB*FUGU0f4Ju9RCNhlRQ3A((", current_page];
+                responseData = [NSData dataWithContentsOfURL:[NSURL URLWithString:requestURLString]];
+                rootDictionary = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableLeaves error:nil];
+                more_sites = [[rootDictionary objectForKey:@"has_more"] boolValue];
+                [allSites addObjectsFromArray:[rootDictionary objectForKey:@"items"]];
+                current_page++;
+            }
+            
+            [[NSFileManager defaultManager] createFileAtPath:cachedSitesPath contents:nil attributes:nil];
+            [allSites writeToFile:cachedSitesPath atomically:YES];
+        }
+        /* The cache does exist, so fetch the data from the cache */
+        else
+        {
+            allSites = [NSMutableArray arrayWithContentsOfURL:[NSURL fileURLWithPath:cachedSitesPath]];
+        }
+        
+        
+        /* Go through sites array and get information for each site */
+        for (NSDictionary *site in allSites)
+        {
+            NSString *siteName = [site objectForKey:@"name"];
+            NSString *iconURLString = [site objectForKey:@"icon_url"];
+            NSString *APIParameter = [site objectForKey:@"api_site_parameter"];
+            
+            NSString *iconCachePath = [cachesDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_icon.png", APIParameter]];
+            
+            NSData *iconData;
+            if (![[NSFileManager defaultManager] fileExistsAtPath:iconCachePath])
+            {
+                iconData = [NSData dataWithContentsOfURL:[NSURL URLWithString:iconURLString]];
+                [[NSFileManager defaultManager] createFileAtPath:iconCachePath contents:iconData attributes:nil];
+            }
+            else
+                iconData = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:iconCachePath]];
+            UIImage *iconImage = [UIImage imageWithData:iconData];
+            
+            [sitesArray addObject:siteName];
+            [iconsArray addObject:iconImage];
+            [siteAPIParams addObject:APIParameter];
+        }
+        self.sitesArray = [NSArray arrayWithArray:sitesArray];
+        self.iconsArray = [NSArray arrayWithArray:iconsArray];
+        self.siteAPIParameters = [NSArray arrayWithArray:siteAPIParams];
+        self.allSites = allSites;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+        });
+    });
 }
 
 - (void)viewDidLoad
@@ -259,10 +265,47 @@
     {
         if ([self.delegate respondsToSelector:@selector(userInfoCellWasSelected:)])
             [self.delegate userInfoCellWasSelected:self.userInfoCellTitles[indexPath.row]];
+        [self loadSites];
         return;
     }
     if ([self.delegate respondsToSelector:@selector(siteWasSelected:)])
         [self.delegate siteWasSelected:self.siteAPIParameters[indexPath.row]];
+    [self loadSites];
+}
+
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == SITES_SECTION)
+        return YES;
+    return NO;
+}
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
+{
+    NSString *cachesDirectory = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    
+    NSString *cachedSitesPath = [cachesDirectory stringByAppendingPathComponent:@"sites_cache.json"];
+    NSMutableArray *temp = [self.sitesArray mutableCopy];
+    NSMutableArray *tempAPI = [self.siteAPIParameters mutableCopy];
+    NSMutableArray *tempIcons = [self.iconsArray mutableCopy];
+    id object = [temp objectAtIndex:sourceIndexPath.row];
+    [temp removeObjectAtIndex:sourceIndexPath.row];
+    [temp insertObject:object atIndex:destinationIndexPath.row];
+    
+    object = [tempAPI objectAtIndex:sourceIndexPath.row];
+    [tempAPI removeObjectAtIndex:sourceIndexPath.row];
+    [tempAPI insertObject:object atIndex:destinationIndexPath.row];
+    
+    object = tempIcons[sourceIndexPath.row];
+    [tempIcons removeObjectAtIndex:sourceIndexPath.row];
+    [tempIcons insertObject:object atIndex:destinationIndexPath.row];
+    
+    object = self.allSites[sourceIndexPath.row];
+    [self.allSites removeObjectAtIndex:sourceIndexPath.row];
+    [self.allSites insertObject:object atIndex:destinationIndexPath.row];
+    
+    [self.allSites writeToFile:cachedSitesPath atomically:YES];
+    [tableView moveRowAtIndexPath:sourceIndexPath toIndexPath:destinationIndexPath];
 }
 
 @end

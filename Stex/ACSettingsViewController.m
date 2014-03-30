@@ -8,6 +8,7 @@
 
 #import "ACSettingsViewController.h"
 #import "ACAlertView.h"
+#import "ACSlideViewController.h"
 
 @implementation ACSettingsViewController
 
@@ -23,7 +24,7 @@
 
 - (void)loadOptions:(BOOL)reload
 {
-    self.optionsDictionary = @{@"Font": [[NSUserDefaults standardUserDefaults] objectForKey:@"Font"], @"Clear Cache" : @""};
+    self.optionsDictionary = @{@"Rearrange sites" : @"", @"Font": [[NSUserDefaults standardUserDefaults] objectForKey:@"Font"], @"Clear Cache" : @""};
     if (reload)
         [self.tableView reloadData];
 }
@@ -97,6 +98,21 @@
                 [[NSFileManager defaultManager] removeItemAtPath:filePath error:nil];
         }
         [alertView dismiss];
+    }
+    else if ([key isEqualToString:@"Rearrange sites"])
+    {
+        ACSlideViewController *slideViewController = [[ACSlideViewController alloc] init];
+        self.navigationController.delegate = self;
+        [self.navigationController pushViewController:slideViewController animated:YES];
+    }
+}
+
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    if ([viewController isKindOfClass:[ACSlideViewController class]])
+    {
+        ACSlideViewController *svc = (ACSlideViewController *)viewController;
+        svc.tableView.editing = YES;
     }
 }
 
