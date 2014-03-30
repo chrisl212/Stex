@@ -45,7 +45,7 @@
         tagLabel.text = tagName;
         tagLabel.textAlignment = NSTextAlignmentCenter;
         
-        if (x_val + labelSize.width > self.frame.size.width)
+        if (x_val + labelSize.width >= self.frame.size.width)
             x_val = 5.0, y_val += labelSize.height + 7.5;
         
         UIView *tag = [[UIView alloc] initWithFrame:CGRectMake(x_val, y_val, labelSize.width + 10, labelSize.height + 2.5)];

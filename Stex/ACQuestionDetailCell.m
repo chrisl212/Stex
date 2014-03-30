@@ -24,34 +24,56 @@
 
 - (void)downvote:(id)sender
 {
+    [(UIButton *)sender setSelected:YES];
     BOOL isQuestion = (self.questionTitleLabel.text.length > 0) ? YES : NO;
+    
+    NSInteger voteCount = self.voteCountLabel.text.integerValue;
+    self.voteCountLabel.text = [NSString stringWithFormat:@"%d", voteCount - 1];
     if (isQuestion)
     {
         if ([self.delegate respondsToSelector:@selector(userDidDownvoteQuestion:)])
-            [self.delegate userDidDownvoteQuestion:self.postIDLabel.text];
+            if (![self.delegate userDidDownvoteQuestion:self.postIDLabel.text])
+            {
+                self.voteCountLabel.text = [NSString stringWithFormat:@"%d", voteCount];
+                [(UIButton *)sender setSelected:NO];
+            }
     }
     else
     {
         if ([self.delegate respondsToSelector:@selector(userDidDownvoteAnswer:)])
-            [self.delegate userDidDownvoteAnswer:self.postIDLabel.text];
+            if (![self.delegate userDidDownvoteAnswer:self.postIDLabel.text])
+            {
+                self.voteCountLabel.text = [NSString stringWithFormat:@"%d", voteCount];
+                [(UIButton *)sender setSelected:NO];
+            }
     }
-    [(UIButton *)sender setSelected:YES];
 }
 
 - (void)upvote:(id)sender
 {
+    [(UIButton *)sender setSelected:YES];
     BOOL isQuestion = (self.questionTitleLabel.text.length > 0) ? YES : NO;
+    
+    NSInteger voteCount = self.voteCountLabel.text.integerValue;
+    self.voteCountLabel.text = [NSString stringWithFormat:@"%d", voteCount + 1];
     if (isQuestion)
     {
         if ([self.delegate respondsToSelector:@selector(userDidUpvoteQuestion:)])
-            [self.delegate userDidUpvoteQuestion:self.postIDLabel.text];
+            if (![self.delegate userDidUpvoteQuestion:self.postIDLabel.text])
+            {
+                self.voteCountLabel.text = [NSString stringWithFormat:@"%d", voteCount];
+                [(UIButton *)sender setSelected:NO];
+            }
     }
     else
     {
         if ([self.delegate respondsToSelector:@selector(userDidUpvoteAnswer:)])
-            [self.delegate userDidUpvoteAnswer:self.postIDLabel.text];
+            if (![self.delegate userDidUpvoteAnswer:self.postIDLabel.text])
+            {
+                self.voteCountLabel.text = [NSString stringWithFormat:@"%d", voteCount];
+                [(UIButton *)sender setSelected:NO];
+            }
     }
-    [(UIButton *)sender setSelected:YES];
 }
 
 @end

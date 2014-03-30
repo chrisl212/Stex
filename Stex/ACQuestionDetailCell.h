@@ -12,10 +12,10 @@
 @protocol ACPostCellDelegate <NSObject>
 
 @optional
-- (void)userDidUpvoteQuestion:(NSString *)question;
-- (void)userDidUpvoteAnswer:(NSString *)answer;
-- (void)userDidDownvoteQuestion:(NSString *)question;
-- (void)userDidDownvoteAnswer:(NSString *)answer;
+- (BOOL)userDidUpvoteQuestion:(NSString *)question;
+- (BOOL)userDidUpvoteAnswer:(NSString *)answer;
+- (BOOL)userDidDownvoteQuestion:(NSString *)question;
+- (BOOL)userDidDownvoteAnswer:(NSString *)answer;
 
 @end
 

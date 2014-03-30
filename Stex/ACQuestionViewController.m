@@ -209,7 +209,7 @@
 
 #pragma mark - ACQuestionDetailCellDelegate
 
-- (void)vote:(NSString *)postID postType:(NSString *)postType voteType:(NSString *)vote
+- (BOOL)vote:(NSString *)postID postType:(NSString *)postType voteType:(NSString *)vote
 {
     NSString *accessToken = [(ACAppDelegate *)[UIApplication sharedApplication].delegate accessToken];
     NSString *requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/%@/%@/%@",postType, postID, vote];
@@ -219,29 +219,35 @@
     
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:[body dataUsingEncoding:NSUTF8StringEncoding]];
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue currentQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error){
-        NSLog(@"%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
-    }];
+    
+    BOOL success = YES;
+    NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+    NSString *dataString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    
+    if ([dataString rangeOfString:@"error"].location != NSNotFound)
+        success = NO;
+    
+    return success;
 }
 
-- (void)userDidDownvoteAnswer:(NSString *)answer
+- (BOOL)userDidDownvoteAnswer:(NSString *)answer
 {
-    [self vote:answer postType:@"answers" voteType:@"downvote"];
+    return [self vote:answer postType:@"answers" voteType:@"downvote"];
 }
 
-- (void)userDidDownvoteQuestion:(NSString *)question
+- (BOOL)userDidDownvoteQuestion:(NSString *)question
 {
-    [self vote:question postType:@"questions" voteType:@"downvote"];
+    return [self vote:question postType:@"questions" voteType:@"downvote"];
 }
 
-- (void)userDidUpvoteAnswer:(NSString *)answer
+- (BOOL)userDidUpvoteAnswer:(NSString *)answer
 {
-    [self vote:answer postType:@"answers" voteType:@"upvote"];
+    return [self vote:answer postType:@"answers" voteType:@"upvote"];
 }
 
-- (void)userDidUpvoteQuestion:(NSString *)question
+- (BOOL)userDidUpvoteQuestion:(NSString *)question
 {
-    [self vote:question postType:@"questions" voteType:@"upvote"];
+    return [self vote:question postType:@"questions" voteType:@"upvote"];
 }
 
 @end

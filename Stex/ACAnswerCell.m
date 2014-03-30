@@ -24,16 +24,29 @@
 
 - (void)downvote:(id)sender
 {
-    if ([self.delegate respondsToSelector:@selector(userDidDownvoteAnswer:)])
-        [self.delegate userDidDownvoteAnswer:self.postIDLabel.text];
     [(UIButton *)sender setSelected:YES];
+    NSInteger voteCount = self.voteCountLabel.text.integerValue;
+    self.voteCountLabel.text = [NSString stringWithFormat:@"%d", voteCount - 1];
+    if ([self.delegate respondsToSelector:@selector(userDidDownvoteAnswer:)])
+        if (![self.delegate userDidDownvoteAnswer:self.postIDLabel.text])
+        {
+            self.voteCountLabel.text = [NSString stringWithFormat:@"%d", voteCount];
+            [(UIButton *)sender setSelected:NO];
+        }
 }
 
 - (void)upvote:(id)sender
 {
-    if ([self.delegate respondsToSelector:@selector(userDidUpvoteAnswer:)])
-        [self.delegate userDidUpvoteAnswer:self.postIDLabel.text];
     [(UIButton *)sender setSelected:YES];
+    NSInteger voteCount = self.voteCountLabel.text.integerValue;
+    self.voteCountLabel.text = [NSString stringWithFormat:@"%d", voteCount + 1];
+    if ([self.delegate respondsToSelector:@selector(userDidUpvoteAnswer:)])
+        if (![self.delegate userDidUpvoteAnswer:self.postIDLabel.text])
+        {
+            self.voteCountLabel.text = [NSString stringWithFormat:@"%d", voteCount];
+            [(UIButton *)sender setSelected:NO];
+        }
 }
+
 
 @end

@@ -30,7 +30,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height - 44) style:UITableViewStyleGrouped];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, self.view.frame.size.width, self.view.frame.size.height - 44) style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     [self.view addSubview:self.tableView];
@@ -76,7 +76,7 @@
     NSString *key = cell.textLabel.text;
     if ([key isEqualToString:@"Font"])
     {
-        UIPickerView *pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, CGRectGetMidY(self.tableView.frame), 320, self.view.frame.size.height/2)];
+        UIPickerView *pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, CGRectGetMidY(self.tableView.frame), self.view.frame.size.width, self.view.frame.size.height/2)];
         pickerView.dataSource = self;
         pickerView.delegate = self;
         [self.view addSubview:pickerView];
