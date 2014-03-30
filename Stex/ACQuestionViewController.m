@@ -275,4 +275,10 @@
     [self.navigationController pushViewController:commentsViewController animated:YES];
 }
 
+- (void)userDidSelectAnswerComments:(NSString *)answer
+{
+    ACCommentsViewController *commentsViewController = [[ACCommentsViewController alloc] initWithPostID:answer isQuestion:NO site:self.siteAPIName];
+    [self.navigationController pushViewController:commentsViewController animated:YES];
+}
+
 @end

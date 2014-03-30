@@ -91,6 +91,7 @@
                         <rect key="frame" x="0.0" y="323" width="91" height="51"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <state key="normal" title="Comments >">
+                            <color key="titleColor" name="alternateSelectedControlColor" catalog="System" colorSpace="catalog"/>
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
                         <connections>

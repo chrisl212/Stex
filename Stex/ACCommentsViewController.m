@@ -131,7 +131,7 @@
             NSString *accessToken = [(ACAppDelegate *)[[UIApplication sharedApplication] delegate] accessToken];
             
             NSString *requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/posts/%@/comments/add?body=%@&access_token=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((&site=%@", self.postID, [commentBody stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding], accessToken, self.siteAPIName];
-            NSData *requestData = [NSData dataWithContentsOfURL:[NSURL URLWithString:requestURLString]];
+            [NSData dataWithContentsOfURL:[NSURL URLWithString:requestURLString]];
             
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
         }

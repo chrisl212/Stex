@@ -7,6 +7,7 @@
 //
 
 #import "ACSettingsViewController.h"
+#import "ACAlertView.h"
 
 @implementation ACSettingsViewController
 
@@ -22,7 +23,7 @@
 
 - (void)loadOptions:(BOOL)reload
 {
-    self.optionsDictionary = @{@"Font": [[NSUserDefaults standardUserDefaults] objectForKey:@"Font"]};
+    self.optionsDictionary = @{@"Font": [[NSUserDefaults standardUserDefaults] objectForKey:@"Font"], @"Clear Cache" : @""};
     if (reload)
         [self.tableView reloadData];
 }
@@ -81,6 +82,22 @@
         pickerView.delegate = self;
         [self.view addSubview:pickerView];
     }
+    else if ([key isEqualToString:@"Clear Cache"])
+    {
+        ACAlertView *alertView = [ACAlertView alertWithTitle:@"Clearing cache..." style:ACAlertViewStyleSpinner delegate:nil buttonTitles:nil];
+        [alertView show];
+        NSString *cachesDir = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        NSArray *fileNames = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:cachesDir error:nil];
+        for (NSString *file in fileNames)
+        {
+            NSString *filePath = [cachesDir stringByAppendingPathComponent:file];
+            BOOL isDir;
+            [[NSFileManager defaultManager] fileExistsAtPath:filePath isDirectory:&isDir];
+            if (!isDir)
+                [[NSFileManager defaultManager] removeItemAtPath:filePath error:nil];
+        }
+        [alertView dismiss];
+    }
 }
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
@@ -95,11 +112,7 @@
     NSArray *fontFamilyNames = [UIFont familyNames];
     for (NSString *familyName in fontFamilyNames)
     {
-        NSLog(@"Font Family Name = %@", familyName);
-        
         NSArray *names = [UIFont fontNamesForFamilyName:familyName];
-        
-        NSLog(@"Font Names = %@", fontNames);
         [fontNames addObjectsFromArray:names];
     }
     return fontNames.count;

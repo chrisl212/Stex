@@ -75,6 +75,17 @@
                         <fontDescription key="fontDescription" name="Verdana" family="Verdana" pointSize="16"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                     </textView>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8dq-LF-JuE">
+                        <rect key="frame" x="0.0" y="255" width="91" height="54"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <state key="normal" title="Comments >">
+                            <color key="titleColor" name="alternateSelectedControlColor" catalog="System" colorSpace="catalog"/>
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="openComments:" destination="iP6-Zq-cQX" eventType="touchUpInside" id="wPo-9g-rNe"/>
+                        </connections>
+                    </button>
                 </subviews>
             </tableViewCellContentView>
             <connections>

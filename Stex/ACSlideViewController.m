@@ -98,16 +98,118 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, self.view.frame.size.width, self.view.frame.size.height - 44) style:UITableViewStyleGrouped];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height - 44) style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     [self.view addSubview:self.tableView];
+    
+    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+    searchBar.delegate = self;
+    [searchBar setShowsCancelButton:YES];
+    self.tableView.tableHeaderView = searchBar;
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Search bar delegate
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    NSMutableArray *sitesArray = [NSMutableArray array];
+    NSMutableArray *iconsArray = [NSMutableArray array];
+    NSMutableArray *siteAPIParams = [NSMutableArray array];
+    
+    NSString *cachesDirectory = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    
+    NSString *cachedSitesPath = [cachesDirectory stringByAppendingPathComponent:@"sites_cache.json"];
+    NSMutableArray *allSites = [NSMutableArray arrayWithContentsOfURL:[NSURL fileURLWithPath:cachedSitesPath]];
+    for (NSDictionary *site in allSites)
+    {
+        NSString *siteName = [site objectForKey:@"name"];
+        NSString *iconURLString = [site objectForKey:@"icon_url"];
+        NSString *APIParameter = [site objectForKey:@"api_site_parameter"];
+        
+        NSString *iconCachePath = [cachesDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_icon.png", APIParameter]];
+        
+        NSData *iconData;
+        if (![[NSFileManager defaultManager] fileExistsAtPath:iconCachePath])
+        {
+            iconData = [NSData dataWithContentsOfURL:[NSURL URLWithString:iconURLString]];
+            [[NSFileManager defaultManager] createFileAtPath:iconCachePath contents:iconData attributes:nil];
+        }
+        else
+            iconData = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:iconCachePath]];
+        UIImage *iconImage = [UIImage imageWithData:iconData];
+        
+        [sitesArray addObject:siteName];
+        [iconsArray addObject:iconImage];
+        [siteAPIParams addObject:APIParameter];
+    }
+    self.sitesArray = [NSArray arrayWithArray:sitesArray];
+    self.iconsArray = [NSArray arrayWithArray:iconsArray];
+    self.siteAPIParameters = [NSArray arrayWithArray:siteAPIParams];
+    
+    NSMutableArray *tempArray = [NSMutableArray array];
+    NSMutableArray *tempIconArray = [NSMutableArray array];
+    NSMutableArray *tempAPINames = [NSMutableArray array];
+    
+    for (NSString *siteName in self.sitesArray)
+    {
+        if ([siteName rangeOfString:searchText options:NSCaseInsensitiveSearch].location != NSNotFound)
+            [tempArray addObject:siteName], [tempIconArray addObject:self.iconsArray[[self.sitesArray indexOfObject:siteName]]], [tempAPINames addObject:self.siteAPIParameters[[self.sitesArray indexOfObject:siteName]]];
+    }
+    self.sitesArray = [NSArray arrayWithArray:tempArray];
+    self.iconsArray = [NSArray arrayWithArray:tempIconArray];
+    self.siteAPIParameters = [NSArray arrayWithArray:tempAPINames];
+    [self.tableView reloadData];
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    [searchBar resignFirstResponder];
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
+    
+    NSMutableArray *sitesArray = [NSMutableArray array];
+    NSMutableArray *iconsArray = [NSMutableArray array];
+    NSMutableArray *siteAPIParams = [NSMutableArray array];
+    
+    NSString *cachesDirectory = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    
+    NSString *cachedSitesPath = [cachesDirectory stringByAppendingPathComponent:@"sites_cache.json"];
+    NSMutableArray *allSites = [NSMutableArray arrayWithContentsOfURL:[NSURL fileURLWithPath:cachedSitesPath]];
+    for (NSDictionary *site in allSites)
+    {
+        NSString *siteName = [site objectForKey:@"name"];
+        NSString *iconURLString = [site objectForKey:@"icon_url"];
+        NSString *APIParameter = [site objectForKey:@"api_site_parameter"];
+        
+        NSString *iconCachePath = [cachesDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_icon.png", APIParameter]];
+        
+        NSData *iconData;
+        if (![[NSFileManager defaultManager] fileExistsAtPath:iconCachePath])
+        {
+            iconData = [NSData dataWithContentsOfURL:[NSURL URLWithString:iconURLString]];
+            [[NSFileManager defaultManager] createFileAtPath:iconCachePath contents:iconData attributes:nil];
+        }
+        else
+            iconData = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:iconCachePath]];
+        UIImage *iconImage = [UIImage imageWithData:iconData];
+        
+        [sitesArray addObject:siteName];
+        [iconsArray addObject:iconImage];
+        [siteAPIParams addObject:APIParameter];
+    }
+    self.sitesArray = [NSArray arrayWithArray:sitesArray];
+    self.iconsArray = [NSArray arrayWithArray:iconsArray];
+    self.siteAPIParameters = [NSArray arrayWithArray:siteAPIParams];
+    [self.tableView reloadData];
 }
 
 #pragma mark - UITableView Delegate/Data source

@@ -24,5 +24,6 @@
 
 - (IBAction)upvote:(id)sender;
 - (IBAction)downvote:(id)sender;
+- (IBAction)openComments:(id)sender;
 
 @end

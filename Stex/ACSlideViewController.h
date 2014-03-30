@@ -16,7 +16,7 @@
 
 @end
 
-@interface ACSlideViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface ACSlideViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate>
 
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSArray *siteAPIParameters; //For future reference, the name of the site to be passed in an API request, eg. "stackoverflow".

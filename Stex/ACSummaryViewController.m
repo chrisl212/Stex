@@ -95,6 +95,10 @@
     for (UILabel *lab in self.contentView.subviews)
         if ([lab isKindOfClass:[UILabel class]] && [lab.text isEqualToString:@"Medals"])
             lab.font = [UIFont fontWithName:[[NSUserDefaults standardUserDefaults] objectForKey:@"Font"] size:17];
+    
+    for (UIButton *button in self.contentView.subviews)
+        if ([button isKindOfClass:[UIButton class]] && [button.titleLabel.text isEqualToString:@"About..."])
+            [button.titleLabel setFont:[UIFont fontWithName:[[NSUserDefaults standardUserDefaults] objectForKey:@"Font"] size:15]];
 }
 
 - (void)viewDidAppear:(BOOL)animated
