@@ -7,10 +7,14 @@
 //
 
 @import UIKit;
+#import "ACAnswerCell.h"
 
-@interface ACAnswersViewController : UITableViewController
+@interface ACAnswersViewController : UITableViewController <ACPostCellDelegate>
 
+@property (strong, nonatomic) NSString *siteAPIName;
 @property (strong, nonatomic) NSArray *answersArray;
 @property (strong, nonatomic) UIImage *avatarImage;
+
+- (id)initWithSite:(NSString *)site;
 
 @end

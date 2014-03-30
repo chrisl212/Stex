@@ -21,6 +21,20 @@
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self)
     {
+        
+        [self.tableView registerClass:[ACCommentCell class] forCellReuseIdentifier:@"Cell"];
+        [self.tableView registerNib:[UINib nibWithNibName:@"ACCommentCell" bundle:nil] forCellReuseIdentifier:@"Cell"];
+        [self.tableView registerClass:[ACCommentCell class] forCellReuseIdentifier:@"NewCell"];
+        [self.tableView registerNib:[UINib nibWithNibName:@"ACCommentCell" bundle:nil] forCellReuseIdentifier:@"NewCell"];
+        
+        if (!site)
+        {
+            ACAlertView *errorAlert = [ACAlertView alertWithTitle:@"Error" style:ACAlertViewStyleTextView delegate:nil buttonTitles:@[@"Close"]];
+            errorAlert.textView.text = @"The site parameter was nil; error loading data.";
+            [errorAlert show];
+            self.commentArray = @[];
+            return self;
+        }
         self.siteAPIName = site;
         self.postID = postID;
         
@@ -34,11 +48,7 @@
         
         NSArray *items = wrapper[@"items"];
         self.commentArray = [NSArray arrayWithArray:items];
-        
-        [self.tableView registerClass:[ACCommentCell class] forCellReuseIdentifier:@"Cell"];
-        [self.tableView registerNib:[UINib nibWithNibName:@"ACCommentCell" bundle:nil] forCellReuseIdentifier:@"Cell"];
-        [self.tableView registerClass:[ACCommentCell class] forCellReuseIdentifier:@"NewCell"];
-        [self.tableView registerNib:[UINib nibWithNibName:@"ACCommentCell" bundle:nil] forCellReuseIdentifier:@"NewCell"];
+
     }
     return self;
 }

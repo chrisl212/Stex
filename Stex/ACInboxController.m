@@ -112,10 +112,14 @@
     if (!questionID)
     {
         ACQuestionViewController *questionViewController = [[ACQuestionViewController alloc] initWithAnswerID:[self.inboxItemsArray[indexPath.row][@"answer_id"] stringValue] site:self.inboxItemsArray[indexPath.row][@"site"][@"api_site_parameter"]];
+        questionViewController.siteAPIName = self.inboxItemsArray[indexPath.row][@"site"][@"api_site_parameter"];
         [self.parentViewController.navigationController pushViewController:questionViewController animated:YES];
         return;
     }
-    ACQuestionViewController *questionViewController = [[ACQuestionViewController alloc] initWithQuestionID:questionID site:self.inboxItemsArray[indexPath.row][@"site"][@"api_site_parameter"]];
+    NSDictionary *dict = self.inboxItemsArray[indexPath.row];
+    NSString *site = dict[@"site"][@"api_site_parameter"];
+    ACQuestionViewController *questionViewController = [[ACQuestionViewController alloc] initWithQuestionID:questionID site:site];
+    questionViewController.siteAPIName = site;
     [self.parentViewController.navigationController pushViewController:questionViewController animated:YES];
 }
 

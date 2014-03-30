@@ -7,23 +7,24 @@
 //
 
 #import "ACAnswersViewController.h"
-#import "ACAnswerCell.h"
 #import "ACAppDelegate.h"
+#import "ACCommentsViewController.h"
 
 @implementation ACAnswersViewController
 
-- (id)init
+- (id)initWithSite:(NSString *)site
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self)
     {
+        self.siteAPIName = site;
         [self.tableView registerClass:[ACAnswerCell class] forCellReuseIdentifier:@"AnswerCell"];
         [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([ACAnswerCell class]) bundle:nil] forCellReuseIdentifier:@"AnswerCell"];
         
         self.answersArray = @[];
         dispatch_async(dispatch_queue_create("com.a-cstudios.answersload", NULL), ^{
             NSString *accessToken = [(ACAppDelegate *)[UIApplication sharedApplication].delegate accessToken];
-            NSString *requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/me/answers?order=desc&sort=creation&site=stackoverflow&access_token=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((&filter=!9WgJfjI5u", accessToken];
+            NSString *requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/me/answers?order=desc&sort=creation&site=%@&access_token=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((&filter=!9WgJfjI5u", site, accessToken];
             NSData *requestData = [NSData dataWithContentsOfURL:[NSURL URLWithString:requestURLString]];
             NSDictionary *wrapper = [NSJSONSerialization JSONObjectWithData:requestData options:kNilOptions error:nil];
             NSArray *items = wrapper[@"items"];
@@ -32,7 +33,7 @@
             NSInteger pageNumber = 2;
             while (hasMore)
             {
-                requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/me/answers?page=%d&order=desc&sort=creation&site=stackoverflow&access_token=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((&filter=!9WgJfjI5u", pageNumber, accessToken];
+                requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/me/answers?page=%d&order=desc&sort=creation&site=%@&access_token=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((&filter=!9WgJfjI5u", pageNumber, site, accessToken];
                 requestData = [NSData dataWithContentsOfURL:[NSURL URLWithString:requestURLString]];
                 wrapper = [NSJSONSerialization JSONObjectWithData:requestData options:kNilOptions error:nil];
                 items = wrapper[@"items"];
@@ -94,8 +95,15 @@
     BOOL isAccepted = [answerDictionary[@"is_accepted"] boolValue];
     cell.voteCountLabel.backgroundColor = (isAccepted) ? [UIColor colorWithRed:64.0/255.0 green:128.0/255.0 blue:0.0 alpha:1.0] : [UIColor clearColor];
     cell.voteCountLabel.textColor = (isAccepted) ? [UIColor whiteColor] : [UIColor blackColor];
-
+    cell.delegate = self;
+    
     return cell;
+}
+
+- (void)userDidSelectAnswerComments:(NSString *)answer
+{
+    ACCommentsViewController *commentsViewController = [[ACCommentsViewController alloc] initWithPostID:answer isQuestion:NO site:self.siteAPIName];
+    [self.navigationController pushViewController:commentsViewController animated:YES];
 }
 
 @end

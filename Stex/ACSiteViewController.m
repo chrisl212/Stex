@@ -298,8 +298,12 @@
     }
     if ([aa isEqualToString:@"My Answers"])
     {
-        ACAnswersViewController *answersViewController = [[ACAnswersViewController alloc] init];
+        ACAnswersViewController *answersViewController = [[ACAnswersViewController alloc] initWithSite:self.siteAPIName];
         ACSummaryViewController *parentViewController = (ACSummaryViewController *)self.parentViewController;
+        UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(slideSiteOptions)];
+        swipe.direction = UISwipeGestureRecognizerDirectionLeft;
+        [answersViewController.view addGestureRecognizer:swipe];
+        
         [parentViewController addChildViewController:answersViewController];
         [parentViewController.contentView addSubview:answersViewController.view];
         [self slideSiteOptions];
