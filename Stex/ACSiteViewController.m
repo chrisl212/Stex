@@ -81,7 +81,8 @@
             for (NSDictionary *questionDictionary in questions)
             {
                 [questionsArray addObject:questionDictionary];
-                [avatarURLSArray addObject:[[questionDictionary objectForKey:@"owner"] objectForKey:@"profile_image"]];
+                if (![[[questionDictionary objectForKey:@"owner"] objectForKey:@"user_type"] isEqualToString:@"does_not_exist"])
+                    [avatarURLSArray addObject:[[questionDictionary objectForKey:@"owner"] objectForKey:@"profile_image"]];
             }
             self.questionsArray = [NSArray arrayWithArray:questionsArray];
             
@@ -155,6 +156,9 @@
         NSMutableArray *questionsArray = [NSMutableArray array];
         NSMutableArray *avatarURLSArray = [NSMutableArray array];
         NSString *questionsRequestURLString = [[NSString stringWithFormat:@"https://api.stackexchange.com/2.2/search?site=%@&order=desc&sort=creation&tagged=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((", self.siteAPIName, tag] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        if ([tag isEqualToString:@"c++"])
+            questionsRequestURLString = [questionsRequestURLString stringByReplacingOccurrencesOfString:@"++" withString:@"%2b%2b"];
+        
         NSData *questionData = [NSData dataWithContentsOfURL:[NSURL URLWithString:questionsRequestURLString]];
         NSDictionary *questionsWrapper = [NSJSONSerialization JSONObjectWithData:questionData options:NSJSONReadingMutableLeaves error:nil];
         NSArray *questions = [questionsWrapper objectForKey:@"items"];
@@ -203,6 +207,9 @@
         NSMutableArray *questionsArray = [NSMutableArray array];
         NSMutableArray *avatarURLSArray = [NSMutableArray array];
         NSString *questionsRequestURLString = [[NSString stringWithFormat:@"https://api.stackexchange.com/2.2/search?site=%@&order=desc&sort=creation&tagged=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((", self.siteAPIName, tag] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        if ([tag isEqualToString:@"c++"])
+            questionsRequestURLString = [questionsRequestURLString stringByReplacingOccurrencesOfString:@"++" withString:@"%2b%2b"];
+        
         NSData *questionData = [NSData dataWithContentsOfURL:[NSURL URLWithString:questionsRequestURLString]];
         NSDictionary *questionsWrapper = [NSJSONSerialization JSONObjectWithData:questionData options:NSJSONReadingMutableLeaves error:nil];
         NSArray *questions = [questionsWrapper objectForKey:@"items"];

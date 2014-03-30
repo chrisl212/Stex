@@ -70,7 +70,7 @@
 		6333F47018B7F7CF00DDC490 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		6333F47418B7F7CF00DDC490 /* Stex-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Stex-Info.plist"; sourceTree = "<group>"; };
 		6333F47618B7F7CF00DDC490 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		6333F47818B7F7CF00DDC490 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		6333F47818B7F7CF00DDC490 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; usesTabs = 0; };
 		6333F47A18B7F7CF00DDC490 /* Stex-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Stex-Prefix.pch"; sourceTree = "<group>"; };
 		6333F47B18B7F7CF00DDC490 /* ACAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACAppDelegate.h; sourceTree = "<group>"; };
 		6333F47C18B7F7CF00DDC490 /* ACAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ACAppDelegate.m; sourceTree = "<group>"; };

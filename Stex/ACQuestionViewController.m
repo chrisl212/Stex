@@ -76,19 +76,37 @@
             NSMutableDictionary *questionInfo = [NSMutableDictionary dictionary];
             
             NSDictionary *ownerInfo = [items objectForKey:@"owner"];
-            questionInfo[@"user_id"] = ownerInfo[@"user_id"];
-            [questionInfo setObject:[ownerInfo objectForKey:@"display_name"] forKey:@"username"];
-            [questionInfo setObject:[self imageWithContentsOfURL:[NSURL URLWithString:[ownerInfo objectForKey:@"profile_image"]]] forKey:@"avatar"];
-            [questionInfo setObject:[ownerInfo objectForKey:@"reputation"] forKey:@"reputation"];
-            
-            [questionInfo setObject:[items objectForKey:@"is_answered"] forKey:@"answered"];
-            [questionInfo setObject:[items objectForKey:@"view_count"] forKey:@"views"];
-            [questionInfo setObject:[items objectForKey:@"score"] forKey:@"votes"];
-            [questionInfo setObject:[items objectForKey:@"body_markdown"] forKey:@"body"];
-            [questionInfo setObject:[items objectForKey:@"title"] forKey:@"title"];
-            [questionInfo setObject:[items objectForKey:@"question_id"] forKey:@"question_id"];
-            self.questionInfoDictionary = [NSDictionary dictionaryWithDictionary:questionInfo];
-            
+            if ([ownerInfo[@"user_type"] isEqualToString:@"does_not_exist"])
+            {
+                questionInfo[@"user_id"] = @(000000000);
+                [questionInfo setObject:[ownerInfo objectForKey:@"display_name"] forKey:@"username"];
+                [questionInfo setObject:[UIImage imageNamed:@"Icon@2x.png"] forKey:@"avatar"];
+                [questionInfo setObject:@(0) forKey:@"reputation"];
+                
+                [questionInfo setObject:[items objectForKey:@"is_answered"] forKey:@"answered"];
+                [questionInfo setObject:[items objectForKey:@"view_count"] forKey:@"views"];
+                [questionInfo setObject:[items objectForKey:@"score"] forKey:@"votes"];
+                [questionInfo setObject:[items objectForKey:@"body_markdown"] forKey:@"body"];
+                [questionInfo setObject:[items objectForKey:@"title"] forKey:@"title"];
+                [questionInfo setObject:[items objectForKey:@"question_id"] forKey:@"question_id"];
+                self.questionInfoDictionary = [NSDictionary dictionaryWithDictionary:questionInfo];
+            }
+            else
+            {
+                questionInfo[@"user_id"] = ownerInfo[@"user_id"];
+                [questionInfo setObject:[ownerInfo objectForKey:@"display_name"] forKey:@"username"];
+                [questionInfo setObject:[self imageWithContentsOfURL:[NSURL URLWithString:[ownerInfo objectForKey:@"profile_image"]]] forKey:@"avatar"];
+                [questionInfo setObject:[ownerInfo objectForKey:@"reputation"] forKey:@"reputation"];
+                
+                [questionInfo setObject:[items objectForKey:@"is_answered"] forKey:@"answered"];
+                [questionInfo setObject:[items objectForKey:@"view_count"] forKey:@"views"];
+                [questionInfo setObject:[items objectForKey:@"score"] forKey:@"votes"];
+                [questionInfo setObject:[items objectForKey:@"body_markdown"] forKey:@"body"];
+                [questionInfo setObject:[items objectForKey:@"title"] forKey:@"title"];
+                [questionInfo setObject:[items objectForKey:@"question_id"] forKey:@"question_id"];
+                self.questionInfoDictionary = [NSDictionary dictionaryWithDictionary:questionInfo];
+            }
+
             NSMutableArray *answerArray = [NSMutableArray array];
             NSString *answersRequestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/questions/%@/answers?site=%@&order=desc&sort=activity&filter=!9WgJfjxe6&key=XB*FUGU0f4Ju9RCNhlRQ3A((", question, site];
             NSData *answersRequestData = [NSData dataWithContentsOfURL:[NSURL URLWithString:answersRequestURLString]];

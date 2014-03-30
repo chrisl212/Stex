@@ -21,13 +21,13 @@
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    [super touchesEnded:touches withEvent:event];
     for (UIView *candidate in self.subviews)
     {
         if ([candidate.backgroundColor isEqual:[UIColor blackColor]])
             [candidate removeFromSuperview];
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:@"UserClicked" object:self.userID];
+    [super touchesEnded:touches withEvent:event];
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
