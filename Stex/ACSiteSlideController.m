@@ -7,9 +7,11 @@
 //
 
 #import "ACSiteSlideController.h"
+#import "ACAppDelegate.h"
 
-#define ACCOUNT_AREAS_SECTION 0
-#define POPULAR_TAGS_SECTION 1
+#define SITE_REGISTER_SECTION 0
+#define ACCOUNT_AREAS_SECTION 1
+#define POPULAR_TAGS_SECTION 2
 
 @implementation ACSiteSlideController
 
@@ -42,6 +44,23 @@
             [popularTagsArray addObject:tagString];
         }
         self.popularTagsArray = [NSArray arrayWithArray:popularTagsArray];
+        
+        NSString *accessToken = [(ACAppDelegate *)[UIApplication sharedApplication].delegate accessToken];
+        requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/me?order=desc&sort=reputation&site=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((&access_token=%@", siteAPIName, accessToken];
+        requestData = [NSData dataWithContentsOfURL:[NSURL URLWithString:requestURLString] options:kNilOptions error:nil];
+        wrapper = [NSJSONSerialization JSONObjectWithData:requestData options:NSJSONReadingMutableLeaves error:nil];
+        items = [wrapper objectForKey:@"items"];
+        if (!items.count == 0)
+        {
+            NSDictionary *rootDictionary = [items objectAtIndex:0];
+            if ([rootDictionary[@"user_type"] isEqualToString:@"registered"])
+                self.registered = YES;
+            else
+                self.registered = NO;
+        }
+        else
+            self.registered = NO;
+
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
         });
@@ -62,11 +81,13 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    if (section == SITE_REGISTER_SECTION)
+        return 1;
     if (section == ACCOUNT_AREAS_SECTION)
         return self.accountAreasArray.count;
     return self.popularTagsArray.count;
@@ -74,6 +95,8 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
+    if (section == SITE_REGISTER_SECTION)
+        return @"Site Registration";
     if (section == ACCOUNT_AREAS_SECTION)
         return self.username;
     return @"Popular Tags";
@@ -81,6 +104,24 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (indexPath.section == SITE_REGISTER_SECTION)
+    {
+        static NSString *registerCellID = @"RegisterCell";
+        UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:registerCellID];
+        NSString *registeredString;
+        if (self.isRegistered)
+            registeredString = @"Registered";
+        else
+            registeredString = @"Not Registered";
+        cell.textLabel.text = registeredString;
+        if (self.isRegistered)
+        {
+            cell.detailTextLabel.text = @"✓";
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
+        return cell;
+    }
+    
     if (indexPath.section == ACCOUNT_AREAS_SECTION)
     {
         static NSString *accountAreasCellID = @"AccountAreasCell";
@@ -104,6 +145,13 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (indexPath.section == SITE_REGISTER_SECTION)
+    {
+        if (self.registered)
+            return;
+        
+    }
+    
     if (indexPath.section == ACCOUNT_AREAS_SECTION)
     {
         if ([self.delegate respondsToSelector:@selector(didSelectAccountArea:)])

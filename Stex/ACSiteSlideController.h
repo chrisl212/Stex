@@ -18,6 +18,7 @@
 
 @interface ACSiteSlideController : UITableViewController
 
+@property (nonatomic, getter = isRegistered) BOOL registered;
 @property (strong, nonatomic) NSArray *accountAreasArray;
 @property (strong, nonatomic) NSArray *popularTagsArray;
 @property (strong, nonatomic) NSString *siteAPIName;
