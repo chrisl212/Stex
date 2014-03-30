@@ -8,8 +8,9 @@
 
 @import UIKit;
 
-@interface ACInboxController : UITableViewController
+@interface ACInboxController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 
+@property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSArray *inboxItemsArray;
 
 @end

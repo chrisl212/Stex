@@ -37,7 +37,7 @@
     
     for (NSString *tagName in self.tagsArray)
     {
-        UIFont *labelFont = [UIFont fontWithName:@"Verdana" size:12];
+        UIFont *labelFont = [UIFont fontWithName:[[NSUserDefaults standardUserDefaults] objectForKey:@"Font"] size:12];
         CGSize labelSize = [tagName sizeWithAttributes:@{NSFontAttributeName: labelFont}];
         UILabel *tagLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, labelSize.width + 10, labelSize.height)];
         tagLabel.textColor = [UIColor whiteColor];
@@ -74,14 +74,29 @@
         if ([label isKindOfClass:[UILabel class]])
         {
             selectedLabel = label;
-            
+            UIView *overlay = [[UIView alloc] initWithFrame:label.superview.bounds];
+            overlay.layer.opacity = 0.4;
+            overlay.backgroundColor = [UIColor blackColor];
+            [label.superview addSubview:overlay];
         }
     }
+}
+
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [super touchesCancelled:touches withEvent:event];
+    for (UIView *overlay in selectedLabel.superview.subviews)
+        if ([overlay.backgroundColor isEqual:[UIColor blackColor]])
+            [overlay removeFromSuperview];
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [super touchesEnded:touches withEvent:event];
+    for (UIView *overlay in selectedLabel.superview.subviews)
+        if ([overlay.backgroundColor isEqual:[UIColor blackColor]])
+            [overlay removeFromSuperview];
+    
     if ([self.delegate respondsToSelector:@selector(tagWasSelected:)])
         [self.delegate tagWasSelected:selectedLabel.text];
 }

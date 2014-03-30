@@ -10,6 +10,18 @@
 
 @implementation ACQuestionDetailCell
 
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    for (UILabel *label in self.contentView.subviews)
+    {
+        if ([label isKindOfClass:[UILabel class]])
+            label.font = [UIFont fontWithName:[[NSUserDefaults standardUserDefaults] objectForKey:@"Font"] size:label.font.pointSize];
+        if ([label isKindOfClass:[UITextView class]])
+            [(UITextView *)label setFont:[UIFont fontWithName:[[NSUserDefaults standardUserDefaults] objectForKey:@"Font"] size:label.font.pointSize]];
+    }
+}
+
 - (void)downvote:(id)sender
 {
     BOOL isQuestion = (self.questionTitleLabel.text.length > 0) ? YES : NO;

@@ -24,14 +24,12 @@
 
 - (id)init
 {
-    self = [super initWithStyle:UITableViewStyleGrouped];
+    self = [super init];
     if (self)
     {
         ACAppDelegate *appDelegate = (ACAppDelegate *)[[UIApplication sharedApplication] delegate];
         NSString *accessToken = appDelegate.accessToken;
         self.inboxItemsArray = @[];
-        [self.tableView registerClass:[ACInboxCell class] forCellReuseIdentifier:@"InboxCell"];
-        [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([ACInboxCell class]) bundle:nil] forCellReuseIdentifier:@"InboxCell"];
         
         dispatch_async(dispatch_queue_create("com.a-cstudios.inboxload", NULL), ^{
             NSString *requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/me/inbox?access_token=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((&site=stackoverflow&filter=!9WgJffKr8", accessToken];
@@ -49,6 +47,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height - 44) style:UITableViewStyleGrouped];
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    [self.view addSubview:self.tableView];
+    
+    [self.tableView registerClass:[ACInboxCell class] forCellReuseIdentifier:@"InboxCell"];
+    [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([ACInboxCell class]) bundle:nil] forCellReuseIdentifier:@"InboxCell"];
 }
 
 - (void)didReceiveMemoryWarning

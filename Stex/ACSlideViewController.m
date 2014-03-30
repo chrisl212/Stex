@@ -15,7 +15,7 @@
 
 - (id)init
 {
-    if (self= [super initWithStyle:UITableViewStyleGrouped])
+    if (self= [super init])
     {
         self.userInfoCellTitles = @[@"Summary", @"Inbox", @"Notifications", @"Settings"];
         self.sitesArray = @[];
@@ -98,7 +98,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, 320, self.view.frame.size.height - 44) style:UITableViewStyleGrouped];
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    [self.view addSubview:self.tableView];
 }
 
 - (void)didReceiveMemoryWarning

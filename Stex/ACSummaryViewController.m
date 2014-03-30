@@ -11,6 +11,8 @@
 #import "ACSiteViewController.h"
 #import "ACAppDelegate.h"
 #import "ACInboxController.h"
+#import "ACNotificationController.h"
+#import "ACSettingsViewController.h"
 
 #define rgb(x) x/255.0
 #define ANIMATION_DURATION 0.5
@@ -33,29 +35,29 @@
 
     UISwipeGestureRecognizer *swipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(slideMenu:)];
     swipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
-    [self.contentView addGestureRecognizer:swipeGestureRecognizer];
+    [self.contentView addGestureRecognizer:swipeGestureRecognizer]; //slide in the main menu
     
-    [self.avatarImageView.layer setMasksToBounds:YES];
-    [self.avatarImageView.layer setCornerRadius:15.0];
+    [self.avatarImageView.layer setMasksToBounds:YES]; //rounds corners of image view
+    [self.avatarImageView.layer setCornerRadius:15.0]; //rounds corners of image view
     
-    UIBarButtonItem *logOut = [[UIBarButtonItem alloc] initWithTitle:@"Log Out" style:UIBarButtonItemStyleBordered target:self action:@selector(logOut:)];
+    UIBarButtonItem *logOut = [[UIBarButtonItem alloc] initWithTitle:@"Log Out" style:UIBarButtonItemStyleBordered target:self action:@selector(logOut:)]; //adds button to log out on right corner of navigation bar
     [logOut setTintColor:[UIColor whiteColor]];
-    [logOut setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"Verdana" size:14]} forState:UIControlStateNormal];
+    [logOut setTitleTextAttributes:@{NSFontAttributeName : [UIFont fontWithName:[[NSUserDefaults standardUserDefaults] objectForKey:@"Font"] size:14]} forState:UIControlStateNormal];
     [self.navigationItem setRightBarButtonItem:logOut animated:YES];
     
-    UIFont *font = [UIFont fontWithName:@"Verdana" size:16];
-    CGRect frame = CGRectMake(0, 0, [@"Stex" sizeWithAttributes:@{NSFontAttributeName: font}].width, 44);
+    UIFont *font = [UIFont fontWithName:[[NSUserDefaults standardUserDefaults] objectForKey:@"Font"] size:16];
+    CGRect frame = CGRectMake(0, 0, [@"Stex" sizeWithAttributes:@{NSFontAttributeName : font}].width, 44);
     UILabel *label = [[UILabel alloc] initWithFrame:frame];
     label.backgroundColor = [UIColor clearColor];
     label.font = font;
     label.textAlignment = NSTextAlignmentCenter;
     label.textColor = [UIColor whiteColor];
     label.text = @"Stex";
-    self.navigationItem.titleView = label;
+    self.navigationItem.titleView = label; //makes navigation bar's title in the correct font
     
     self.slideViewController = [[ACSlideViewController alloc] init];
     self.slideViewController.delegate = self;
-    [self.view insertSubview:self.slideViewController.view belowSubview:self.contentView];
+    [self.view insertSubview:self.slideViewController.view atIndex:0];
     [self addChildViewController:self.slideViewController];
     
     UISwipeGestureRecognizer *slideGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(slideMenu:)];
@@ -63,9 +65,11 @@
     [self.slideViewController.view addGestureRecognizer:slideGestureRecognizer];
     
     self.siteSlideController = [[ACSiteSlideController alloc] init];
-    [self.view insertSubview:self.siteSlideController.view belowSubview:self.slideViewController.view];
+    self.siteSlideController.view.frame = self.view.bounds;
+    [self.view insertSubview:self.siteSlideController.view atIndex:0];
     [self addChildViewController:self.siteSlideController];
-    self.slideViewController.view.frame = CGRectMake(0, 44, 320, [UIScreen mainScreen].bounds.size.height - 44);
+    
+    self.slideViewController.view.frame = self.view.bounds;
     
     UISwipeGestureRecognizer *siteSlideGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(slideSiteMenu)];
     siteSlideGestureRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
@@ -74,18 +78,36 @@
     originalCenter = self.view.center;
     originalSlideCenter = self.slideViewController.view.center;
     originalSiteSlideCenter = self.siteSlideController.view.center;
+    
+    [self loadFonts];
+}
+
+- (void)loadFonts
+{
+    UILabel *titleLabel = (UILabel *)self.navigationItem.titleView;
+    titleLabel.font = [UIFont fontWithName:[[NSUserDefaults standardUserDefaults] objectForKey:@"Font"] size:16];
+    
+    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{NSFontAttributeName : [UIFont fontWithName:[[NSUserDefaults standardUserDefaults] objectForKey:@"Font"] size:14]} forState:UIControlStateNormal];
+    
+    self.usernameLabel.font = [UIFont fontWithName:[[NSUserDefaults standardUserDefaults] objectForKey:@"Font"] size:19];
+    self.reputationLabel.font = [UIFont fontWithName:[[NSUserDefaults standardUserDefaults] objectForKey:@"Font"] size:17];
+    
+    for (UILabel *lab in self.contentView.subviews)
+        if ([lab isKindOfClass:[UILabel class]] && [lab.text isEqualToString:@"Medals"])
+            lab.font = [UIFont fontWithName:[[NSUserDefaults standardUserDefaults] objectForKey:@"Font"] size:17];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    [self loadFonts];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
     self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:rgb(41.0) green:rgb(75.0) blue:rgb(125.0) alpha:1.0];
     
     self.pieChart.delegate = self;
     self.pieChart.dataSource = self;
     [self.pieChart setShowPercentage:NO];
-    [self.pieChart setLabelFont:[UIFont fontWithName:@"Verdana" size:16.0]];
+    [self.pieChart setLabelFont:[UIFont fontWithName:[[NSUserDefaults standardUserDefaults] objectForKey:@"Font"] size:16.0]];
     [self.pieChart reloadData];
 }
 
@@ -177,7 +199,7 @@
 {
     ACAlertView *alertView = [ACAlertView alertWithTitle:@"About me" style:ACAlertViewStyleTextView delegate:nil buttonTitles:@[@"Close"]];
     NSMutableAttributedString *HTMLString = [[NSMutableAttributedString alloc] initWithData:[self.aboutUser dataUsingEncoding:NSUTF8StringEncoding] options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType, NSCharacterEncodingDocumentAttribute: [NSNumber numberWithInt:NSUTF8StringEncoding]} documentAttributes:nil error:nil];
-    [HTMLString setAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"Verdana" size:14], NSStrokeColorAttributeName : [UIColor whiteColor]} range:NSMakeRange(0, HTMLString.length)];
+    [HTMLString setAttributes:@{NSFontAttributeName: [UIFont fontWithName:[[NSUserDefaults standardUserDefaults] objectForKey:@"Font"] size:14], NSStrokeColorAttributeName : [UIColor whiteColor]} range:NSMakeRange(0, HTMLString.length)];
     alertView.textView.attributedText = HTMLString;
     alertView.textView.textColor = [UIColor whiteColor];
     
@@ -294,6 +316,7 @@
     NSString *accessToken = [(ACAppDelegate *)[UIApplication sharedApplication].delegate accessToken];
     ACSiteViewController *siteViewController = [[ACSiteViewController alloc] initWithSite:site];
     siteViewController.accessToken = accessToken;
+    siteViewController.view.frame = self.contentView.bounds;
     [self addChildViewController:siteViewController];
     [self.contentView addSubview:siteViewController.view];
     [self slideMenu:nil];
@@ -303,7 +326,7 @@
 {
     UIBarButtonItem *logOut = [[UIBarButtonItem alloc] initWithTitle:@"Log Out" style:UIBarButtonItemStyleBordered target:self action:@selector(logOut:)];
     [logOut setTintColor:[UIColor whiteColor]];
-    [logOut setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"Verdana" size:14]} forState:UIControlStateNormal];
+    [logOut setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:[[NSUserDefaults standardUserDefaults] objectForKey:@"Font"] size:14]} forState:UIControlStateNormal];
     [self.navigationItem setRightBarButtonItem:logOut animated:YES];
     
     for (UIViewController *vc in self.childViewControllers)
@@ -315,12 +338,27 @@
         }
     }
     if ([info isEqualToString:@"Summary"])
-        [self fetchUserInfo];
+        [self fetchUserInfo], [self loadFonts];
     if ([info isEqualToString:@"Inbox"])
     {
         ACInboxController *inboxController = [[ACInboxController alloc] init];
+        inboxController.view.frame = self.contentView.bounds;
         [self addChildViewController:inboxController];
         [self.contentView addSubview:inboxController.view];
+    }
+    if ([info isEqualToString:@"Notifications"])
+    {
+        ACNotificationController *notificationController = [[ACNotificationController alloc] init];
+        notificationController.view.frame = self.contentView.bounds;
+        [self addChildViewController:notificationController];
+        [self.contentView addSubview:notificationController.view];
+    }
+    if ([info isEqualToString:@"Settings"])
+    {
+        ACSettingsViewController *settingsViewController = [[ACSettingsViewController alloc] init];
+        settingsViewController.view.frame = self.contentView.bounds;
+        [self addChildViewController:settingsViewController];
+        [self.contentView addSubview:settingsViewController.view];
     }
 
     [self slideMenu:nil];

@@ -22,6 +22,12 @@
         [(UINavigationController *)self.window.rootViewController pushViewController:loginController animated:YES];
     }
     
+    if (![[NSUserDefaults standardUserDefaults] objectForKey:@"FirstLaunch"])
+    {
+        [[NSUserDefaults standardUserDefaults] setObject:@"Verdana" forKey:@"Font"];
+        [[NSUserDefaults standardUserDefaults] setObject:@(1) forKey:@"FirstLaunch"];
+    }
+    
     return YES;
 }
 
