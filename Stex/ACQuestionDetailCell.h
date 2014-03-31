@@ -23,6 +23,8 @@
 
 @interface ACQuestionDetailCell : UITableViewCell
 
+@property (weak, nonatomic) IBOutlet UIButton *upvoteButton;
+@property (weak, nonatomic) IBOutlet UIButton *downvoteButton;
 @property (weak, nonatomic) IBOutlet UILabel *voteCountLabel;
 @property (weak, nonatomic) IBOutlet UILabel *questionTitleLabel;
 @property (weak, nonatomic) IBOutlet UITextView *questionMarkdownView;

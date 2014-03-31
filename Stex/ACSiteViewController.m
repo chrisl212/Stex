@@ -56,6 +56,7 @@
             NSDictionary *infoDictionary = [[wrapper objectForKey:@"items"] objectAtIndex:0];
             NSDictionary *siteInfo = [infoDictionary objectForKey:@"site"];
             
+            self.siteName = siteInfo[@"name"];
             
             NSString *iconCachePath = [cachesDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_icon.png", site]];
 
@@ -118,6 +119,7 @@
     {
         if ([vc isKindOfClass:[ACSiteSlideController class]])
         {
+            vc.siteDisplayName = self.siteName;
             vc.siteAPIName = self.siteAPIName;
             vc.delegate = self;
         }
@@ -182,6 +184,95 @@
         {
             NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:imageURLString]];
             UIImage *avatar = [UIImage imageWithData:imageData];
+            [avatarArray addObject:avatar];
+        }
+        self.avatarArray = [NSArray arrayWithArray:avatarArray];
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+        });
+    });
+}
+
+- (void)didSelectAllQuestions
+{
+    for (UIViewController *vc in self.parentViewController.childViewControllers)
+    {
+        if ([vc isKindOfClass:[ACAnswersViewController class]])
+            [vc removeFromParentViewController], [vc.view removeFromSuperview];
+    }
+    
+    ACAlertView *alertView = [ACAlertView alertWithTitle:@"Loading..." style:ACAlertViewStyleSpinner delegate:nil buttonTitles:nil];
+    [alertView show];
+    
+    self.questionsArray = @[];
+    self.openTagName = @"All Questions";
+    
+    dispatch_async(dispatch_queue_create("com.a-cstudios.siteload", NULL), ^{
+        NSString *requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/info?site=%@&filter=!9WgJff6fP&key=XB*FUGU0f4Ju9RCNhlRQ3A((", self.siteAPIName];
+        
+        NSString *cachesDir = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        NSString *wrapperCache = [cachesDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_sitecache.json", self.siteAPIName]];
+        
+        NSData *requestData;
+        if (![[NSFileManager defaultManager] fileExistsAtPath:wrapperCache])
+        {
+            requestData = [NSData dataWithContentsOfURL:[NSURL URLWithString:requestURLString]];
+            [[NSFileManager defaultManager] createFileAtPath:wrapperCache contents:requestData attributes:nil];
+        }
+        else
+            requestData = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:wrapperCache]];
+        
+        
+        NSDictionary *wrapper = [NSJSONSerialization JSONObjectWithData:requestData options:NSJSONReadingMutableLeaves error:nil];
+        NSDictionary *infoDictionary = [[wrapper objectForKey:@"items"] objectAtIndex:0];
+        NSDictionary *siteInfo = [infoDictionary objectForKey:@"site"];
+        
+        self.siteName = siteInfo[@"name"];
+        
+        NSString *iconCachePath = [cachesDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_icon.png", self.siteAPIName]];
+        
+        NSData *iconData;
+        if (![[NSFileManager defaultManager] fileExistsAtPath:iconCachePath])
+        {
+            NSString *iconImageURLString = [siteInfo objectForKey:@"icon_url"];
+            iconData = [NSData dataWithContentsOfURL:[NSURL URLWithString:iconImageURLString]];
+            [[NSFileManager defaultManager] createFileAtPath:iconCachePath contents:iconData attributes:nil];
+        }
+        else
+            iconData = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:iconCachePath]];
+        
+        UIImage *iconImage = [self scaleToSize:CGSizeMake(30, 30) image:[UIImage imageWithData:iconData]];
+        
+        NSMutableArray *questionsArray = [NSMutableArray array];
+        NSMutableArray *avatarURLSArray = [NSMutableArray array];
+        
+        NSString *questionsRequestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/questions?order=desc&sort=creation&site=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((", self.siteAPIName];
+        NSData *questionData = [NSData dataWithContentsOfURL:[NSURL URLWithString:questionsRequestURLString]];
+        NSDictionary *questionsWrapper = [NSJSONSerialization JSONObjectWithData:questionData options:NSJSONReadingMutableLeaves error:nil];
+        NSArray *questions = [questionsWrapper objectForKey:@"items"];
+        for (NSDictionary *questionDictionary in questions)
+        {
+            [questionsArray addObject:questionDictionary];
+            if (![[[questionDictionary objectForKey:@"owner"] objectForKey:@"user_type"] isEqualToString:@"does_not_exist"])
+                [avatarURLSArray addObject:[[questionDictionary objectForKey:@"owner"] objectForKey:@"profile_image"]];
+        }
+        self.questionsArray = [NSArray arrayWithArray:questionsArray];
+        
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            UIBarButtonItem *siteSlide = [[UIBarButtonItem alloc] initWithImage:iconImage style:UIBarButtonItemStyleBordered target:self action:@selector(slideSiteOptions)];
+            [siteSlide setTintColor:[UIColor whiteColor]];
+            self.parentViewController.navigationItem.rightBarButtonItem = siteSlide;
+            [self.tableView reloadData];
+            [alertView dismiss];
+            [self slideSiteOptions];
+        });
+        NSMutableArray *avatarArray = [NSMutableArray array];
+        for (NSString *imageURLString in avatarURLSArray)
+        {
+            NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:imageURLString]];
+            UIImage *avatar = [UIImage imageWithData:imageData];
+            if (!avatar)
+                avatar = [UIImage imageNamed:@"Icon@2x.png"];
             [avatarArray addObject:avatar];
         }
         self.avatarArray = [NSArray arrayWithArray:avatarArray];

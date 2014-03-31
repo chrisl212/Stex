@@ -69,6 +69,8 @@
     UITouch *touch = [touches anyObject];
     CGPoint location = [touch locationInView:self];
     UIView *view = [self hitTest:location withEvent:event];
+    if ([view isKindOfClass:[ACTagView class]])
+        return;
     for (UILabel *label in view.subviews)
     {
         if ([label isKindOfClass:[UILabel class]])
@@ -85,6 +87,8 @@
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [super touchesCancelled:touches withEvent:event];
+    if (!selectedLabel)
+        return;
     for (UIView *overlay in selectedLabel.superview.subviews)
         if ([overlay.backgroundColor isEqual:[UIColor blackColor]])
             [overlay removeFromSuperview];
@@ -93,6 +97,8 @@
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [super touchesEnded:touches withEvent:event];
+    if (!selectedLabel)
+        return;
     for (UIView *overlay in selectedLabel.superview.subviews)
         if ([overlay.backgroundColor isEqual:[UIColor blackColor]])
             [overlay removeFromSuperview];

@@ -13,6 +13,7 @@
 @optional
 - (void)didSelectTag:(NSString *)tag;
 - (void)didSelectAccountArea:(NSString *)aa;
+- (void)didSelectAllQuestions;
 
 @end
 
@@ -21,7 +22,9 @@
 @property (nonatomic, getter = isRegistered) BOOL registered;
 @property (strong, nonatomic) NSArray *accountAreasArray;
 @property (strong, nonatomic) NSArray *popularTagsArray;
+@property (strong, nonatomic) NSDictionary *siteOptionsArray;
 @property (strong, nonatomic) NSString *siteAPIName;
+@property (strong, nonatomic) NSString *siteDisplayName;
 @property (strong, nonatomic) NSString *username;
 @property (weak, nonatomic) id<ACSiteSlideControllerDelegate> delegate;
 

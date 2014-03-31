@@ -10,7 +10,7 @@
 #import "ACAppDelegate.h"
 #import "ACAlertView.h"
 
-#define SITE_REGISTER_SECTION 0
+#define SITE_SECTION 0
 #define ACCOUNT_AREAS_SECTION 1
 #define POPULAR_TAGS_SECTION 2
 
@@ -22,6 +22,7 @@
     {
         self.accountAreasArray = @[@"My Questions", @"My Answers"];
         self.popularTagsArray = @[];
+        self.siteOptionsArray = @{@"Registered": @"", @"All Questions" : @""};
         self.username = @"";
     }
     return self;
@@ -87,8 +88,8 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == SITE_REGISTER_SECTION)
-        return 1;
+    if (section == SITE_SECTION)
+        return self.siteOptionsArray.count;
     if (section == ACCOUNT_AREAS_SECTION)
         return self.accountAreasArray.count;
     return self.popularTagsArray.count;
@@ -96,8 +97,8 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    if (section == SITE_REGISTER_SECTION)
-        return @"Site Registration";
+    if (section == SITE_SECTION)
+        return self.siteDisplayName;
     if (section == ACCOUNT_AREAS_SECTION)
         return self.username;
     return @"Popular Tags";
@@ -105,21 +106,30 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == SITE_REGISTER_SECTION)
+    if (indexPath.section == SITE_SECTION)
     {
-        static NSString *registerCellID = @"RegisterCell";
-        UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:registerCellID];
-        NSString *registeredString;
-        if (self.isRegistered)
-            registeredString = @"Registered";
-        else
-            registeredString = @"Not Registered";
-        cell.textLabel.text = registeredString;
-        if (self.isRegistered)
+        if (indexPath.row == 0)
         {
-            cell.detailTextLabel.text = @"✓";
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            static NSString *registerCellID = @"RegisterCell";
+            UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:registerCellID];
+            NSString *registeredString;
+            if (self.isRegistered)
+                registeredString = @"Registered";
+            else
+                registeredString = @"Not Registered";
+            cell.textLabel.text = registeredString;
+            if (self.isRegistered)
+            {
+                cell.detailTextLabel.text = @"✓";
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            }
+            return cell;
         }
+        static NSString *cellID = @"SiteCell";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+        if (!cell)
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
+        cell.textLabel.text = self.siteOptionsArray.allKeys[indexPath.row];
         return cell;
     }
     
@@ -146,14 +156,24 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == SITE_REGISTER_SECTION)
+    if (indexPath.section == SITE_SECTION)
     {
-        if (self.registered)
+        if (indexPath.row == 0)
+        {
+            if (self.registered)
+                return;
+            ACAlertView *alertView = [ACAlertView alertWithTitle:@"Not Supported" style:ACAlertViewStyleTextView delegate:nil buttonTitles:@[@"Close"]];
+            alertView.textView.text = @"Currently, registering for sites is not supported.";
+            [alertView show];
             return;
-        ACAlertView *alertView = [ACAlertView alertWithTitle:@"Not Supported" style:ACAlertViewStyleTextView delegate:nil buttonTitles:@[@"Close"]];
-        alertView.textView.text = @"Currently, registering for sites is not supported.";
-        [alertView show];
-        return;
+        }
+        NSString *cellTitle = [tableView cellForRowAtIndexPath:indexPath].textLabel.text;
+        if ([cellTitle isEqualToString:@"All Questions"])
+        {
+            if ([self.delegate respondsToSelector:@selector(didSelectAllQuestions)])
+                [self.delegate didSelectAllQuestions];
+            return;
+        }
     }
     
     if (indexPath.section == ACCOUNT_AREAS_SECTION)

@@ -10,6 +10,7 @@
 #import "ACCommentCell.h"
 #import "ACAppDelegate.h"
 #import "ACAlertView.h"
+#import "Bypass.h"
 
 #define NEW_COMMENT_SECTION 0
 #define COMMENTS_SECTION 1
@@ -42,7 +43,7 @@
         if (question)
             postTypeString = @"questions";
         
-        NSString *requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/%@/%@/comments?order=desc&sort=creation&site=%@&filter=!9WgJfngld&key=XB*FUGU0f4Ju9RCNhlRQ3A((", postTypeString, postID, site];
+        NSString *requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/%@/%@/comments?order=desc&sort=creation&site=%@&filter=!9WgJfnTX4&key=XB*FUGU0f4Ju9RCNhlRQ3A((", postTypeString, postID, site];
         NSData *requestData = [NSData dataWithContentsOfURL:[NSURL URLWithString:requestURLString]];
         NSDictionary *wrapper = [NSJSONSerialization JSONObjectWithData:requestData options:NSJSONReadingMutableLeaves error:nil];
         
@@ -75,7 +76,24 @@
 {
     if (indexPath.section == NEW_COMMENT_SECTION && indexPath.row == 1)
         return 44.0;
-    return 122.0;
+    if (indexPath.section == NEW_COMMENT_SECTION && indexPath.row == 0)
+        return 122.0;
+    
+    NSDictionary *commentDictionary = self.commentArray[indexPath.row];
+    
+    NSString *markdownText = commentDictionary[@"body_markdown"];
+    
+    BPParser *parser = [[BPParser alloc] init];
+    BPDocument *document = [parser parse:markdownText];
+    BPAttributedStringConverter *converter = [[BPAttributedStringConverter alloc] init];
+    NSAttributedString *markdownString = [converter convertDocument:document];
+    
+    UIFont *font = [markdownString attribute:NSFontAttributeName atIndex:0 effectiveRange:NULL];
+    CGRect rectSize = [markdownString.string boundingRectWithSize:CGSizeMake(320.0, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : font} context:NULL];
+    
+    CGFloat height = MAX(rectSize.size.height, 122.0);
+    
+    return height;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -115,7 +133,15 @@
     [formatter setDateFormat:@"MMM dd, yyyy HH:mm"];
     
     cell.dateLabel.text = [formatter stringFromDate:creationDate];
-    cell.bodyTextView.text = commentDictionary[@"body"];
+    
+    NSString *markdownText = commentDictionary[@"body_markdown"];
+    
+    BPParser *parser = [[BPParser alloc] init];
+    BPDocument *document = [parser parse:markdownText];
+    BPAttributedStringConverter *converter = [[BPAttributedStringConverter alloc] init];
+    NSAttributedString *markdownString = [converter convertDocument:document];
+    
+    cell.bodyTextView.attributedText = markdownString;
     
     return cell;
 }

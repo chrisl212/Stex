@@ -101,9 +101,11 @@
                 </subviews>
             </tableViewCellContentView>
             <connections>
+                <outlet property="downvoteButton" destination="IWx-A3-0WS" id="jdi-IL-h6A"/>
                 <outlet property="postIDLabel" destination="njz-tv-Es0" id="bTR-NA-8Ry"/>
                 <outlet property="questionMarkdownView" destination="Biw-3b-91l" id="nWj-yW-TLU"/>
                 <outlet property="questionTitleLabel" destination="xBH-ef-QQ6" id="sIX-ym-Vip"/>
+                <outlet property="upvoteButton" destination="1nU-Sn-qDs" id="czR-PK-6UX"/>
                 <outlet property="userAvatarImageView" destination="3Rd-m9-q0d" id="EFW-VW-rsG"/>
                 <outlet property="userReputationLabel" destination="DBZ-k7-Txl" id="0tB-mc-svD"/>
                 <outlet property="usernameLabel" destination="cwr-nV-uIW" id="Wbk-FT-t2n"/>

@@ -37,7 +37,9 @@
         [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([ACAnswerCell class]) bundle:nil] forCellReuseIdentifier:@"AnswerCell"];
         
         dispatch_async(dispatch_queue_create("com.a-cstudios.answerload", NULL), ^{
-            NSString *requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/answers/%@?order=desc&sort=activity&site=%@&filter=!9WgJfj3zM&key=XB*FUGU0f4Ju9RCNhlRQ3A((", answer, site];
+            NSString *accessToken = [(ACAppDelegate *)[UIApplication sharedApplication].delegate accessToken];
+
+            NSString *requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/answers/%@?order=desc&sort=activity&site=%@&filter=!azbR8Gjc6czKz.&key=XB*FUGU0f4Ju9RCNhlRQ3A((&access_token=%@", answer, site, accessToken];
             NSData *requestData = [NSData dataWithContentsOfURL:[NSURL URLWithString:requestURLString]];
             NSDictionary *wrapper = [NSJSONSerialization JSONObjectWithData:requestData options:NSJSONReadingMutableLeaves error:nil];
             NSDictionary *items = [[wrapper objectForKey:@"items"] objectAtIndex:0];
@@ -61,7 +63,9 @@
         [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([ACAnswerCell class]) bundle:nil] forCellReuseIdentifier:@"AnswerCell"];
         
         dispatch_async(dispatch_queue_create("com.a-cstudios.questionload", NULL), ^{
-            NSString *requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/questions/%@?order=desc&sort=activity&site=%@&filter=!9WgJfj3zM&key=XB*FUGU0f4Ju9RCNhlRQ3A((", question, site];
+            NSString *accessToken = [(ACAppDelegate *)[UIApplication sharedApplication].delegate accessToken];
+            
+            NSString *requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/questions/%@?order=desc&sort=activity&site=%@&filter=!azbR7jYqz354wI&key=XB*FUGU0f4Ju9RCNhlRQ3A((&access_token=%@", question, site, accessToken];
             NSData *requestData = [NSData dataWithContentsOfURL:[NSURL URLWithString:requestURLString]];
             NSDictionary *wrapper = [NSJSONSerialization JSONObjectWithData:requestData options:NSJSONReadingMutableLeaves error:nil];
             if (!wrapper[@"items"] || !wrapper || [wrapper[@"items"] count] == 0)
@@ -84,6 +88,8 @@
                 [questionInfo setObject:[UIImage imageNamed:@"Icon@2x.png"] forKey:@"avatar"];
                 [questionInfo setObject:@(0) forKey:@"reputation"];
                 
+                questionInfo[@"upvoted"] = items[@"upvoted"];
+                questionInfo[@"downvoted"] = items[@"downvoted"];
                 [questionInfo setObject:[items objectForKey:@"is_answered"] forKey:@"answered"];
                 [questionInfo setObject:[items objectForKey:@"view_count"] forKey:@"views"];
                 [questionInfo setObject:[items objectForKey:@"score"] forKey:@"votes"];
@@ -99,6 +105,8 @@
                 [questionInfo setObject:[self imageWithContentsOfURL:[NSURL URLWithString:[ownerInfo objectForKey:@"profile_image"]]] forKey:@"avatar"];
                 [questionInfo setObject:[ownerInfo objectForKey:@"reputation"] forKey:@"reputation"];
                 
+                questionInfo[@"upvoted"] = items[@"upvoted"];
+                questionInfo[@"downvoted"] = items[@"downvoted"];
                 [questionInfo setObject:[items objectForKey:@"is_answered"] forKey:@"answered"];
                 [questionInfo setObject:[items objectForKey:@"view_count"] forKey:@"views"];
                 [questionInfo setObject:[items objectForKey:@"score"] forKey:@"votes"];
@@ -109,7 +117,7 @@
             }
 
             NSMutableArray *answerArray = [NSMutableArray array];
-            NSString *answersRequestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/questions/%@/answers?site=%@&order=desc&sort=activity&filter=!9WgJfjxe6&key=XB*FUGU0f4Ju9RCNhlRQ3A((", question, site];
+            NSString *answersRequestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/questions/%@/answers?site=%@&order=desc&sort=activity&filter=!azbR8_QNAu5IlA&key=XB*FUGU0f4Ju9RCNhlRQ3A((&access_token=%@", question, site, accessToken];
             NSData *answersRequestData = [NSData dataWithContentsOfURL:[NSURL URLWithString:answersRequestURLString]];
             NSDictionary *answersWrapper = [NSJSONSerialization JSONObjectWithData:answersRequestData options:NSJSONReadingMutableLeaves error:nil];
             for (NSDictionary *answerDictionary in answersWrapper[@"items"])
@@ -189,6 +197,15 @@
         cell.viewsLabel.text = [NSString stringWithFormat:@"%@ views", self.questionInfoDictionary[@"views"]];
         cell.voteCountLabel.text = [self.questionInfoDictionary[@"votes"] stringValue];
         cell.postIDLabel.text = [self.questionInfoDictionary[@"question_id"] stringValue];
+        
+        BOOL upvoted = [self.questionInfoDictionary[@"upvoted"] boolValue];
+        BOOL downvoted = [self.questionInfoDictionary[@"downvoted"] boolValue];
+
+        if (upvoted)
+            [cell.upvoteButton setSelected:YES];
+        else if (downvoted)
+            [cell.downvoteButton setSelected:YES];
+        
         if ([self.questionInfoDictionary[@"answered"] boolValue])
             cell.voteCountLabel.textColor = [UIColor colorWithRed:64.0/255.0 green:128.0/255.0 blue:0.0 alpha:1.0];
         else
@@ -219,6 +236,19 @@
     cell.userReputationLabel.text = [answerDictionary[@"owner"][@"reputation"] stringValue];
     cell.voteCountLabel.text = [answerDictionary[@"score"] stringValue];
     cell.postIDLabel.text = [answerDictionary[@"answer_id"] stringValue];
+    
+    BOOL upvoted = [answerDictionary[@"upvoted"] boolValue];
+    BOOL downvoted = [answerDictionary[@"downvoted"] boolValue];
+    
+    if (upvoted)
+        [cell.upvoteButton setSelected:YES];
+    else
+        [cell.upvoteButton setSelected:NO];
+    if (downvoted)
+        [cell.downvoteButton setSelected:YES];
+    else
+        [cell.downvoteButton setSelected:NO];
+    
     if ([answerDictionary[@"is_accepted"] boolValue])
         cell.voteCountLabel.textColor = [UIColor colorWithRed:64.0/255.0 green:128.0/255.0 blue:0.0 alpha:1.0];
     else
