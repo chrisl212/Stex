@@ -8,6 +8,7 @@
 
 #import "ACAnswersViewController.h"
 #import "ACAppDelegate.h"
+#import "Bypass.h"
 #import "ACCommentsViewController.h"
 
 @implementation ACAnswersViewController
@@ -24,7 +25,7 @@
         self.answersArray = @[];
         dispatch_async(dispatch_queue_create("com.a-cstudios.answersload", NULL), ^{
             NSString *accessToken = [(ACAppDelegate *)[UIApplication sharedApplication].delegate accessToken];
-            NSString *requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/me/answers?order=desc&sort=creation&site=%@&access_token=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((&filter=!9WgJfjI5u", site, accessToken];
+            NSString *requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/me/answers?order=desc&sort=creation&site=%@&access_token=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((&filter=!9WgJfjxe6", site, accessToken];
             NSData *requestData = [NSData dataWithContentsOfURL:[NSURL URLWithString:requestURLString]];
             NSDictionary *wrapper = [NSJSONSerialization JSONObjectWithData:requestData options:kNilOptions error:nil];
             NSArray *items = wrapper[@"items"];
@@ -33,7 +34,7 @@
             NSInteger pageNumber = 2;
             while (hasMore)
             {
-                requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/me/answers?page=%d&order=desc&sort=creation&site=%@&access_token=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((&filter=!9WgJfjI5u", pageNumber, site, accessToken];
+                requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/me/answers?page=%d&order=desc&sort=creation&site=%@&access_token=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((&filter=!9WgJfjxe6", pageNumber, site, accessToken];
                 requestData = [NSData dataWithContentsOfURL:[NSURL URLWithString:requestURLString]];
                 wrapper = [NSJSONSerialization JSONObjectWithData:requestData options:kNilOptions error:nil];
                 items = wrapper[@"items"];
@@ -88,7 +89,14 @@
     cell.userAvatarImageView.image = self.avatarImage;
     cell.usernameLabel.text = answerDictionary[@"owner"][@"display_name"];
     cell.postIDLabel.text = [answerDictionary[@"answer_id"] stringValue];
-    cell.bodyMarkdownView.attributedText = [[NSAttributedString alloc] initWithData:[answerDictionary[@"body"] dataUsingEncoding:NSUTF8StringEncoding] options:@{NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType, NSCharacterEncodingDocumentAttribute : @(NSUTF8StringEncoding)} documentAttributes:nil error:nil];
+    
+    BPParser *parser = [[BPParser alloc] init];
+    BPDocument *document = [parser parse:answerDictionary[@"body_markdown"]];
+    
+    BPAttributedStringConverter *converter = [[BPAttributedStringConverter alloc] init];
+    NSAttributedString *attributedText = [converter convertDocument:document];
+    
+    cell.bodyMarkdownView.attributedText = attributedText;
 
     cell.userReputationLabel.text = [answerDictionary[@"owner"][@"reputation"] stringValue];
     cell.voteCountLabel.text = [answerDictionary[@"score"] stringValue];

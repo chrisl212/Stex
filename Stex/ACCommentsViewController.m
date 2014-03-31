@@ -140,8 +140,17 @@
             
             NSString *accessToken = [(ACAppDelegate *)[[UIApplication sharedApplication] delegate] accessToken];
             
-            NSString *requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/posts/%@/comments/add?body=%@&access_token=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((&site=%@", self.postID, [commentBody stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding], accessToken, self.siteAPIName];
-            [NSData dataWithContentsOfURL:[NSURL URLWithString:requestURLString]];
+            NSString *requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/posts/%@/comments/add", self.postID];
+
+            NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:requestURLString]];
+            [request setHTTPMethod:@"POST"];
+            
+            NSString *requestBody = [NSString stringWithFormat:@"body=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((&access_token=%@&site=%@", [commentBody stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding], accessToken, self.siteAPIName];
+            [request setHTTPBody:[requestBody dataUsingEncoding:NSUTF8StringEncoding]];
+            [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue currentQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+             {
+
+             }];
             
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
         }

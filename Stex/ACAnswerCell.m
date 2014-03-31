@@ -17,8 +17,6 @@
     {
         if ([label isKindOfClass:[UILabel class]])
             label.font = [UIFont fontWithName:[[NSUserDefaults standardUserDefaults] objectForKey:@"Font"] size:label.font.pointSize];
-        if ([label isKindOfClass:[UITextView class]])
-            [(UITextView *)label setFont:[UIFont fontWithName:[[NSUserDefaults standardUserDefaults] objectForKey:@"Font"] size:label.font.pointSize]];
     }
 }
 

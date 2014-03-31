@@ -7,7 +7,7 @@
 //
 
 #import "ACQuestionViewController.h"
-#import "MMMarkdown.h"
+#import "Bypass.h"
 #import "ACAppDelegate.h"
 #import "ACAlertView.h"
 #import "ACAnswerCell.h"
@@ -194,9 +194,15 @@
         else
             cell.voteCountLabel.textColor = [UIColor blackColor];
         
-        NSString *markdownText = self.questionInfoDictionary[@"body"];
-        NSString *htmlString = [MMMarkdown HTMLStringWithMarkdown:markdownText error:nil];
-        cell.questionMarkdownView.attributedText = [[NSAttributedString alloc] initWithData:[htmlString dataUsingEncoding:NSUTF8StringEncoding] options:@{NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType, NSCharacterEncodingDocumentAttribute : @(NSUTF8StringEncoding)} documentAttributes:nil error:nil];
+        NSString *htmlString = self.questionInfoDictionary[@"body"];
+        
+        BPParser *parser = [[BPParser alloc] init];
+        BPDocument *document = [parser parse:htmlString];
+        
+        BPAttributedStringConverter *converter = [[BPAttributedStringConverter alloc] init];
+        NSAttributedString *attributedText = [converter convertDocument:document];
+        
+        cell.questionMarkdownView.attributedText = attributedText;
         
         cell.delegate = self;
         return cell;
@@ -219,8 +225,14 @@
         cell.voteCountLabel.textColor = [UIColor blackColor];
     
     NSString *markdownText = answerDictionary[@"body_markdown"];
-    NSString *htmlString = [MMMarkdown HTMLStringWithMarkdown:markdownText error:nil];
-    cell.bodyMarkdownView.attributedText = [[NSAttributedString alloc] initWithData:[htmlString dataUsingEncoding:NSUTF8StringEncoding] options:@{NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType, NSCharacterEncodingDocumentAttribute : @(NSUTF8StringEncoding)} documentAttributes:nil error:nil];
+
+    BPParser *parser = [[BPParser alloc] init];
+    BPDocument *document = [parser parse:markdownText];
+    
+    BPAttributedStringConverter *converter = [[BPAttributedStringConverter alloc] init];
+    NSAttributedString *attributedText = [converter convertDocument:document];
+    
+    cell.bodyMarkdownView.attributedText = attributedText;
 
     cell.delegate = self;
     return cell;
