@@ -86,11 +86,11 @@
     NSDictionary *notificationDictionary = self.notificationArray[indexPath.row];
     NSAttributedString *attributedBodyString = [[NSAttributedString alloc] initWithString:notificationDictionary[@"body"] attributes:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType, NSCharacterEncodingDocumentAttribute: @(NSUTF8StringEncoding)}];
     
-    CGRect rectSize = [attributedBodyString.string boundingRectWithSize:CGSizeMake(260.0, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : [UIFont fontWithName:[[NSUserDefaults standardUserDefaults] objectForKey:@"Font"] size:FONT_SIZE]} context:NULL];
+    CGRect rectSize = [attributedBodyString.string boundingRectWithSize:CGSizeMake(260.0, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : [UIFont fontWithName:[[NSUserDefaults standardUserDefaults] objectForKey:@"Font"] size:FONT_SIZE], NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType, NSCharacterEncodingDocumentAttribute: @(NSUTF8StringEncoding)} context:NULL];
     
-    CGFloat height = MAX(rectSize.size.height, 44.0f);
+    CGFloat height = MAX(rectSize.size.height + 10.0, 54.0);
     
-    return height + (5.0 * 2);
+    return height;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -101,19 +101,20 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *cellID = @"Cell";
-    UILabel *label = nil;
+    UIWebView *webView = nil;
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if (!cell)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
         
-        label = [[UILabel alloc] initWithFrame:CGRectZero];
-        [label setLineBreakMode:NSLineBreakByWordWrapping];
-        [label setNumberOfLines:0];
-        [label setFont:[UIFont fontWithName:[[NSUserDefaults standardUserDefaults] objectForKey:@"Font"] size:FONT_SIZE]];
-        [label setTag:1];
+        webView = [[UIWebView alloc] initWithFrame:CGRectZero];
+        [webView setTag:1];
+        webView.scrollView.scrollEnabled = NO;
+        webView.backgroundColor = [UIColor clearColor];
+        webView.opaque = NO;
+        webView.delegate = self;
         
-        [[cell contentView] addSubview:label];
+        [[cell contentView] addSubview:webView];
     }
     
     NSDictionary *notificationDictionary = self.notificationArray[indexPath.row];
@@ -121,17 +122,24 @@
     
     CGRect bodySize = [attributedBodyString.string boundingRectWithSize:CGSizeMake(260.0, MAXFLOAT)
                                          options:NSStringDrawingUsesLineFragmentOrigin
-                                      attributes:@{NSFontAttributeName : [UIFont fontWithName:[[NSUserDefaults standardUserDefaults] objectForKey:@"Font"] size:FONT_SIZE]}
+                                      attributes:@{NSFontAttributeName : [UIFont fontWithName:[[NSUserDefaults standardUserDefaults] objectForKey:@"Font"] size:FONT_SIZE], NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType, NSCharacterEncodingDocumentAttribute: @(NSUTF8StringEncoding)}
                                          context:nil];
-    if (!label)
-        label = (UILabel *)[cell viewWithTag:1];
+    if (!webView)
+        webView = (UIWebView *)[cell viewWithTag:1];
     
-    [label setText:attributedBodyString.string];
-    [label setFrame:CGRectMake(60.0, 5.0, 260.0, MAX(bodySize.size.height, 44.0f))];
-    
+    [webView loadHTMLString:attributedBodyString.string baseURL:nil];
+    [webView setFrame:CGRectMake(60.0, 5.0, 260.0, MAX(bodySize.size.height, 44.0f))];
     
     cell.imageView.image = self.siteIconDictionary[notificationDictionary[@"site"][@"api_site_parameter"]];
     return cell;
+}
+
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+{
+    if ([request.URL.absoluteString isEqualToString:@"about:blank"])
+        return YES;
+    [[UIApplication sharedApplication] openURL:request.URL];
+    return NO;
 }
 
 @end

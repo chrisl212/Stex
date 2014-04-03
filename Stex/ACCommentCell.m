@@ -22,4 +22,16 @@
     }
 }
 
+- (void)deleteComment:(id)sender
+{
+    if ([self.delegate respondsToSelector:@selector(commentWasDeleted:)])
+        [self.delegate commentWasDeleted:self];
+}
+
+- (void)flagComment:(id)sender
+{
+    if ([self.delegate respondsToSelector:@selector(commentWasFlagged:)])
+        [self.delegate commentWasFlagged:self];
+}
+
 @end

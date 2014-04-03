@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ACCommentCell.h"
 
-@interface ACCommentsViewController : UITableViewController
+@interface ACCommentsViewController : UITableViewController <ACCommentDelegate>
 
 @property (strong, nonatomic) NSArray *commentArray;
 @property (strong, nonatomic) NSString *siteAPIName;

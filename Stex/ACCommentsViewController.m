@@ -7,7 +7,6 @@
 //
 
 #import "ACCommentsViewController.h"
-#import "ACCommentCell.h"
 #import "ACAppDelegate.h"
 #import "ACAlertView.h"
 #import "Bypass.h"
@@ -16,6 +15,9 @@
 #define COMMENTS_SECTION 1
 
 @implementation ACCommentsViewController
+{
+    BOOL isQuestion;
+}
 
 - (id)initWithPostID:(NSString *)postID isQuestion:(BOOL)question site:(NSString *)site
 {
@@ -38,25 +40,30 @@
         }
         self.siteAPIName = site;
         self.postID = postID;
-        
-        NSString *postTypeString = @"answers";
-        if (question)
-            postTypeString = @"questions";
-        
-        NSString *requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/%@/%@/comments?order=desc&sort=creation&site=%@&filter=!9WgJfnTX4&key=XB*FUGU0f4Ju9RCNhlRQ3A((", postTypeString, postID, site];
-        NSData *requestData = [NSData dataWithContentsOfURL:[NSURL URLWithString:requestURLString]];
-        NSDictionary *wrapper = [NSJSONSerialization JSONObjectWithData:requestData options:NSJSONReadingMutableLeaves error:nil];
-        
-        NSArray *items = wrapper[@"items"];
-        self.commentArray = [NSArray arrayWithArray:items];
-
+        isQuestion = question;
+        [self loadComments];
     }
     return self;
+}
+
+- (void)loadComments
+{
+    NSString *postTypeString = @"answers";
+    if (isQuestion)
+        postTypeString = @"questions";
+    
+    NSString *requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/%@/%@/comments?order=desc&sort=creation&site=%@&filter=!9WgJfnTX4&key=XB*FUGU0f4Ju9RCNhlRQ3A((", postTypeString, self.postID, self.siteAPIName];
+    NSData *requestData = [NSData dataWithContentsOfURL:[NSURL URLWithString:requestURLString]];
+    NSDictionary *wrapper = [NSJSONSerialization JSONObjectWithData:requestData options:NSJSONReadingMutableLeaves error:nil];
+    
+    NSArray *items = wrapper[@"items"];
+    self.commentArray = [NSArray arrayWithArray:items];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [[UITextView appearance] setTintColor:[UIColor blueColor]];
 }
 
 - (void)didReceiveMemoryWarning
@@ -77,7 +84,7 @@
     if (indexPath.section == NEW_COMMENT_SECTION && indexPath.row == 1)
         return 44.0;
     if (indexPath.section == NEW_COMMENT_SECTION && indexPath.row == 0)
-        return 122.0;
+        return 112.0;
     
     NSDictionary *commentDictionary = self.commentArray[indexPath.row];
     
@@ -91,7 +98,7 @@
     UIFont *font = [markdownString attribute:NSFontAttributeName atIndex:0 effectiveRange:NULL];
     CGRect rectSize = [markdownString.string boundingRectWithSize:CGSizeMake(320.0, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : font} context:NULL];
     
-    CGFloat height = MAX(rectSize.size.height, 122.0);
+    CGFloat height = MAX(rectSize.size.height, 133.0);
     
     return height;
 }
@@ -123,6 +130,7 @@
     }
     static NSString *CellIdentifier = @"Cell";
     ACCommentCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    NSString *userID = [(ACAppDelegate *)[UIApplication sharedApplication].delegate userID];
     
     NSDictionary *commentDictionary = self.commentArray[indexPath.row];
     cell.usernameLabel.text = commentDictionary[@"owner"][@"display_name"];
@@ -143,7 +151,39 @@
     
     cell.bodyTextView.attributedText = markdownString;
     
+    cell.commentID = [commentDictionary[@"comment_id"] stringValue];
+    cell.delegate = self;
+    if ([[commentDictionary[@"owner"][@"user_id"] stringValue] isEqualToString:userID])
+        cell.deleteCommentButton.hidden = NO;
+    else
+        cell.deleteCommentButton.hidden = YES;
+    
     return cell;
+}
+
+- (void)commentWasDeleted:(ACCommentCell *)comment
+{
+    NSString *requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/comments/34813823/delete"];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:requestURLString]];
+    [request setHTTPMethod:@"POST"];
+    
+    NSString *accessToken = [(ACAppDelegate *)[UIApplication sharedApplication].delegate accessToken];
+    NSString *requestBody = [NSString stringWithFormat:@"id=%@&access_token=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((&site=%@", comment.commentID, accessToken, self.siteAPIName];
+    [request setHTTPBody:[requestBody dataUsingEncoding:NSUTF8StringEncoding]];
+    [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+    
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:comment];
+    
+    NSMutableArray *temporary = self.commentArray.mutableCopy;
+    [temporary removeObjectAtIndex:indexPath.row];
+    self.commentArray = [NSArray arrayWithArray:temporary];
+    
+    [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+}
+
+- (void)commentWasFlagged:(ACCommentCell *)comment
+{
+    NSLog(@"comment was flagged");
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -165,6 +205,7 @@
             }
             
             NSString *accessToken = [(ACAppDelegate *)[[UIApplication sharedApplication] delegate] accessToken];
+            NSString *userID = [(ACAppDelegate *)[[UIApplication sharedApplication] delegate] userID];
             
             NSString *requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/posts/%@/comments/add", self.postID];
 
@@ -173,10 +214,14 @@
             
             NSString *requestBody = [NSString stringWithFormat:@"body=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((&access_token=%@&site=%@", [commentBody stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding], accessToken, self.siteAPIName];
             [request setHTTPBody:[requestBody dataUsingEncoding:NSUTF8StringEncoding]];
-            [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue currentQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
-             {
-
-             }];
+            [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue currentQueue] completionHandler:nil];
+            
+            NSMutableArray *temp = self.commentArray.mutableCopy;
+            NSDictionary *comment = @{@"owner": @{@"display_name": @"You", @"user_id": @([userID integerValue])}, @"creation_date": @([[NSDate date] timeIntervalSince1970]), @"body_markdown": commentBody, @"comment_id": @(00000)};
+            [temp addObject:comment];
+            self.commentArray = [NSArray arrayWithArray:temp];
+            
+            [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:COMMENTS_SECTION]] withRowAnimation:UITableViewRowAnimationRight];
             
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
         }

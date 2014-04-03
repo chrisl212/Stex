@@ -8,7 +8,7 @@
 
 @import UIKit;
 
-@interface ACNotificationController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@interface ACNotificationController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIWebViewDelegate>
 
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSString *siteAPIKey;

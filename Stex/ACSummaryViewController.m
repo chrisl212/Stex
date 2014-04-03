@@ -134,6 +134,10 @@
         NSLog(@"%@", error);
     NSDictionary *items = [[wrapper objectForKey:@"items"] objectAtIndex:0];
     NSString *username = [items objectForKey:@"display_name"];
+    NSString *userID = [[items objectForKey:@"user_id"] stringValue];
+    
+    if (![(ACAppDelegate *)[UIApplication sharedApplication].delegate userID])
+        [(ACAppDelegate *)[UIApplication sharedApplication].delegate setUserID:userID];
     
     self.siteSlideController.username = username;
     
