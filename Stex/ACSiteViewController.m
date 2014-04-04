@@ -127,6 +127,11 @@
     [summaryViewController slideSiteMenu];
 }
 
+- (void)newQuestion
+{
+    
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -241,8 +246,6 @@
         else
             iconData = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:iconCachePath]];
         
-        UIImage *iconImage = [self scaleToSize:CGSizeMake(30, 30) image:[UIImage imageWithData:iconData]];
-        
         NSMutableArray *questionsArray = [NSMutableArray array];
         NSMutableArray *avatarURLSArray = [NSMutableArray array];
         
@@ -259,9 +262,6 @@
         self.questionsArray = [NSArray arrayWithArray:questionsArray];
         
         dispatch_sync(dispatch_get_main_queue(), ^{
-            UIBarButtonItem *siteSlide = [[UIBarButtonItem alloc] initWithImage:iconImage style:UIBarButtonItemStyleBordered target:self action:@selector(slideSiteOptions)];
-            [siteSlide setTintColor:[UIColor whiteColor]];
-            self.parentViewController.navigationItem.rightBarButtonItem = siteSlide;
             [self.tableView reloadData];
             [alertView dismiss];
             [self slideSiteOptions];

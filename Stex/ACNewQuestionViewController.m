@@ -1,0 +1,227 @@
+//
+//  ACNewQuestionViewController.m
+//  Stex
+//
+//  Created by Chris on 4/3/14.
+//  Copyright (c) 2014 A and C Studios. All rights reserved.
+//
+
+#import "ACNewQuestionViewController.h"
+#import "ACNewQuestionCell.h"
+#import "Bypass.h"
+
+@implementation ACNewQuestionViewController
+{
+    UIToolbar *inputAccessoryView;
+}
+
+- (id)initWithSite:(NSString *)site
+{
+    if (self = [super initWithStyle:UITableViewStyleGrouped])
+    {
+        self.siteAPIName = site;
+        [self.tableView registerClass:[ACNewQuestionCell class] forCellReuseIdentifier:@"NewQuestionCell"];
+        [self.tableView registerNib:[UINib nibWithNibName:@"ACNewQuestionCell" bundle:nil] forCellReuseIdentifier:@"NewQuestionCell"];
+        inputAccessoryView = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+        
+        UIBarButtonItem *codeButton = [[UIBarButtonItem alloc] initWithTitle:@"Code" style:UIBarButtonItemStylePlain target:self action:@selector(insertCodeBlock)];
+        UIBarButtonItem *dismissButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissKeyboard)];
+        [inputAccessoryView setItems:@[codeButton, dismissButton]];
+        
+    }
+    return self;
+}
+
+- (void)dismissKeyboard
+{
+    ACNewQuestionCell *cell = (ACNewQuestionCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+
+    [cell.bodyTextView resignFirstResponder];
+}
+
+- (void)insertCodeBlock
+{
+    ACNewQuestionCell *cell = (ACNewQuestionCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    
+    NSString *codeBlock = @"\r\n\r\n\t";
+    NSMutableString *bodyText = cell.bodyTextView.text.mutableCopy;
+    [bodyText appendString:codeBlock];
+    [cell.bodyTextView setText:bodyText];
+    [cell.bodyTextView setSelectedRange:NSMakeRange(bodyText.length, 0)];
+}
+
+- (void)submitQuestion
+{
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    [[UIBarButtonItem appearance] setTintColor:[UIColor whiteColor]];
+    
+    UIWindow *window = [UIApplication sharedApplication].keyWindow;
+    window.tintColor = [UIColor whiteColor];
+    [[UIView appearance] setTintColor:[UIColor whiteColor]];
+
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)dismiss
+{
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    [[UIBarButtonItem appearance] setTintColor:[UIColor whiteColor]];
+    
+    UIWindow *window = [UIApplication sharedApplication].keyWindow;
+    window.tintColor = [UIColor whiteColor];
+    [[UIView appearance] setTintColor:[UIColor whiteColor]];
+
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    [[UIView appearance] setTintColor:[UIColor blueColor]];
+    UIBarButtonItem *submit = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(submitQuestion)];
+    UIBarButtonItem *dismiss = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismiss)];
+    self.navigationItem.rightBarButtonItem = submit;
+    self.navigationItem.leftBarButtonItem = dismiss;
+    
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+    [[UIBarButtonItem appearance] setTintColor:[UIColor blueColor]];
+    
+    UIWindow *window = [UIApplication sharedApplication].keyWindow;
+    window.tintColor = [UIColor blackColor];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 2;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.row == 0 && indexPath.section == 0)
+        return 294.0;
+    return 44.0;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if (section == 1)
+        return 1;
+    return 2;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 1)
+    {
+        UITableViewCell *preview = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+        preview.textLabel.text = @"Preview";
+        
+        return preview;
+    }
+    if (indexPath.row == 1)
+    {
+        static NSString *cellID = @"TagCell";
+        UITableViewCell *tagCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
+        ACTagView *tagView = [[ACTagView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 44.0)];
+
+        tagView.delegate = self;
+        tagView.tagsArray = @[@"Click here to add a new tag"];
+        [tagCell.contentView addSubview:tagView];
+        return tagCell;
+    }
+
+    static NSString *CellIdentifier = @"NewQuestionCell";
+    ACNewQuestionCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+
+    cell.bodyTextView.inputAccessoryView = inputAccessoryView;
+    
+    return cell;
+}
+
+- (void)tagWasSelected:(NSString *)tag
+{
+    UITableViewCell *tagCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+    for (ACTagView *tagView in tagCell.contentView.subviews)
+    {
+        if ([tagView isKindOfClass:[ACTagView class]])
+        {
+            NSMutableArray *temporaryArray = tagView.tagsArray.mutableCopy;
+            [temporaryArray removeObject:tag];
+            tagView.tagsArray = [NSArray arrayWithArray:temporaryArray];
+        }
+    }
+}
+
+- (void)viewWasSelected
+{
+    ACAlertView *alertView = [ACAlertView alertWithTitle:@"New Tag" style:ACAlertViewStyleTextField delegate:self buttonTitles:@[@"Cancel", @"Add"]];
+    [alertView show];
+}
+
+- (void)alertView:(ACAlertView *)alertView didClickButtonWithTitle:(NSString *)title
+{
+    NSString *newTag = alertView.textField.text;
+    if ([newTag isEqualToString:@""])
+    {
+        [alertView dismiss];
+        return;
+    }
+    
+    UITableViewCell *tagCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+    for (ACTagView *tagView in tagCell.contentView.subviews)
+    {
+        if ([tagView isKindOfClass:[ACTagView class]])
+        {
+            NSMutableArray *temporaryArray = tagView.tagsArray.mutableCopy;
+            for (NSString *tag in tagView.tagsArray)
+            {
+                if ([tag isEqualToString:newTag])
+                {
+                    [alertView dismiss];
+                    return;
+                }
+                if ([tag isEqualToString:@"Click here to add a new tag"])
+                    [temporaryArray removeObject:tag];
+            }
+            if (temporaryArray.count < 5)
+                [temporaryArray addObject:newTag];
+            tagView.tagsArray = [NSArray arrayWithArray:temporaryArray];
+        }
+    }
+    [alertView dismiss];
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    ACNewQuestionCell *newQuestionCell = (ACNewQuestionCell *)[tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    
+    if (indexPath.section == 1)
+    {
+        UIViewController *previewViewController = [[UIViewController alloc] init];
+        UITextView *textView = [[UITextView alloc] initWithFrame:previewViewController.view.bounds];
+        textView.editable = NO;
+        
+        BPParser *parser = [[BPParser alloc] init];
+        BPDocument *document = [parser parse:newQuestionCell.bodyTextView.text];
+        BPAttributedStringConverter *converter = [[BPAttributedStringConverter alloc] init];
+        textView.attributedText = [converter convertDocument:document];
+        [previewViewController.view addSubview:textView];
+        [self.navigationController pushViewController:previewViewController animated:YES];
+        
+        return;
+    }
+    if (indexPath.row == 1)
+    {
+        
+    }
+}
+
+@end

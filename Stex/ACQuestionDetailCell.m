@@ -22,13 +22,21 @@
 
 - (void)downvote:(id)sender
 {
-    [(UIButton *)sender setSelected:YES];
     BOOL isQuestion = (self.questionTitleLabel.text.length > 0) ? YES : NO;
     
     NSInteger voteCount = self.voteCountLabel.text.integerValue;
-    self.voteCountLabel.text = [NSString stringWithFormat:@"%d", voteCount - 1];
     if (isQuestion)
     {
+        if ([sender isSelected])
+        {
+            if ([self.delegate respondsToSelector:@selector(userDidUndoQuestionDownvote:)])
+                if ([self.delegate userDidUndoQuestionDownvote:self.postIDLabel.text])
+                {
+                    self.voteCountLabel.text = [NSString stringWithFormat:@"%d", voteCount + 1];
+                    [(UIButton *)sender setSelected:NO];
+                    return;
+                }
+        }
         if ([self.delegate respondsToSelector:@selector(userDidDownvoteQuestion:)])
             if (![self.delegate userDidDownvoteQuestion:self.postIDLabel.text])
             {
@@ -38,6 +46,16 @@
     }
     else
     {
+        if ([sender isSelected])
+        {
+            if ([self.delegate respondsToSelector:@selector(userDidUndoAnswerDownvote:)])
+                if ([self.delegate userDidUndoAnswerDownvote:self.postIDLabel.text])
+                {
+                    self.voteCountLabel.text = [NSString stringWithFormat:@"%d", voteCount + 1];
+                    [(UIButton *)sender setSelected:NO];
+                    return;
+                }
+        }
         if ([self.delegate respondsToSelector:@selector(userDidDownvoteAnswer:)])
             if (![self.delegate userDidDownvoteAnswer:self.postIDLabel.text])
             {
@@ -45,17 +63,27 @@
                 [(UIButton *)sender setSelected:NO];
             }
     }
+    self.voteCountLabel.text = [NSString stringWithFormat:@"%d", voteCount - 1];
+    [(UIButton *)sender setSelected:YES];
 }
 
 - (void)upvote:(id)sender
 {
-    [(UIButton *)sender setSelected:YES];
     BOOL isQuestion = (self.questionTitleLabel.text.length > 0) ? YES : NO;
     
     NSInteger voteCount = self.voteCountLabel.text.integerValue;
-    self.voteCountLabel.text = [NSString stringWithFormat:@"%d", voteCount + 1];
     if (isQuestion)
     {
+        if ([sender isSelected])
+        {
+            if ([self.delegate respondsToSelector:@selector(userDidUndoQuestionUpvote:)])
+                if ([self.delegate userDidUndoQuestionUpvote:self.postIDLabel.text])
+                {
+                    self.voteCountLabel.text = [NSString stringWithFormat:@"%d", voteCount - 1];
+                    [(UIButton *)sender setSelected:NO];
+                    return;
+                }
+        }
         if ([self.delegate respondsToSelector:@selector(userDidUpvoteQuestion:)])
             if (![self.delegate userDidUpvoteQuestion:self.postIDLabel.text])
             {
@@ -65,6 +93,16 @@
     }
     else
     {
+        if ([sender isSelected])
+        {
+            if ([self.delegate respondsToSelector:@selector(userDidUndoAnswerUpvote:)])
+                if ([self.delegate userDidUndoAnswerUpvote:self.postIDLabel.text])
+                {
+                    self.voteCountLabel.text = [NSString stringWithFormat:@"%d", voteCount - 1];
+                    [(UIButton *)sender setSelected:NO];
+                    return;
+                }
+        }
         if ([self.delegate respondsToSelector:@selector(userDidUpvoteAnswer:)])
             if (![self.delegate userDidUpvoteAnswer:self.postIDLabel.text])
             {
@@ -72,6 +110,8 @@
                 [(UIButton *)sender setSelected:NO];
             }
     }
+    self.voteCountLabel.text = [NSString stringWithFormat:@"%d", voteCount + 1];
+    [(UIButton *)sender setSelected:YES];
 }
 
 - (void)openComments:(id)sender

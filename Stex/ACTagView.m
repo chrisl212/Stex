@@ -70,7 +70,11 @@
     CGPoint location = [touch locationInView:self];
     UIView *view = [self hitTest:location withEvent:event];
     if ([view isKindOfClass:[ACTagView class]])
+    {
+        if ([self.delegate respondsToSelector:@selector(viewWasSelected)])
+            [self.delegate viewWasSelected];
         return;
+    }
     for (UILabel *label in view.subviews)
     {
         if ([label isKindOfClass:[UILabel class]])
@@ -98,7 +102,11 @@
 {
     [super touchesEnded:touches withEvent:event];
     if (!selectedLabel)
+    {
+        if ([self.delegate respondsToSelector:@selector(viewWasSelected)])
+            [self.delegate viewWasSelected];
         return;
+    }
     for (UIView *overlay in selectedLabel.superview.subviews)
         if ([overlay.backgroundColor isEqual:[UIColor blackColor]])
             [overlay removeFromSuperview];

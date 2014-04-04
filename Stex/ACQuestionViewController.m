@@ -291,6 +291,27 @@
     return success;
 }
 
+- (BOOL)undoVote:(NSString *)postID postType:(NSString *)postType voteType:(NSString *)voteType
+{
+    NSString *accessToken = [(ACAppDelegate *)[UIApplication sharedApplication].delegate accessToken];
+    NSString *requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/%@/%@/%@/undo", postType, postID, voteType];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:requestURLString]];
+    
+    NSString *body = [NSString stringWithFormat:@"access_token=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((&site=%@", accessToken, self.siteAPIName];
+    
+    [request setHTTPMethod:@"POST"];
+    [request setHTTPBody:[body dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    BOOL success = YES;
+    NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+    NSString *dataString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    
+    if ([dataString rangeOfString:@"error"].location != NSNotFound)
+        success = NO;
+    
+    return success;
+}
+
 - (BOOL)userDidDownvoteAnswer:(NSString *)answer
 {
     return [self vote:answer postType:@"answers" voteType:@"downvote"];
@@ -309,6 +330,26 @@
 - (BOOL)userDidUpvoteQuestion:(NSString *)question
 {
     return [self vote:question postType:@"questions" voteType:@"upvote"];
+}
+
+- (BOOL)userDidUndoAnswerDownvote:(NSString *)answer
+{
+    return [self undoVote:answer postType:@"answers" voteType:@"downvote"];
+}
+
+- (BOOL)userDidUndoAnswerUpvote:(NSString *)answer
+{
+    return [self undoVote:answer postType:@"answers" voteType:@"upvote"];
+}
+
+- (BOOL)userDidUndoQuestionDownvote:(NSString *)question
+{
+    return [self undoVote:question postType:@"questions" voteType:@"downvote"];
+}
+
+- (BOOL)userDidUndoQuestionUpvote:(NSString *)question
+{
+    return [self undoVote:question postType:@"questions" voteType:@"upvote"];
 }
 
 - (void)userDidSelectQuestionComments:(NSString *)question

@@ -9,6 +9,7 @@
 #import "ACSiteSlideController.h"
 #import "ACAppDelegate.h"
 #import "ACAlertView.h"
+#import "ACNewQuestionViewController.h"
 
 #define SITE_SECTION 0
 #define ACCOUNT_AREAS_SECTION 1
@@ -22,7 +23,7 @@
     {
         self.accountAreasArray = @[@"My Questions", @"My Answers"];
         self.popularTagsArray = @[];
-        self.siteOptionsArray = @{@"Registered": @"", @"All Questions" : @""};
+        self.siteOptionsArray = @{@"Registered": @"", @"All Questions" : @"", @"New Question" : @""};
         self.username = @"";
     }
     return self;
@@ -173,6 +174,12 @@
             if ([self.delegate respondsToSelector:@selector(didSelectAllQuestions)])
                 [self.delegate didSelectAllQuestions];
             return;
+        }
+        else if ([cellTitle isEqualToString:@"New Question"])
+        {
+            ACNewQuestionViewController *newQuestionViewController = [[ACNewQuestionViewController alloc] initWithSite:self.siteAPIName];
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:newQuestionViewController];
+            [self presentViewController:navigationController animated:YES completion:nil];
         }
     }
     

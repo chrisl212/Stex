@@ -201,6 +201,11 @@
         //TODO: uncomment this if you want all other views disabled when the alert is presented
         //[subview setUserInteractionEnabled:NO];
     }
+    if (self.alertViewStyle == ACAlertViewStyleTextField)
+    {
+        [self.textField becomeFirstResponder];
+    }
+    
     self.center = currentWindow.center;
     self.alpha = 0.0;
     [currentWindow addSubview:self];

@@ -16,6 +16,10 @@
 - (BOOL)userDidUpvoteAnswer:(NSString *)answer;
 - (BOOL)userDidDownvoteQuestion:(NSString *)question;
 - (BOOL)userDidDownvoteAnswer:(NSString *)answer;
+- (BOOL)userDidUndoQuestionUpvote:(NSString *)question;
+- (BOOL)userDidUndoAnswerUpvote:(NSString *)answer;
+- (BOOL)userDidUndoQuestionDownvote:(NSString *)question;
+- (BOOL)userDidUndoAnswerDownvote:(NSString *)answer;
 - (void)userDidSelectQuestionComments:(NSString *)question;
 - (void)userDidSelectAnswerComments:(NSString *)answer;
 

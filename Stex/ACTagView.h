@@ -13,6 +13,7 @@
 
 @optional
 - (void)tagWasSelected:(NSString *)tag;
+- (void)viewWasSelected;
 
 @end
 
