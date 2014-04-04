@@ -15,6 +15,12 @@
     UIToolbar *inputAccessoryView;
 }
 
+- (UIImage *)imageWithContentsOfURL:(NSURL *)url
+{
+    NSData *imageData = [NSData dataWithContentsOfURL:url];
+    return [UIImage imageWithData:imageData];
+}
+
 - (id)initWithSite:(NSString *)site
 {
     if (self = [super initWithStyle:UITableViewStyleGrouped])
@@ -24,10 +30,15 @@
         [self.tableView registerNib:[UINib nibWithNibName:@"ACNewQuestionCell" bundle:nil] forCellReuseIdentifier:@"NewQuestionCell"];
         inputAccessoryView = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
         
-        UIBarButtonItem *codeButton = [[UIBarButtonItem alloc] initWithTitle:@"Code" style:UIBarButtonItemStylePlain target:self action:@selector(insertCodeBlock)];
+        UIBarButtonItem *codeButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"code.png"] style:UIBarButtonItemStylePlain target:self action:@selector(insertCodeBlock)];
+        UIBarButtonItem *boldButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"bold.png"] style:UIBarButtonItemStylePlain target:self action:@selector(insertBoldText)];
+        UIBarButtonItem *italicButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"italic.png"] style:UIBarButtonItemStylePlain target:self action:@selector(insertItalicText)];
+        UIBarButtonItem *linkButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"link.png"] style:UIBarButtonItemStylePlain target:self action:@selector(insertLink)];
+        UIBarButtonItem *imageButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"image.png"] style:UIBarButtonItemStylePlain target:self action:@selector(insertImage)];
+
         UIBarButtonItem *dismissButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissKeyboard)];
-        [inputAccessoryView setItems:@[codeButton, dismissButton]];
         
+        [inputAccessoryView setItems:@[codeButton, boldButton, italicButton, linkButton, imageButton, dismissButton]];
     }
     return self;
 }
@@ -39,11 +50,55 @@
     [cell.bodyTextView resignFirstResponder];
 }
 
+- (void)insertImage
+{
+    ACNewQuestionCell *cell = (ACNewQuestionCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    
+    NSString *linkText = @"![enter image description here](enter image address here)";
+    NSMutableString *bodyText = cell.bodyTextView.text.mutableCopy;
+    [bodyText appendString:linkText];
+    [cell.bodyTextView setText:bodyText];
+    [cell.bodyTextView setSelectedRange:NSMakeRange(bodyText.length - 25, 24)];
+}
+
+- (void)insertLink
+{
+    ACNewQuestionCell *cell = (ACNewQuestionCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    
+    NSString *linkText = @"[enter link description here](enter link address here)";
+    NSMutableString *bodyText = cell.bodyTextView.text.mutableCopy;
+    [bodyText appendString:linkText];
+    [cell.bodyTextView setText:bodyText];
+    [cell.bodyTextView setSelectedRange:NSMakeRange(bodyText.length - 24, 23)];
+}
+
+- (void)insertItalicText
+{
+    ACNewQuestionCell *cell = (ACNewQuestionCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    
+    NSString *italicText = @"*italic text here*";
+    NSMutableString *bodyText = cell.bodyTextView.text.mutableCopy;
+    [bodyText appendString:italicText];
+    [cell.bodyTextView setText:bodyText];
+    [cell.bodyTextView setSelectedRange:NSMakeRange(bodyText.length - 17, 16)];
+}
+
+- (void)insertBoldText
+{
+    ACNewQuestionCell *cell = (ACNewQuestionCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    
+    NSString *boldText = @"**bold text here**";
+    NSMutableString *bodyText = cell.bodyTextView.text.mutableCopy;
+    [bodyText appendString:boldText];
+    [cell.bodyTextView setText:bodyText];
+    [cell.bodyTextView setSelectedRange:NSMakeRange(bodyText.length - 16, 14)];
+}
+
 - (void)insertCodeBlock
 {
     ACNewQuestionCell *cell = (ACNewQuestionCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     
-    NSString *codeBlock = @"\r\n\r\n\t";
+    NSString *codeBlock = @"\r\n\r\n    ";
     NSMutableString *bodyText = cell.bodyTextView.text.mutableCopy;
     [bodyText appendString:codeBlock];
     [cell.bodyTextView setText:bodyText];
@@ -213,6 +268,35 @@
         BPDocument *document = [parser parse:newQuestionCell.bodyTextView.text];
         BPAttributedStringConverter *converter = [[BPAttributedStringConverter alloc] init];
         textView.attributedText = [converter convertDocument:document];
+        
+        NSRegularExpression *regex = [[NSRegularExpression alloc] initWithPattern:@"\\!\\[.*\\]\\(.*\\)" options:NSRegularExpressionCaseInsensitive error:nil];
+        NSArray *matches = [regex matchesInString:textView.attributedText.string options:kNilOptions range:NSMakeRange(0, textView.attributedText.length)];
+        for (NSTextCheckingResult *result in matches)
+        {
+            NSString *imageURLString;
+            
+            regex = [[NSRegularExpression alloc] initWithPattern:@"\\(.*\\)" options:NSRegularExpressionCaseInsensitive error:nil];
+            NSArray *URLMatches = [regex matchesInString:textView.attributedText.string options:kNilOptions range:result.range];
+            for (NSTextCheckingResult *URLResult in URLMatches)
+            {
+                NSMutableString *mutableURLString = [textView.attributedText.string substringWithRange:URLResult.range].mutableCopy;
+                [mutableURLString deleteCharactersInRange:NSMakeRange(0, 1)];
+                [mutableURLString deleteCharactersInRange:NSMakeRange(mutableURLString.length - 1, 1)];
+                
+                imageURLString = mutableURLString;
+            }
+            
+            NSMutableAttributedString *text = textView.attributedText.mutableCopy;
+            
+            NSTextAttachment *imageAttachment = [[NSTextAttachment alloc] init];
+            imageAttachment.image = [self imageWithContentsOfURL:[NSURL URLWithString:imageURLString]];
+            NSAttributedString *imageString = [NSAttributedString attributedStringWithAttachment:imageAttachment];
+            [text insertAttributedString:imageString atIndex:result.range.location - 1];
+            
+            [text deleteCharactersInRange:result.range];
+            [textView setAttributedText:text];
+        }
+        
         [previewViewController.view addSubview:textView];
         [self.navigationController pushViewController:previewViewController animated:YES];
         

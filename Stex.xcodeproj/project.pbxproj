@@ -44,6 +44,11 @@
 		63A6AF5018EE241200493ACD /* ACNewQuestionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A6AF4F18EE241200493ACD /* ACNewQuestionViewController.m */; };
 		63A6AF5318EE250200493ACD /* ACNewQuestionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A6AF5218EE250200493ACD /* ACNewQuestionCell.m */; };
 		63A6AF5518EE253500493ACD /* ACNewQuestionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63A6AF5418EE253500493ACD /* ACNewQuestionCell.xib */; };
+		63A6AF5918EF52B700493ACD /* bold@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 63A6AF5718EF52B700493ACD /* bold@2x.png */; };
+		63A6AF5A18EF52B700493ACD /* code@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 63A6AF5818EF52B700493ACD /* code@2x.png */; };
+		63A6AF5C18EF551900493ACD /* italic@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 63A6AF5B18EF551900493ACD /* italic@2x.png */; };
+		63A6AF5E18EF569500493ACD /* link@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 63A6AF5D18EF569500493ACD /* link@2x.png */; };
+		63A6AF6018EF588700493ACD /* image@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 63A6AF5F18EF588700493ACD /* image@2x.png */; };
 		63C5175318BADA9C006420A4 /* ACQuestionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C5175218BADA9C006420A4 /* ACQuestionCell.m */; };
 		63C5175518BADAAA006420A4 /* ACQuestionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63C5175418BADAAA006420A4 /* ACQuestionCell.xib */; };
 		63C5175918BB0D77006420A4 /* ACQuestionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C5175718BB0D77006420A4 /* ACQuestionViewController.m */; };
@@ -137,6 +142,11 @@
 		63A6AF5118EE250200493ACD /* ACNewQuestionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACNewQuestionCell.h; sourceTree = "<group>"; };
 		63A6AF5218EE250200493ACD /* ACNewQuestionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACNewQuestionCell.m; sourceTree = "<group>"; };
 		63A6AF5418EE253500493ACD /* ACNewQuestionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACNewQuestionCell.xib; sourceTree = "<group>"; };
+		63A6AF5718EF52B700493ACD /* bold@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bold@2x.png"; sourceTree = "<group>"; };
+		63A6AF5818EF52B700493ACD /* code@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "code@2x.png"; sourceTree = "<group>"; };
+		63A6AF5B18EF551900493ACD /* italic@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "italic@2x.png"; sourceTree = "<group>"; };
+		63A6AF5D18EF569500493ACD /* link@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "link@2x.png"; sourceTree = "<group>"; };
+		63A6AF5F18EF588700493ACD /* image@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "image@2x.png"; sourceTree = "<group>"; };
 		63C5175118BADA9C006420A4 /* ACQuestionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACQuestionCell.h; sourceTree = "<group>"; };
 		63C5175218BADA9C006420A4 /* ACQuestionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACQuestionCell.m; sourceTree = "<group>"; };
 		63C5175418BADAAA006420A4 /* ACQuestionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACQuestionCell.xib; sourceTree = "<group>"; };
@@ -328,17 +338,13 @@
 		63A3F54D18BA84D300D159CF /* Site Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				63A6AF5118EE250200493ACD /* ACNewQuestionCell.h */,
-				63A6AF5218EE250200493ACD /* ACNewQuestionCell.m */,
-				63A6AF5418EE253500493ACD /* ACNewQuestionCell.xib */,
-				63A6AF4E18EE241200493ACD /* ACNewQuestionViewController.h */,
-				63A6AF4F18EE241200493ACD /* ACNewQuestionViewController.m */,
 				63A3F54A18BA84CC00D159CF /* ACSiteSlideController.h */,
 				63A3F54B18BA84CC00D159CF /* ACSiteSlideController.m */,
 				63C5177C18BBEFDF006420A4 /* ACTagView.h */,
 				63C5177D18BBEFDF006420A4 /* ACTagView.m */,
 				63C5177B18BBEFB4006420A4 /* Question Cells */,
 				637954FA18E861FC0095530B /* Comments */,
+				63A6AF5618EE40A300493ACD /* New Question */,
 				63C5175618BB0D77006420A4 /* ACQuestionViewController.h */,
 				63C5175718BB0D77006420A4 /* ACQuestionViewController.m */,
 				63C5179518BD7FD2006420A4 /* ACAnswersViewController.h */,
@@ -371,6 +377,23 @@
 				63A6AF4A18E8C3A400493ACD /* parser.h */,
 			);
 			name = "Bypass (markdown)";
+			sourceTree = "<group>";
+		};
+		63A6AF5618EE40A300493ACD /* New Question */ = {
+			isa = PBXGroup;
+			children = (
+				63A6AF5118EE250200493ACD /* ACNewQuestionCell.h */,
+				63A6AF5218EE250200493ACD /* ACNewQuestionCell.m */,
+				63A6AF5418EE253500493ACD /* ACNewQuestionCell.xib */,
+				63A6AF4E18EE241200493ACD /* ACNewQuestionViewController.h */,
+				63A6AF4F18EE241200493ACD /* ACNewQuestionViewController.m */,
+				63A6AF5F18EF588700493ACD /* image@2x.png */,
+				63A6AF5D18EF569500493ACD /* link@2x.png */,
+				63A6AF5B18EF551900493ACD /* italic@2x.png */,
+				63A6AF5718EF52B700493ACD /* bold@2x.png */,
+				63A6AF5818EF52B700493ACD /* code@2x.png */,
+			);
+			name = "New Question";
 			sourceTree = "<group>";
 		};
 		63C5177B18BBEFB4006420A4 /* Question Cells */ = {
@@ -458,9 +481,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63A6AF6018EF588700493ACD /* image@2x.png in Resources */,
 				63A6AF5518EE253500493ACD /* ACNewQuestionCell.xib in Resources */,
 				637954FF18E863990095530B /* ACCommentCell.xib in Resources */,
 				6333F4CA18B8108100DDC490 /* Icon@2x.png in Resources */,
+				63A6AF5A18EF52B700493ACD /* code@2x.png in Resources */,
+				63A6AF5E18EF569500493ACD /* link@2x.png in Resources */,
 				633D395A18B9BB7C001EABFD /* open-slide@2x.png in Resources */,
 				63C5178618BC1BAA006420A4 /* upvote@2x.png in Resources */,
 				6333F48318B7F7CF00DDC490 /* Main_iPad.storyboard in Resources */,
@@ -468,11 +494,13 @@
 				6333F4C418B8108100DDC490 /* Icon-76@2x.png in Resources */,
 				6333F4C318B8108100DDC490 /* Icon-76.png in Resources */,
 				6333F4C218B8108100DDC490 /* Icon-512@2x.png in Resources */,
+				63A6AF5C18EF551900493ACD /* italic@2x.png in Resources */,
 				63C5178518BC1BAA006420A4 /* upvote-selected@2x.png in Resources */,
 				6333F48818B7F7CF00DDC490 /* Images.xcassets in Resources */,
 				6379550118E8775C0095530B /* LICENSE in Resources */,
 				633D394E18B8A1EA001EABFD /* LICENSE.txt in Resources */,
 				63C5178E18BC30B4006420A4 /* ACInboxCell.xib in Resources */,
+				63A6AF5918EF52B700493ACD /* bold@2x.png in Resources */,
 				6333F48018B7F7CF00DDC490 /* Main_iPhone.storyboard in Resources */,
 				6333F47718B7F7CF00DDC490 /* InfoPlist.strings in Resources */,
 				63C5178418BC1BAA006420A4 /* downvote@2x.png in Resources */,
