@@ -65,6 +65,7 @@
 		63C5179218BD7B31006420A4 /* ACAnswerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C5179118BD7B31006420A4 /* ACAnswerCell.m */; };
 		63C5179418BD7B3E006420A4 /* ACAnswerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63C5179318BD7B3E006420A4 /* ACAnswerCell.xib */; };
 		63C5179718BD7FD2006420A4 /* ACAnswersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C5179618BD7FD2006420A4 /* ACAnswersViewController.m */; };
+		63ED839E18F2172200821948 /* ACPostSender.m in Sources */ = {isa = PBXBuildFile; fileRef = 63ED839D18F2172200821948 /* ACPostSender.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -171,6 +172,8 @@
 		63C5179318BD7B3E006420A4 /* ACAnswerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACAnswerCell.xib; sourceTree = "<group>"; };
 		63C5179518BD7FD2006420A4 /* ACAnswersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACAnswersViewController.h; sourceTree = "<group>"; };
 		63C5179618BD7FD2006420A4 /* ACAnswersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACAnswersViewController.m; sourceTree = "<group>"; };
+		63ED839C18F2172200821948 /* ACPostSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACPostSender.h; sourceTree = "<group>"; };
+		63ED839D18F2172200821948 /* ACPostSender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACPostSender.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -245,6 +248,8 @@
 				633D395218B9A1AD001EABFD /* ACSlideViewController.m */,
 				636449B518C40D0A0059B058 /* ACUserImageView.h */,
 				636449B618C40D0A0059B058 /* ACUserImageView.m */,
+				63ED839C18F2172200821948 /* ACPostSender.h */,
+				63ED839D18F2172200821948 /* ACPostSender.m */,
 				6333F4AA18B7FA0C00DDC490 /* Login Controller */,
 				637954F618E79D710095530B /* Settings Controller */,
 				636449B818C551C00059B058 /* Notification Controller */,
@@ -541,6 +546,7 @@
 				63C5179218BD7B31006420A4 /* ACAnswerCell.m in Sources */,
 				63C5175D18BB100F006420A4 /* ACQuestionDetailCell.m in Sources */,
 				63C5178918BC2DFE006420A4 /* ACInboxController.m in Sources */,
+				63ED839E18F2172200821948 /* ACPostSender.m in Sources */,
 				636449B718C40D0A0059B058 /* ACUserImageView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

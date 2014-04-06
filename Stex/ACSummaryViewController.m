@@ -29,6 +29,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     self.badgeCounts = [NSMutableArray array];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     [[UIBarButtonItem appearance] setTintColor:[UIColor whiteColor]];
@@ -110,7 +111,7 @@
     
     self.pieChart.delegate = self;
     self.pieChart.dataSource = self;
-    [self.pieChart setShowPercentage:NO];
+    self.pieChart.showPercentage = NO;
     [self.pieChart setLabelFont:[UIFont fontWithName:[[NSUserDefaults standardUserDefaults] objectForKey:@"Font"] size:16.0]];
     [self.pieChart reloadData];
 }
@@ -262,24 +263,7 @@
 
 - (NSString *)pieChart:(XYPieChart *)pieChart textForSliceAtIndex:(NSUInteger)index
 {
-    switch (index)
-    {
-        case 0:
-            return @"Bronze";
-            break;
-            
-        case 1:
-            return @"Silver";
-            break;
-            
-        case 2:
-            return @"Gold";
-            break;
-            
-        default:
-            break;
-    }
-    return @"Error";
+    return [self.badgeCounts[index] stringValue];
 }
 
 - (CGFloat)pieChart:(XYPieChart *)pieChart valueForSliceAtIndex:(NSUInteger)index

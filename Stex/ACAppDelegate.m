@@ -27,7 +27,6 @@
         [[NSUserDefaults standardUserDefaults] setObject:@"Verdana" forKey:@"Font"];
         [[NSUserDefaults standardUserDefaults] setObject:@(1) forKey:@"FirstLaunch"];
     }
-    
     return YES;
 }
 

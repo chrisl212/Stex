@@ -42,6 +42,7 @@ typedef NS_ENUM(NSInteger, ACAlertViewStyle)
 - (void)show; //Display the alert
 - (void)dismiss; //Dismiss the alert
 - (void)hide; //Mizimize the alert
++ (void)displayError:(NSString *)errorString;
 
 @end
 

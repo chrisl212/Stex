@@ -9,6 +9,7 @@
 #import "ACCommentsViewController.h"
 #import "ACAppDelegate.h"
 #import "ACAlertView.h"
+#import "ACPostSender.h"
 #import "Bypass.h"
 
 #define NEW_COMMENT_SECTION 0
@@ -204,17 +205,9 @@
                 return;
             }
             
-            NSString *accessToken = [(ACAppDelegate *)[[UIApplication sharedApplication] delegate] accessToken];
             NSString *userID = [(ACAppDelegate *)[[UIApplication sharedApplication] delegate] userID];
             
-            NSString *requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/posts/%@/comments/add", self.postID];
-
-            NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:requestURLString]];
-            [request setHTTPMethod:@"POST"];
-            
-            NSString *requestBody = [NSString stringWithFormat:@"body=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((&access_token=%@&site=%@", [commentBody stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding], accessToken, self.siteAPIName];
-            [request setHTTPBody:[requestBody dataUsingEncoding:NSUTF8StringEncoding]];
-            [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue currentQueue] completionHandler:nil];
+            [ACPostSender postCommentWithBody:commentBody toPost:self.postID site:self.siteAPIName];
             
             NSMutableArray *temp = self.commentArray.mutableCopy;
             NSDictionary *comment = @{@"owner": @{@"display_name": @"You", @"user_id": @([userID integerValue])}, @"creation_date": @([[NSDate date] timeIntervalSince1970]), @"body_markdown": commentBody, @"comment_id": @(00000)};

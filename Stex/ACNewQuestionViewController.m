@@ -8,7 +8,15 @@
 
 #import "ACNewQuestionViewController.h"
 #import "ACNewQuestionCell.h"
+#import "ACAppDelegate.h"
 #import "Bypass.h"
+#import "ACPostSender.h"
+
+CGSize getScaledSize(CGSize original, CGFloat newWidth)
+{
+    CGFloat newHeight = (original.height/original.width) * newWidth;
+    return CGSizeMake(newWidth, newHeight);
+}
 
 @implementation ACNewQuestionViewController
 {
@@ -35,10 +43,10 @@
         UIBarButtonItem *italicButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"italic.png"] style:UIBarButtonItemStylePlain target:self action:@selector(insertItalicText)];
         UIBarButtonItem *linkButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"link.png"] style:UIBarButtonItemStylePlain target:self action:@selector(insertLink)];
         UIBarButtonItem *imageButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"image.png"] style:UIBarButtonItemStylePlain target:self action:@selector(insertImage)];
-
+        UIBarButtonItem *flex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
         UIBarButtonItem *dismissButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissKeyboard)];
         
-        [inputAccessoryView setItems:@[codeButton, boldButton, italicButton, linkButton, imageButton, dismissButton]];
+        [inputAccessoryView setItems:@[codeButton, boldButton, italicButton, linkButton, imageButton, flex, dismissButton]];
     }
     return self;
 }
@@ -107,6 +115,12 @@
 
 - (void)submitQuestion
 {
+    ACNewQuestionCell *questionCell = (ACNewQuestionCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    UITableViewCell *tagsCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+    ACTagView *tagView = (ACTagView *)[tagsCell.contentView viewWithTag:1];
+    
+    [ACPostSender postQuestionWithTitle:questionCell.questionTitleField.text body:questionCell.bodyTextView.text tags:tagView.tagsArray site:self.siteAPIName];
+    
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     [[UIBarButtonItem appearance] setTintColor:[UIColor whiteColor]];
     
@@ -186,7 +200,8 @@
         static NSString *cellID = @"TagCell";
         UITableViewCell *tagCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
         ACTagView *tagView = [[ACTagView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 44.0)];
-
+        tagView.tag = 1;
+        
         tagView.delegate = self;
         tagView.tagsArray = @[@"Click here to add a new tag"];
         [tagCell.contentView addSubview:tagView];
@@ -254,6 +269,15 @@
     [alertView dismiss];
 }
 
+- (UIImage *)scaleToSize:(CGSize)newSize image:(UIImage *)image
+{
+    UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0);
+    [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     ACNewQuestionCell *newQuestionCell = (ACNewQuestionCell *)[tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
@@ -289,11 +313,15 @@
             NSMutableAttributedString *text = textView.attributedText.mutableCopy;
             
             NSTextAttachment *imageAttachment = [[NSTextAttachment alloc] init];
-            imageAttachment.image = [self imageWithContentsOfURL:[NSURL URLWithString:imageURLString]];
-            NSAttributedString *imageString = [NSAttributedString attributedStringWithAttachment:imageAttachment];
-            [text insertAttributedString:imageString atIndex:result.range.location - 1];
             
-            [text deleteCharactersInRange:result.range];
+            UIImage *unscaledImage = [self imageWithContentsOfURL:[NSURL URLWithString:imageURLString]];
+            CGFloat width = [UIScreen mainScreen].bounds.size.width - 10;
+            UIImage *scaledImage = [self scaleToSize:getScaledSize(unscaledImage.size, width) image:unscaledImage];
+            
+            imageAttachment.image = scaledImage;
+            NSAttributedString *imageString = [NSAttributedString attributedStringWithAttachment:imageAttachment];
+            
+            [text replaceCharactersInRange:result.range withAttributedString:imageString];
             [textView setAttributedText:text];
         }
         

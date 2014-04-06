@@ -276,7 +276,14 @@
     }];
 }
 
--(void)orientationChanged
++ (void)displayError:(NSString *)errorString
+{
+    ACAlertView *alertView = [ACAlertView alertWithTitle:@"Error" style:ACAlertViewStyleTextView delegate:nil buttonTitles:@[@"Close"]];
+    alertView.textView.text = errorString;
+    [alertView show];
+}
+
+- (void)orientationChanged
 {
     UIDeviceOrientation o = [UIDevice currentDevice].orientation;
     
