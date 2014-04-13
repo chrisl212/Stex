@@ -119,7 +119,8 @@ CGSize getScaledSize(CGSize original, CGFloat newWidth)
     UITableViewCell *tagsCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
     ACTagView *tagView = (ACTagView *)[tagsCell.contentView viewWithTag:1];
     
-    [ACPostSender postQuestionWithTitle:questionCell.questionTitleField.text body:questionCell.bodyTextView.text tags:tagView.tagsArray site:self.siteAPIName];
+    if (![ACPostSender postQuestionWithTitle:questionCell.questionTitleField.text body:questionCell.bodyTextView.text tags:tagView.tagsArray site:self.siteAPIName])
+        return;
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     [[UIBarButtonItem appearance] setTintColor:[UIColor whiteColor]];
@@ -334,6 +335,7 @@ CGSize getScaledSize(CGSize original, CGFloat newWidth)
     {
         
     }
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 @end

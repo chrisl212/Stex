@@ -10,6 +10,7 @@
 #import "ACAppDelegate.h"
 #import "ACAlertView.h"
 #import "ACNewQuestionViewController.h"
+#import "ACSearchViewController.h"
 
 #define SITE_SECTION 0
 #define ACCOUNT_AREAS_SECTION 1
@@ -23,7 +24,7 @@
     {
         self.accountAreasArray = @[@"My Questions", @"My Answers"];
         self.popularTagsArray = @[];
-        self.siteOptionsArray = @{@"Registered": @"", @"All Questions" : @"", @"New Question" : @""};
+        self.siteOptionsArray = @{@"Registered": @"", @"All Questions" : @"", @"New Question" : @"", @"Search" : @""};
         self.username = @"";
     }
     return self;
@@ -131,6 +132,10 @@
         if (!cell)
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
         cell.textLabel.text = self.siteOptionsArray.allKeys[indexPath.row];
+        if ([cell.textLabel.text isEqualToString:@"New Question"])
+            cell.selectionStyle = (self.isRegistered) ? UITableViewCellSelectionStyleGray : UITableViewCellSelectionStyleNone, cell.userInteractionEnabled = self.isRegistered;
+        else
+            cell.selectionStyle = UITableViewCellSelectionStyleGray, cell.userInteractionEnabled = YES;
         return cell;
     }
     
@@ -180,6 +185,13 @@
             ACNewQuestionViewController *newQuestionViewController = [[ACNewQuestionViewController alloc] initWithSite:self.siteAPIName];
             UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:newQuestionViewController];
             [self presentViewController:navigationController animated:YES completion:nil];
+            return;
+        }
+        else if ([cellTitle isEqualToString:@"Search"])
+        {
+            ACSearchViewController *searchViewController = [[ACSearchViewController alloc] initWithSite:self.siteAPIName];
+            [self.navigationController pushViewController:searchViewController animated:YES];
+            return;
         }
     }
     

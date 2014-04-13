@@ -12,7 +12,7 @@
 
 @implementation ACPostSender
 
-+ (void)postQuestionWithTitle:(NSString *)title body:(NSString *)body tags:(NSArray *)tags site:(NSString *)site
++ (BOOL)postQuestionWithTitle:(NSString *)title body:(NSString *)body tags:(NSArray *)tags site:(NSString *)site
 {
     ACAppDelegate *appDelegate = (ACAppDelegate *)[UIApplication sharedApplication].delegate;
     NSString *accessToken = appDelegate.accessToken;
@@ -31,7 +31,7 @@
     if (questionTitle.length < 15)
     {
         [ACAlertView displayError:@"The title must be greater than 15 characters long."];
-        return;
+        return NO;
     }
     
     NSString *requestBody = [NSString stringWithFormat:@"key=XB*FUGU0f4Ju9RCNhlRQ3A((&access_token=%@&body=%@&tags=%@&title=%@&site=%@", accessToken, body, tagString, questionTitle, site];
@@ -48,11 +48,12 @@
     if ([responseDictionary.allKeys containsObject:@"error_id"])
     {
         [ACAlertView displayError:responseDictionary[@"error_message"]];
-        return;
+        return NO;
     }
+    return YES;
 }
 
-+ (void)postCommentWithBody:(NSString *)body toPost:(NSString *)postID site:(NSString *)site
++ (BOOL)postCommentWithBody:(NSString *)body toPost:(NSString *)postID site:(NSString *)site
 {
     ACAppDelegate *appDelegate = (ACAppDelegate *)[UIApplication sharedApplication].delegate;
     NSString *accessToken = appDelegate.accessToken;
@@ -65,6 +66,7 @@
     NSString *requestBody = [NSString stringWithFormat:@"body=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((&access_token=%@&site=%@", [body stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding], accessToken, site];
     [request setHTTPBody:[requestBody dataUsingEncoding:NSUTF8StringEncoding]];
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue currentQueue] completionHandler:nil];
+    return YES;
 }
 
 @end

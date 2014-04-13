@@ -29,6 +29,7 @@
 {
     if (self = [super initWithStyle:UITableViewStyleGrouped])
     {
+        self.siteAPIName = site;
         self.answerArray = @[];
         [self.tableView registerClass:[ACQuestionDetailCell class] forCellReuseIdentifier:@"QuestionCell"];
         [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([ACQuestionDetailCell class]) bundle:nil] forCellReuseIdentifier:@"QuestionCell"];
@@ -55,6 +56,7 @@
 {
     if (self = [super initWithStyle:UITableViewStyleGrouped])
     {
+        self.siteAPIName = site;
         self.answerArray = @[];
         [self.tableView registerClass:[ACQuestionDetailCell class] forCellReuseIdentifier:@"QuestionCell"];
         [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([ACQuestionDetailCell class]) bundle:nil] forCellReuseIdentifier:@"QuestionCell"];

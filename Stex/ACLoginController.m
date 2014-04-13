@@ -62,9 +62,7 @@
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        ACAlertView *alert = [ACAlertView alertWithTitle:@"Error" style:ACAlertViewStyleTextView delegate:nil buttonTitles:@[@"Close"]];
-        alert.textView.text = [NSString stringWithFormat:@"The request failed with error:\n%@", error];
-        [alert show];
+        [ACAlertView displayError:[NSString stringWithFormat:@"The request failed with error:\n%@", error]];
     });
 }
 

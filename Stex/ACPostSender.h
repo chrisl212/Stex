@@ -10,7 +10,7 @@
 
 @interface ACPostSender : NSObject
 
-+ (void)postQuestionWithTitle:(NSString *)title body:(NSString *)body tags:(NSArray *)tags site:(NSString *)site;
-+ (void)postCommentWithBody:(NSString *)body toPost:(NSString *)postID site:(NSString *)site;
++ (BOOL)postQuestionWithTitle:(NSString *)title body:(NSString *)body tags:(NSArray *)tags site:(NSString *)site;
++ (BOOL)postCommentWithBody:(NSString *)body toPost:(NSString *)postID site:(NSString *)site;
 
 @end

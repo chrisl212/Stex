@@ -31,6 +31,7 @@
 		633D395718B9AEDE001EABFD /* ACSiteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 633D395518B9AEDE001EABFD /* ACSiteViewController.m */; };
 		633D395818B9AEDE001EABFD /* ACSiteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 633D395618B9AEDE001EABFD /* ACSiteViewController.xib */; };
 		633D395A18B9BB7C001EABFD /* open-slide@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633D395918B9BB7C001EABFD /* open-slide@2x.png */; };
+		634881FA18FAFA48006D76E2 /* ACSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 634881F918FAFA48006D76E2 /* ACSearchViewController.m */; };
 		636449B718C40D0A0059B058 /* ACUserImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 636449B618C40D0A0059B058 /* ACUserImageView.m */; };
 		636449BB18C551D90059B058 /* ACNotificationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 636449BA18C551D90059B058 /* ACNotificationController.m */; };
 		637954F518E79D6D0095530B /* ACSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 637954F418E79D6D0095530B /* ACSettingsViewController.m */; };
@@ -105,6 +106,8 @@
 		633D395518B9AEDE001EABFD /* ACSiteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACSiteViewController.m; sourceTree = "<group>"; };
 		633D395618B9AEDE001EABFD /* ACSiteViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACSiteViewController.xib; sourceTree = "<group>"; };
 		633D395918B9BB7C001EABFD /* open-slide@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "open-slide@2x.png"; sourceTree = "<group>"; };
+		634881F818FAFA48006D76E2 /* ACSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACSearchViewController.h; sourceTree = "<group>"; };
+		634881F918FAFA48006D76E2 /* ACSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACSearchViewController.m; sourceTree = "<group>"; };
 		636449B518C40D0A0059B058 /* ACUserImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACUserImageView.h; sourceTree = "<group>"; };
 		636449B618C40D0A0059B058 /* ACUserImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACUserImageView.m; sourceTree = "<group>"; };
 		636449B918C551D90059B058 /* ACNotificationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACNotificationController.h; sourceTree = "<group>"; };
@@ -310,6 +313,15 @@
 			name = "Pie Chart";
 			sourceTree = "<group>";
 		};
+		634881FB18FAFA4E006D76E2 /* Search Controller */ = {
+			isa = PBXGroup;
+			children = (
+				634881F818FAFA48006D76E2 /* ACSearchViewController.h */,
+				634881F918FAFA48006D76E2 /* ACSearchViewController.m */,
+			);
+			name = "Search Controller";
+			sourceTree = "<group>";
+		};
 		636449B818C551C00059B058 /* Notification Controller */ = {
 			isa = PBXGroup;
 			children = (
@@ -343,6 +355,7 @@
 		63A3F54D18BA84D300D159CF /* Site Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				634881FB18FAFA4E006D76E2 /* Search Controller */,
 				63A3F54A18BA84CC00D159CF /* ACSiteSlideController.h */,
 				63A3F54B18BA84CC00D159CF /* ACSiteSlideController.m */,
 				63C5177C18BBEFDF006420A4 /* ACTagView.h */,
@@ -529,6 +542,7 @@
 				6333F47D18B7F7CF00DDC490 /* ACAppDelegate.m in Sources */,
 				633D395718B9AEDE001EABFD /* ACSiteViewController.m in Sources */,
 				6333F48618B7F7CF00DDC490 /* ACSummaryViewController.m in Sources */,
+				634881FA18FAFA48006D76E2 /* ACSearchViewController.m in Sources */,
 				6333F4CF18B811E600DDC490 /* ACAlertView.m in Sources */,
 				63C5179718BD7FD2006420A4 /* ACAnswersViewController.m in Sources */,
 				6333F47918B7F7CF00DDC490 /* main.m in Sources */,
