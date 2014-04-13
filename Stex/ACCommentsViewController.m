@@ -11,6 +11,7 @@
 #import "ACAlertView.h"
 #import "ACPostSender.h"
 #import "Bypass.h"
+#import "NSString+HTML.h"
 
 #define NEW_COMMENT_SECTION 0
 #define COMMENTS_SECTION 1
@@ -144,6 +145,7 @@
     cell.dateLabel.text = [formatter stringFromDate:creationDate];
     
     NSString *markdownText = commentDictionary[@"body_markdown"];
+    markdownText = [markdownText stringByDecodingHTMLEntities];
     
     BPParser *parser = [[BPParser alloc] init];
     BPDocument *document = [parser parse:markdownText];

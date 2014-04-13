@@ -8,6 +8,7 @@
 
 @import UIKit;
 #import "ACUserImageView.h"
+#import "BPMarkdownView.h"
 
 @protocol ACPostCellDelegate <NSObject>
 
@@ -31,7 +32,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *downvoteButton;
 @property (weak, nonatomic) IBOutlet UILabel *voteCountLabel;
 @property (weak, nonatomic) IBOutlet UILabel *questionTitleLabel;
-@property (weak, nonatomic) IBOutlet UITextView *questionMarkdownView;
+@property (weak, nonatomic) IBOutlet BPMarkdownView *questionMarkdownView;
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *userReputationLabel;
 @property (weak, nonatomic) IBOutlet UILabel *viewsLabel;

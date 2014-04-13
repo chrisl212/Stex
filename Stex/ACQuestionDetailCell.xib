@@ -81,12 +81,6 @@
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" text="Body text" translatesAutoresizingMaskIntoConstraints="NO" id="Biw-3b-91l">
-                        <rect key="frame" x="65" y="74" width="255" height="197"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="Verdana" family="Verdana" pointSize="16"/>
-                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                    </textView>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j6F-GH-NFX">
                         <rect key="frame" x="0.0" y="323" width="91" height="51"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -98,12 +92,16 @@
                             <action selector="openComments:" destination="4pY-Fc-RQT" eventType="touchUpInside" id="gr5-q7-KVf"/>
                         </connections>
                     </button>
+                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YWH-Dj-uhF" customClass="BPMarkdownView">
+                        <rect key="frame" x="73" y="65" width="247" height="202"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    </scrollView>
                 </subviews>
             </tableViewCellContentView>
             <connections>
                 <outlet property="downvoteButton" destination="IWx-A3-0WS" id="jdi-IL-h6A"/>
                 <outlet property="postIDLabel" destination="njz-tv-Es0" id="bTR-NA-8Ry"/>
-                <outlet property="questionMarkdownView" destination="Biw-3b-91l" id="nWj-yW-TLU"/>
+                <outlet property="questionMarkdownView" destination="YWH-Dj-uhF" id="eMx-Hi-uhN"/>
                 <outlet property="questionTitleLabel" destination="xBH-ef-QQ6" id="sIX-ym-Vip"/>
                 <outlet property="upvoteButton" destination="1nU-Sn-qDs" id="czR-PK-6UX"/>
                 <outlet property="userAvatarImageView" destination="3Rd-m9-q0d" id="EFW-VW-rsG"/>

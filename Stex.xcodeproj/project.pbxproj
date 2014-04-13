@@ -32,6 +32,7 @@
 		633D395818B9AEDE001EABFD /* ACSiteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 633D395618B9AEDE001EABFD /* ACSiteViewController.xib */; };
 		633D395A18B9BB7C001EABFD /* open-slide@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 633D395918B9BB7C001EABFD /* open-slide@2x.png */; };
 		634881FA18FAFA48006D76E2 /* ACSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 634881F918FAFA48006D76E2 /* ACSearchViewController.m */; };
+		6348820318FB1184006D76E2 /* NSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = 6348820218FB1184006D76E2 /* NSString+HTML.m */; };
 		636449B718C40D0A0059B058 /* ACUserImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 636449B618C40D0A0059B058 /* ACUserImageView.m */; };
 		636449BB18C551D90059B058 /* ACNotificationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 636449BA18C551D90059B058 /* ACNotificationController.m */; };
 		637954F518E79D6D0095530B /* ACSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 637954F418E79D6D0095530B /* ACSettingsViewController.m */; };
@@ -108,6 +109,8 @@
 		633D395918B9BB7C001EABFD /* open-slide@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "open-slide@2x.png"; sourceTree = "<group>"; };
 		634881F818FAFA48006D76E2 /* ACSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACSearchViewController.h; sourceTree = "<group>"; };
 		634881F918FAFA48006D76E2 /* ACSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACSearchViewController.m; sourceTree = "<group>"; };
+		6348820118FB1184006D76E2 /* NSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+HTML.h"; sourceTree = "<group>"; };
+		6348820218FB1184006D76E2 /* NSString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+HTML.m"; sourceTree = "<group>"; };
 		636449B518C40D0A0059B058 /* ACUserImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACUserImageView.h; sourceTree = "<group>"; };
 		636449B618C40D0A0059B058 /* ACUserImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACUserImageView.m; sourceTree = "<group>"; };
 		636449B918C551D90059B058 /* ACNotificationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACNotificationController.h; sourceTree = "<group>"; };
@@ -355,14 +358,14 @@
 		63A3F54D18BA84D300D159CF /* Site Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				63C5177B18BBEFB4006420A4 /* Question Cells */,
+				637954FA18E861FC0095530B /* Comments */,
+				63A6AF5618EE40A300493ACD /* New Question */,
 				634881FB18FAFA4E006D76E2 /* Search Controller */,
 				63A3F54A18BA84CC00D159CF /* ACSiteSlideController.h */,
 				63A3F54B18BA84CC00D159CF /* ACSiteSlideController.m */,
 				63C5177C18BBEFDF006420A4 /* ACTagView.h */,
 				63C5177D18BBEFDF006420A4 /* ACTagView.m */,
-				63C5177B18BBEFB4006420A4 /* Question Cells */,
-				637954FA18E861FC0095530B /* Comments */,
-				63A6AF5618EE40A300493ACD /* New Question */,
 				63C5175618BB0D77006420A4 /* ACQuestionViewController.h */,
 				63C5175718BB0D77006420A4 /* ACQuestionViewController.m */,
 				63C5179518BD7FD2006420A4 /* ACAnswersViewController.h */,
@@ -377,6 +380,8 @@
 		63A6AF4B18E8C3AA00493ACD /* Bypass (markdown) */ = {
 			isa = PBXGroup;
 			children = (
+				6348820118FB1184006D76E2 /* NSString+HTML.h */,
+				6348820218FB1184006D76E2 /* NSString+HTML.m */,
 				63A6AF3B18E8C3A400493ACD /* array.h */,
 				63A6AF3C18E8C3A400493ACD /* BPAttributedStringConverter.h */,
 				63A6AF3D18E8C3A400493ACD /* BPDisplaySettings.h */,
@@ -558,6 +563,7 @@
 				63C5178C18BC30A3006420A4 /* ACInboxCell.m in Sources */,
 				6333F4A818B7FA0600DDC490 /* ACLoginController.m in Sources */,
 				63C5179218BD7B31006420A4 /* ACAnswerCell.m in Sources */,
+				6348820318FB1184006D76E2 /* NSString+HTML.m in Sources */,
 				63C5175D18BB100F006420A4 /* ACQuestionDetailCell.m in Sources */,
 				63C5178918BC2DFE006420A4 /* ACInboxController.m in Sources */,
 				63ED839E18F2172200821948 /* ACPostSender.m in Sources */,

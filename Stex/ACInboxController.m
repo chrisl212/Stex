@@ -24,8 +24,7 @@
 
 - (id)init
 {
-    self = [super init];
-    if (self)
+    if (self = [super init])
     {
         ACAppDelegate *appDelegate = (ACAppDelegate *)[[UIApplication sharedApplication] delegate];
         NSString *accessToken = appDelegate.accessToken;

@@ -13,6 +13,7 @@
 #import "ACAnswerCell.h"
 #import "ACSummaryViewController.h"
 #import "ACCommentsViewController.h"
+#import "NSString+HTML.h"
 
 #define QUESTION_SECTION 0
 #define ANSWER_SECTION 1
@@ -214,14 +215,8 @@
             cell.voteCountLabel.textColor = [UIColor blackColor];
         
         NSString *htmlString = self.questionInfoDictionary[@"body"];
-        
-        BPParser *parser = [[BPParser alloc] init];
-        BPDocument *document = [parser parse:htmlString];
-        
-        BPAttributedStringConverter *converter = [[BPAttributedStringConverter alloc] init];
-        NSAttributedString *attributedText = [converter convertDocument:document];
-        
-        cell.questionMarkdownView.attributedText = attributedText;
+        htmlString = [htmlString stringByDecodingHTMLEntities];
+        [cell.questionMarkdownView setMarkdown:htmlString];
         
         cell.delegate = self;
         return cell;
@@ -257,7 +252,8 @@
         cell.voteCountLabel.textColor = [UIColor blackColor];
     
     NSString *markdownText = answerDictionary[@"body_markdown"];
-
+    markdownText = [markdownText stringByDecodingHTMLEntities];
+    
     BPParser *parser = [[BPParser alloc] init];
     BPDocument *document = [parser parse:markdownText];
     

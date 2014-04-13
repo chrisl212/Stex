@@ -13,6 +13,7 @@
 #import "ACQuestionViewController.h"
 #import "ACAppDelegate.h"
 #import "ACAnswersViewController.h"
+#import "NSString+HTML.h"
 
 @implementation ACSiteViewController
 
@@ -425,7 +426,7 @@
     if (!cell)
         cell = [[ACQuestionCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
     
-    cell.questionTextView.text = [self.questionsArray[indexPath.row] objectForKey:@"title"];
+    cell.questionTextView.text = [[self.questionsArray[indexPath.row] objectForKey:@"title"] stringByDecodingHTMLEntities];
     cell.usernameLabel.text = [[self.questionsArray[indexPath.row] objectForKey:@"owner"] objectForKey:@"display_name"];
     cell.userReputationLabel.text = [[[self.questionsArray[indexPath.row] objectForKey:@"owner"] objectForKey:@"reputation"] stringValue];
     cell.tagView.tagsArray = self.questionsArray[indexPath.row][@"tags"];
