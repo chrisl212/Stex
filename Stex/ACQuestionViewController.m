@@ -19,6 +19,9 @@
 #define ANSWER_SECTION 1
 
 @implementation ACQuestionViewController
+{
+    NSString *user; //used when a user image view is clicked; see down by - userSelected:
+}
 
 - (UIImage *)imageWithContentsOfURL:(NSURL *)url
 {
@@ -149,10 +152,21 @@
 - (void)userSelected:(NSNotification *)notif
 {
     NSString *userID = notif.object;
-    ACSummaryViewController *summaryViewController = [[self.navigationController viewControllers] objectAtIndex:0];
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    user = userID;
+    ACSummaryViewController *summaryViewController = [[ACSummaryViewController alloc] init];
+    summaryViewController->isMainUser = NO;
+    self.navigationController.delegate = self;
+    [self.navigationController pushViewController:summaryViewController animated:YES];
     [summaryViewController displayUser:userID site:self.siteAPIName];
-    [summaryViewController slideMenu:nil];
+}
+
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    if ([viewController isKindOfClass:[ACSummaryViewController class]])
+    {
+        ACSummaryViewController *summaryViewController = (ACSummaryViewController *)viewController;
+        [summaryViewController displayUser:user site:self.siteAPIName];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated

@@ -15,6 +15,10 @@
 @class ACAlertView;
 
 @interface ACSummaryViewController : UIViewController <NSURLConnectionDataDelegate, NSURLConnectionDelegate, XYPieChartDataSource, XYPieChartDelegate, ACSlideControllerDelegate>
+{
+    @public
+    BOOL isMainUser;
+}
 
 @property (weak, nonatomic) IBOutlet UIImageView *avatarImageView;
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
@@ -28,9 +32,9 @@
 @property (strong, nonatomic) ACSiteSlideController *siteSlideController;
 
 - (void)displayUser:(NSString *)userID site:(NSString *)site;
-- (IBAction)logOut:(id)sender;
+- (void)logOut;
 - (IBAction)displayAboutMe:(id)sender;
-- (IBAction)slideMenu:(id)sender;
+- (void)slideMenu;
 - (void)slideSiteMenu;
 - (void)fetchUserInfo;
 

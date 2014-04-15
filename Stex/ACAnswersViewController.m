@@ -34,7 +34,7 @@
             NSInteger pageNumber = 2;
             while (hasMore)
             {
-                requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/me/answers?page=%d&order=desc&sort=creation&site=%@&access_token=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((&filter=!9WgJfjxe6", pageNumber, site, accessToken];
+                requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/me/answers?page=%ld&order=desc&sort=creation&site=%@&access_token=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((&filter=!9WgJfjxe6", (long)pageNumber, site, accessToken];
                 requestData = [NSData dataWithContentsOfURL:[NSURL URLWithString:requestURLString]];
                 wrapper = [NSJSONSerialization JSONObjectWithData:requestData options:kNilOptions error:nil];
                 items = wrapper[@"items"];

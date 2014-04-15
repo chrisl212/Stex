@@ -14,6 +14,13 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
+    ACSummaryViewController *summaryViewController = [[ACSummaryViewController alloc] init];
+    summaryViewController->isMainUser = YES;
+    self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:summaryViewController];
+    summaryViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"open-slide.png"] style:UIBarButtonItemStylePlain target:summaryViewController action:@selector(slideMenu)];
+
     self.window.tintColor = [UIColor whiteColor];
     [[UIBarButtonItem appearance] setTintColor:[UIColor whiteColor]];
     if (!self.accessToken)
@@ -37,13 +44,6 @@
     self.accessToken = code;
     dispatch_async(dispatch_get_main_queue(), ^{
         [(UINavigationController *)self.window.rootViewController popToRootViewControllerAnimated:YES];
-        ACAlertView *alertView = [ACAlertView alertWithTitle:@"Loading..." style:ACAlertViewStyleSpinner delegate:nil buttonTitles:nil];
-        [alertView show];
-        ACSummaryViewController *vc = [[(UINavigationController *)self.window.rootViewController viewControllers] objectAtIndex:0];
-        vc.alertView = alertView;
-        dispatch_async(dispatch_queue_create("com.a-cstudios.userinfoload", NULL), ^{
-            [vc fetchUserInfo];
-        });
     });
 }
 

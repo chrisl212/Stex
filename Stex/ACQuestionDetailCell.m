@@ -40,7 +40,7 @@
         if ([self.delegate respondsToSelector:@selector(userDidDownvoteQuestion:)])
             if (![self.delegate userDidDownvoteQuestion:self.postIDLabel.text])
             {
-                self.voteCountLabel.text = [NSString stringWithFormat:@"%d", voteCount];
+                self.voteCountLabel.text = [NSString stringWithFormat:@"%ld", (long)voteCount];
                 [(UIButton *)sender setSelected:NO];
             }
     }
@@ -59,7 +59,7 @@
         if ([self.delegate respondsToSelector:@selector(userDidDownvoteAnswer:)])
             if (![self.delegate userDidDownvoteAnswer:self.postIDLabel.text])
             {
-                self.voteCountLabel.text = [NSString stringWithFormat:@"%d", voteCount];
+                self.voteCountLabel.text = [NSString stringWithFormat:@"%ld", (long)voteCount];
                 [(UIButton *)sender setSelected:NO];
             }
     }
@@ -87,7 +87,7 @@
         if ([self.delegate respondsToSelector:@selector(userDidUpvoteQuestion:)])
             if (![self.delegate userDidUpvoteQuestion:self.postIDLabel.text])
             {
-                self.voteCountLabel.text = [NSString stringWithFormat:@"%d", voteCount];
+                self.voteCountLabel.text = [NSString stringWithFormat:@"%ld", (long)voteCount];
                 [(UIButton *)sender setSelected:NO];
             }
     }
@@ -106,7 +106,7 @@
         if ([self.delegate respondsToSelector:@selector(userDidUpvoteAnswer:)])
             if (![self.delegate userDidUpvoteAnswer:self.postIDLabel.text])
             {
-                self.voteCountLabel.text = [NSString stringWithFormat:@"%d", voteCount];
+                self.voteCountLabel.text = [NSString stringWithFormat:@"%ld", (long)voteCount];
                 [(UIButton *)sender setSelected:NO];
             }
     }

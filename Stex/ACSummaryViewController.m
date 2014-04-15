@@ -26,22 +26,57 @@
     CGPoint originalSiteSlideCenter;
 }
 
+- (id)init
+{
+    if (self = [super initWithNibName:NSStringFromClass([self class]) bundle:nil])
+    {
+        ACAppDelegate *appDelegate = (ACAppDelegate *)[[UIApplication sharedApplication] delegate];
+        if (appDelegate.accessToken && isMainUser)
+        {
+            ACAlertView *alertView = [ACAlertView alertWithTitle:@"Loading..." style:ACAlertViewStyleSpinner delegate:nil buttonTitles:nil];
+            [alertView show];
+            
+            dispatch_async(dispatch_queue_create("com.ac.infoload", NULL), ^{
+                [self fetchUserInfo];
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    [alertView dismiss];
+                });
+            });
+        }
+    }
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    ACAppDelegate *appDelegate = (ACAppDelegate *)[[UIApplication sharedApplication] delegate];
+    if (appDelegate.accessToken && !self.aboutUser && isMainUser)
+    {
+        ACAlertView *alertView = [ACAlertView alertWithTitle:@"Loading..." style:ACAlertViewStyleSpinner delegate:nil buttonTitles:nil];
+        [alertView show];
+        
+        dispatch_async(dispatch_queue_create("com.ac.infoload", NULL), ^{
+            [self fetchUserInfo];
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                [alertView dismiss];
+            });
+        });
+    }
     
     self.badgeCounts = [NSMutableArray array];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     [[UIBarButtonItem appearance] setTintColor:[UIColor whiteColor]];
 
-    UISwipeGestureRecognizer *swipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(slideMenu:)];
+    UISwipeGestureRecognizer *swipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(slideMenu)];
     swipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
     [self.contentView addGestureRecognizer:swipeGestureRecognizer]; //slide in the main menu
     
     [self.avatarImageView.layer setMasksToBounds:YES]; //rounds corners of image view
     [self.avatarImageView.layer setCornerRadius:15.0]; //rounds corners of image view
     
-    UIBarButtonItem *logOut = [[UIBarButtonItem alloc] initWithTitle:@"Log Out" style:UIBarButtonItemStyleBordered target:self action:@selector(logOut:)]; //adds button to log out on right corner of navigation bar
+    UIBarButtonItem *logOut = [[UIBarButtonItem alloc] initWithTitle:@"Log Out" style:UIBarButtonItemStyleBordered target:self action:@selector(logOut)]; //adds button to log out on right corner of navigation bar
     [logOut setTintColor:[UIColor whiteColor]];
     [logOut setTitleTextAttributes:@{NSFontAttributeName : [UIFont fontWithName:[[NSUserDefaults standardUserDefaults] objectForKey:@"Font"] size:14]} forState:UIControlStateNormal];
     [self.navigationItem setRightBarButtonItem:logOut animated:YES];
@@ -61,7 +96,7 @@
     [self.view insertSubview:self.slideViewController.view atIndex:0];
     [self addChildViewController:self.slideViewController];
     
-    UISwipeGestureRecognizer *slideGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(slideMenu:)];
+    UISwipeGestureRecognizer *slideGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(slideMenu)];
     slideGestureRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
     [self.slideViewController.view addGestureRecognizer:slideGestureRecognizer];
     
@@ -105,6 +140,7 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
     [self loadFonts];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
     self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:rgb(41.0) green:rgb(75.0) blue:rgb(125.0) alpha:1.0];
@@ -173,7 +209,7 @@
         silverCount += silver.integerValue;
         goldCount += gold.integerValue;
     }
-    self.badgeCounts = [NSMutableArray arrayWithArray:@[[NSNumber numberWithInteger:bronzeCount], [NSNumber numberWithInteger:silverCount], [NSNumber numberWithInteger:goldCount]]];
+    self.badgeCounts = [NSMutableArray arrayWithArray:@[[NSNumber numberWithInteger:bronzeCount], [NSNumber numberWithInteger:goldCount], [NSNumber numberWithInteger:silverCount]]];
 
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.pieChart reloadData];
@@ -187,7 +223,7 @@
     });
 }
 
-- (void)logOut:(id)sender
+- (void)logOut
 {
     NSString *accessToken = [(ACAppDelegate *)[UIApplication sharedApplication].delegate accessToken];
     NSString *deauthenticateURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/access-tokens/%@/invalidate", accessToken];
@@ -215,7 +251,7 @@
     [alertView show];
 }
 
-- (void)slideMenu:(id)sender
+- (void)slideMenu
 {
     if (self.contentView.center.x != SLIDING_X_VAL)
     {
@@ -280,11 +316,11 @@
             break;
             
         case 1:
-            return [UIColor colorWithRed:rgb(204.0) green:rgb(204.0) blue:rgb(204.0) alpha:1.0];
+            return [UIColor yellowColor];
             break;
             
         case 2:
-            return [UIColor yellowColor];
+            return [UIColor colorWithRed:rgb(204.0) green:rgb(204.0) blue:rgb(204.0) alpha:1.0];
             break;
             
         default:
@@ -311,12 +347,12 @@
     siteViewController.view.frame = self.contentView.bounds;
     [self addChildViewController:siteViewController];
     [self.contentView addSubview:siteViewController.view];
-    [self slideMenu:nil];
+    [self slideMenu];
 }
 
 - (void)userInfoCellWasSelected:(NSString *)info
 {
-    UIBarButtonItem *logOut = [[UIBarButtonItem alloc] initWithTitle:@"Log Out" style:UIBarButtonItemStyleBordered target:self action:@selector(logOut:)];
+    UIBarButtonItem *logOut = [[UIBarButtonItem alloc] initWithTitle:@"Log Out" style:UIBarButtonItemStyleBordered target:self action:@selector(logOut)];
     [logOut setTintColor:[UIColor whiteColor]];
     [logOut setTitleTextAttributes:@{NSFontAttributeName: [UIFont fontWithName:[[NSUserDefaults standardUserDefaults] objectForKey:@"Font"] size:14]} forState:UIControlStateNormal];
     [self.navigationItem setRightBarButtonItem:logOut animated:YES];
@@ -353,7 +389,7 @@
         [self.contentView addSubview:settingsViewController.view];
     }
 
-    [self slideMenu:nil];
+    [self slideMenu];
 }
 
 #pragma mark -
@@ -383,29 +419,8 @@
     });
     self.aboutUser = items[@"about_me"];
     
-    /* Fetch total user rep and total badge count using associated accounts */
-    NSString *associatedRequestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/users/%@/associated?access_token=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((", userID, accessToken];
-    NSData *associatedInfo = [NSData dataWithContentsOfURL:[NSURL URLWithString:associatedRequestURLString]];
-    NSDictionary *associatedWrapper = [NSJSONSerialization JSONObjectWithData:associatedInfo options:NSJSONReadingMutableLeaves error:nil];
-    NSArray *allAccounts = [associatedWrapper objectForKey:@"items"];
-    NSInteger finalReputation = 0;
-    NSInteger goldCount, bronzeCount, silverCount;
-    goldCount = 0;
-    bronzeCount = 0;
-    silverCount = 0;
-    for (NSDictionary *accountDictionary in allAccounts)
-    {
-        NSNumber *rep = [accountDictionary objectForKey:@"reputation"];
-        finalReputation += rep.integerValue;
-        
-        NSNumber *bronze = [[accountDictionary objectForKey:@"badge_counts"] objectForKey:@"bronze"];
-        NSNumber *silver = [[accountDictionary objectForKey:@"badge_counts"] objectForKey:@"silver"];
-        NSNumber *gold = [[accountDictionary objectForKey:@"badge_counts"] objectForKey:@"gold"];
-        bronzeCount += bronze.integerValue;
-        silverCount += silver.integerValue;
-        goldCount += gold.integerValue;
-    }
-    self.badgeCounts = [NSMutableArray arrayWithArray:@[[NSNumber numberWithInteger:bronzeCount], [NSNumber numberWithInteger:silverCount], [NSNumber numberWithInteger:goldCount]]];
+    NSInteger finalReputation = [items[@"reputation"] integerValue];
+    self.badgeCounts = @[items[@"badge_counts"][@"bronze"], items[@"badge_counts"][@"gold"], items[@"badge_counts"][@"silver"]].mutableCopy;
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.pieChart reloadData];
@@ -417,7 +432,6 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.alertView dismiss];
     });
-    [self userInfoCellWasSelected:nil];
 }
 
 @end
