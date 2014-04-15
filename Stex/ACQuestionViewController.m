@@ -206,7 +206,7 @@
         ACQuestionDetailCell *cell = [tableView dequeueReusableCellWithIdentifier:questionCellID forIndexPath:indexPath];
         if (!cell)
             cell = [[ACQuestionDetailCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:questionCellID];
-        cell.questionTitleLabel.text = self.questionInfoDictionary[@"title"];
+        cell.questionTitleLabel.text = [self.questionInfoDictionary[@"title"] stringByDecodingHTMLEntities];
         cell.usernameLabel.text = self.questionInfoDictionary[@"username"];
         cell.userAvatarImageView.image = self.questionInfoDictionary[@"avatar"];
         cell.userAvatarImageView.userID = self.questionInfoDictionary[@"user_id"];

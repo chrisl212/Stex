@@ -11,6 +11,11 @@
 #import "ACQuestionViewController.h"
 
 #define rgb(x) x/255.0
+#define ALL_SECTION 0
+#define QUESTION_SECTION 1
+#define TAG_SECTION 2
+
+NSInteger searchScope;
 
 @implementation ACSearchViewController
 
@@ -36,7 +41,7 @@
     UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 90.0)];
     searchBar.delegate = self;
     [searchBar setShowsScopeBar:YES];
-    searchBar.scopeButtonTitles = @[@"Questions", @"Answers"];
+    searchBar.scopeButtonTitles = @[@"All", @"Questions", @"Tags"];
     searchBar.barTintColor = [UIColor colorWithRed:rgb(41.0) green:rgb(75.0) blue:rgb(125.0) alpha:1.0];
 
     self.tableView.tableHeaderView = searchBar;
@@ -48,14 +53,43 @@
 
 #pragma mark - UISearchBarDelegate
 
+- (void)searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope
+{
+    searchScope = selectedScope;
+    if (selectedScope == QUESTION_SECTION)
+        searchBar.placeholder = @"Search for questions";
+    else if (selectedScope == ALL_SECTION)
+        searchBar.placeholder = @"Search through all posts";
+    else
+        searchBar.placeholder = @"Separate tags with a semicolon ex. ios;c";
+}
+
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    NSString *requestURLString = [[NSString stringWithFormat:@"https://api.stackexchange.com/2.2/search?order=desc&sort=activity&intitle=%@&site=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((", searchBar.text, self.siteAPIName] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSData *requestData = [NSData dataWithContentsOfURL:[NSURL URLWithString:requestURLString]];
-    NSDictionary *rootDictionary = [NSJSONSerialization JSONObjectWithData:requestData options:kNilOptions error:nil];
-    self.searchItems = rootDictionary[@"items"];
+    if (searchScope == QUESTION_SECTION)
+    {
+        NSString *requestURLString = [[NSString stringWithFormat:@"https://api.stackexchange.com/2.2/search?order=desc&sort=activity&intitle=%@&site=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((", searchBar.text, self.siteAPIName] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSData *requestData = [NSData dataWithContentsOfURL:[NSURL URLWithString:requestURLString]];
+        NSDictionary *rootDictionary = [NSJSONSerialization JSONObjectWithData:requestData options:kNilOptions error:nil];
+        self.searchItems = rootDictionary[@"items"];
+        
+        [self.tableView reloadData];
+    }
+    else if (searchScope == ALL_SECTION)
+    {
+        NSString *requestURLString = [[NSString stringWithFormat:@"https://api.stackexchange.com/2.2/search/excerpts?order=desc&sort=activity&q=%@&site=%@", searchBar.text, self.siteAPIName] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSData *requestData = [NSData dataWithContentsOfURL:[NSURL URLWithString:requestURLString]];
+        NSDictionary *rootDictionary = [NSJSONSerialization JSONObjectWithData:requestData options:kNilOptions error:nil];
+        self.searchItems = rootDictionary[@"items"];
+        
+        [self.tableView reloadData];
+    }
+    else
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"SearchTag" object:[searchBar.text stringByReplacingOccurrencesOfString:@" " withString:@""]];
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 
-    [self.tableView reloadData];
     [searchBar resignFirstResponder];
 }
 
@@ -82,7 +116,17 @@
     questionCell.answerCountLabel.text = [questionDictionary[@"answer_count"] stringValue];
     questionCell.usernameLabel.text = questionDictionary[@"owner"][@"display_name"];
     
-    questionCell.questionTextView.text = questionDictionary[@"title"];
+    NSString *titleString = questionDictionary[@"title"];
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:[NSString stringWithFormat:@"(%@)", [[(UISearchBar *)self.tableView.tableHeaderView text] lowercaseString]] options:kNilOptions error:nil];
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:titleString attributes:@{NSFontAttributeName: [UIFont fontWithName:[[NSUserDefaults standardUserDefaults] objectForKey:@"Font"] size:questionCell.questionTextView.font.pointSize]}];
+    titleString = [titleString lowercaseString];
+    
+    for (NSTextCheckingResult *result in [regex matchesInString:titleString options:kNilOptions range:NSMakeRange(0, titleString.length)])
+    {
+        [attributedString addAttributes:@{NSBackgroundColorAttributeName: [UIColor redColor]} range:result.range];
+    }
+    
+    questionCell.questionTextView.attributedText = attributedString;
     questionCell.userReputationLabel.text = [questionDictionary[@"owner"][@"reputation"] stringValue];
     questionCell.userAvatarImageView.image = [UIImage imageNamed:@"Icon.png"];
     questionCell.tagView.tagsArray = questionDictionary[@"tags"];

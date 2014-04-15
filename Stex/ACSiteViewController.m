@@ -142,6 +142,13 @@
     
     [self.tableView registerClass:[ACQuestionCell class] forCellReuseIdentifier:@"QuestionCell"];
     [self.tableView registerNib:[UINib nibWithNibName:NSStringFromClass([ACQuestionCell class]) bundle:nil] forCellReuseIdentifier:@"QuestionCell"];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openTags:) name:@"SearchTag" object:nil];
+}
+
+- (void)openTags:(NSNotification *)notif
+{
+    [self tagWasSelected:notif.object];
 }
 
 - (void)didReceiveMemoryWarning
@@ -166,8 +173,7 @@
         NSMutableArray *questionsArray = [NSMutableArray array];
         NSMutableArray *avatarURLSArray = [NSMutableArray array];
         NSString *questionsRequestURLString = [[NSString stringWithFormat:@"https://api.stackexchange.com/2.2/search?site=%@&order=desc&sort=creation&tagged=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((", self.siteAPIName, tag] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        if ([tag isEqualToString:@"c++"])
-            questionsRequestURLString = [questionsRequestURLString stringByReplacingOccurrencesOfString:@"++" withString:@"%2b%2b"];
+        questionsRequestURLString = [questionsRequestURLString stringByReplacingOccurrencesOfString:@"c++" withString:@"c%2b%2b"];
         
         NSData *questionData = [NSData dataWithContentsOfURL:[NSURL URLWithString:questionsRequestURLString]];
         NSDictionary *questionsWrapper = [NSJSONSerialization JSONObjectWithData:questionData options:NSJSONReadingMutableLeaves error:nil];

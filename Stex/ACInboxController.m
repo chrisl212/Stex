@@ -120,6 +120,7 @@
     ACQuestionViewController *questionViewController = [[ACQuestionViewController alloc] initWithQuestionID:questionID site:site];
     questionViewController.siteAPIName = site;
     [self.parentViewController.navigationController pushViewController:questionViewController animated:YES];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 @end
