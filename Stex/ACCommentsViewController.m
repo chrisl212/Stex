@@ -56,6 +56,14 @@
     
     NSString *requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/%@/%@/comments?order=desc&sort=creation&site=%@&filter=!9WgJfnTX4&key=XB*FUGU0f4Ju9RCNhlRQ3A((", postTypeString, self.postID, self.siteAPIName];
     NSData *requestData = [NSData dataWithContentsOfURL:[NSURL URLWithString:requestURLString]];
+    
+    if (!requestData)
+    {
+        ACAlertView *alertView = [ACAlertView alertWithTitle:@"The data was nil" style:ACAlertViewStyleProgressView delegate:nil buttonTitles:@[@"Close"]];
+        [alertView show];
+        return;
+    }
+    
     NSDictionary *wrapper = [NSJSONSerialization JSONObjectWithData:requestData options:NSJSONReadingMutableLeaves error:nil];
     
     NSArray *items = wrapper[@"items"];

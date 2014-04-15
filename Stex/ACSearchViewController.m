@@ -9,6 +9,7 @@
 #import "ACSearchViewController.h"
 #import "ACQuestionCell.h"
 #import "ACQuestionViewController.h"
+#import "ACAlertView.h"
 
 #define rgb(x) x/255.0
 #define ALL_SECTION 0
@@ -41,6 +42,7 @@ NSInteger searchScope;
     UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 90.0)];
     searchBar.delegate = self;
     [searchBar setShowsScopeBar:YES];
+    searchBar.placeholder = @"Search through all posts";
     searchBar.scopeButtonTitles = @[@"All", @"Questions", @"Tags"];
     searchBar.barTintColor = [UIColor colorWithRed:rgb(41.0) green:rgb(75.0) blue:rgb(125.0) alpha:1.0];
 
@@ -70,6 +72,16 @@ NSInteger searchScope;
     {
         NSString *requestURLString = [[NSString stringWithFormat:@"https://api.stackexchange.com/2.2/search?order=desc&sort=activity&intitle=%@&site=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((", searchBar.text, self.siteAPIName] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         NSData *requestData = [NSData dataWithContentsOfURL:[NSURL URLWithString:requestURLString]];
+        
+        if (!requestData)
+        {
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                ACAlertView *alertView = [ACAlertView alertWithTitle:@"The data was nil" style:ACAlertViewStyleProgressView delegate:nil buttonTitles:@[@"Close"]];
+                [alertView show];
+            });
+            return;
+        }
+        
         NSDictionary *rootDictionary = [NSJSONSerialization JSONObjectWithData:requestData options:kNilOptions error:nil];
         self.searchItems = rootDictionary[@"items"];
         
@@ -79,6 +91,16 @@ NSInteger searchScope;
     {
         NSString *requestURLString = [[NSString stringWithFormat:@"https://api.stackexchange.com/2.2/search/excerpts?order=desc&sort=activity&q=%@&site=%@", searchBar.text, self.siteAPIName] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         NSData *requestData = [NSData dataWithContentsOfURL:[NSURL URLWithString:requestURLString]];
+        
+        if (!requestData)
+        {
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                ACAlertView *alertView = [ACAlertView alertWithTitle:@"The data was nil" style:ACAlertViewStyleProgressView delegate:nil buttonTitles:@[@"Close"]];
+                [alertView show];
+            });
+            return;
+        }
+        
         NSDictionary *rootDictionary = [NSJSONSerialization JSONObjectWithData:requestData options:kNilOptions error:nil];
         self.searchItems = rootDictionary[@"items"];
         

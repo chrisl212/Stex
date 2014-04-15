@@ -26,6 +26,16 @@
 - (UIImage *)imageWithContentsOfURL:(NSURL *)url
 {
     NSData *imageData = [NSData dataWithContentsOfURL:url];
+    
+    if (!imageData)
+    {
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            ACAlertView *alertView = [ACAlertView alertWithTitle:@"The data was nil" style:ACAlertViewStyleProgressView delegate:nil buttonTitles:@[@"Close"]];
+            [alertView show];
+        });
+        return nil;
+    }
+    
     return [UIImage imageWithData:imageData];
 }
 
@@ -46,6 +56,16 @@
 
             NSString *requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/answers/%@?order=desc&sort=activity&site=%@&filter=!azbR8Gjc6czKz.&key=XB*FUGU0f4Ju9RCNhlRQ3A((&access_token=%@", answer, site, accessToken];
             NSData *requestData = [NSData dataWithContentsOfURL:[NSURL URLWithString:requestURLString]];
+            
+            if (!requestData)
+            {
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    ACAlertView *alertView = [ACAlertView alertWithTitle:@"The data was nil" style:ACAlertViewStyleProgressView delegate:nil buttonTitles:@[@"Close"]];
+                    [alertView show];
+                });
+                return;
+            }
+            
             NSDictionary *wrapper = [NSJSONSerialization JSONObjectWithData:requestData options:NSJSONReadingMutableLeaves error:nil];
             NSDictionary *items = [[wrapper objectForKey:@"items"] objectAtIndex:0];
 
@@ -73,6 +93,16 @@
             
             NSString *requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/questions/%@?order=desc&sort=activity&site=%@&filter=!azbR7jYqz354wI&key=XB*FUGU0f4Ju9RCNhlRQ3A((&access_token=%@", question, site, accessToken];
             NSData *requestData = [NSData dataWithContentsOfURL:[NSURL URLWithString:requestURLString]];
+            
+            if (!requestData)
+            {
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    ACAlertView *alertView = [ACAlertView alertWithTitle:@"The data was nil" style:ACAlertViewStyleProgressView delegate:nil buttonTitles:@[@"Close"]];
+                    [alertView show];
+                });
+                return;
+            }
+            
             NSDictionary *wrapper = [NSJSONSerialization JSONObjectWithData:requestData options:NSJSONReadingMutableLeaves error:nil];
             if (!wrapper[@"items"] || !wrapper || [wrapper[@"items"] count] == 0)
             {
@@ -125,11 +155,31 @@
             NSMutableArray *answerArray = [NSMutableArray array];
             NSString *answersRequestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/questions/%@/answers?site=%@&order=desc&sort=activity&filter=!azbR8_QNAu5IlA&key=XB*FUGU0f4Ju9RCNhlRQ3A((&access_token=%@", question, site, accessToken];
             NSData *answersRequestData = [NSData dataWithContentsOfURL:[NSURL URLWithString:answersRequestURLString]];
+            
+            if (!answersRequestData)
+            {
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    ACAlertView *alertView = [ACAlertView alertWithTitle:@"The data was nil" style:ACAlertViewStyleProgressView delegate:nil buttonTitles:@[@"Close"]];
+                    [alertView show];
+                });
+                return;
+            }
+            
             NSDictionary *answersWrapper = [NSJSONSerialization JSONObjectWithData:answersRequestData options:NSJSONReadingMutableLeaves error:nil];
             for (NSDictionary *answerDictionary in answersWrapper[@"items"])
             {
                 NSMutableDictionary *modifiedDictionary = [NSMutableDictionary dictionaryWithDictionary:answerDictionary];
                 NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:answerDictionary[@"owner"][@"profile_image"]]];
+                
+                if (!imageData)
+                {
+                    dispatch_sync(dispatch_get_main_queue(), ^{
+                        ACAlertView *alertView = [ACAlertView alertWithTitle:@"The data was nil" style:ACAlertViewStyleProgressView delegate:nil buttonTitles:@[@"Close"]];
+                        [alertView show];
+                    });
+                    return;
+                }
+                
                 modifiedDictionary[@"avatar"] = [UIImage imageWithData:imageData];
                 [answerArray addObject:modifiedDictionary];
             }
@@ -295,6 +345,16 @@
     
     BOOL success = YES;
     NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+    
+    if (!data)
+    {
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            ACAlertView *alertView = [ACAlertView alertWithTitle:@"The data was nil" style:ACAlertViewStyleProgressView delegate:nil buttonTitles:@[@"Close"]];
+            [alertView show];
+        });
+        return NO;
+    }
+    
     NSString *dataString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     
     if ([dataString rangeOfString:@"error"].location != NSNotFound)
@@ -316,6 +376,16 @@
     
     BOOL success = YES;
     NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+    
+    if (!data)
+    {
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            ACAlertView *alertView = [ACAlertView alertWithTitle:@"The data was nil" style:ACAlertViewStyleProgressView delegate:nil buttonTitles:@[@"Close"]];
+            [alertView show];
+        });
+        return NO;
+    }
+    
     NSString *dataString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     
     if ([dataString rangeOfString:@"error"].location != NSNotFound)

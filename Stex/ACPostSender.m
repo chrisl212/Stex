@@ -44,6 +44,15 @@
         [ACAlertView displayError:responseError.description];
     }
     
+    if (!responseData)
+    {
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            ACAlertView *alertView = [ACAlertView alertWithTitle:@"The data was nil" style:ACAlertViewStyleProgressView delegate:nil buttonTitles:@[@"Close"]];
+            [alertView show];
+        });
+        return NO;
+    }
+    
     NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:responseData options:kNilOptions error:nil];
     if ([responseDictionary.allKeys containsObject:@"error_id"])
     {

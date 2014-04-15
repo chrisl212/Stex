@@ -8,6 +8,7 @@
 
 #import "ACNotificationController.h"
 #import "ACAppDelegate.h"
+#import "ACAlertView.h"
 
 #define FONT_SIZE 14.0
 
@@ -55,6 +56,16 @@
         NSString *accessToken = appDelegate.accessToken;
         NSString *requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/me/notifications?site=%@&access_token=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((", self.siteAPIKey, accessToken];
         NSData *requestData = [NSData dataWithContentsOfURL:[NSURL URLWithString:requestURLString]];
+        
+        if (!requestData)
+        {
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                ACAlertView *alertView = [ACAlertView alertWithTitle:@"The data was nil" style:ACAlertViewStyleProgressView delegate:nil buttonTitles:@[@"Close"]];
+                [alertView show];
+            });
+            return;
+        }
+        
         NSDictionary *wrapper = [NSJSONSerialization JSONObjectWithData:requestData options:NSJSONReadingMutableLeaves error:nil];
         NSArray *items = wrapper[@"items"];
         
@@ -66,6 +77,16 @@
             {
                 NSString *iconRequestURLString = siteDictionary[@"site"][@"icon_url"];
                 NSData *iconData = [NSData dataWithContentsOfURL:[NSURL URLWithString:iconRequestURLString]];
+                
+                if (!iconData)
+                {
+                    dispatch_sync(dispatch_get_main_queue(), ^{
+                        ACAlertView *alertView = [ACAlertView alertWithTitle:@"The data was nil" style:ACAlertViewStyleProgressView delegate:nil buttonTitles:@[@"Close"]];
+                        [alertView show];
+                    });
+                    return;
+                }
+                
                 UIImage *iconImage = [UIImage imageWithData:iconData];
                 iconImage = [self scaleToSize:CGSizeMake(40, 40) image:iconImage];
                 siteIconDictionary[siteAPIName] = iconImage;

@@ -7,6 +7,7 @@
 //
 
 #import "ACInboxController.h"
+#import "ACAlertView.h"
 #import "ACAppDelegate.h"
 #import "ACInboxCell.h"
 #import "ACQuestionViewController.h"
@@ -33,6 +34,16 @@
         dispatch_async(dispatch_queue_create("com.a-cstudios.inboxload", NULL), ^{
             NSString *requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/me/inbox?access_token=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((&site=stackoverflow&filter=!9WgJffKr8", accessToken];
             NSData *requestData = [NSData dataWithContentsOfURL:[NSURL URLWithString:requestURLString]];
+            
+            if (!requestData)
+            {
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    ACAlertView *alertView = [ACAlertView alertWithTitle:@"The data was nil" style:ACAlertViewStyleProgressView delegate:nil buttonTitles:@[@"Close"]];
+                    [alertView show];
+                });
+                return;
+            }
+            
             NSDictionary *wrapper = [NSJSONSerialization JSONObjectWithData:requestData options:NSJSONReadingMutableLeaves error:nil];
             self.inboxItemsArray = wrapper[@"items"];
             dispatch_async(dispatch_get_main_queue(), ^{

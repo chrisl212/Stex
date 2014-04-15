@@ -26,6 +26,14 @@ CGSize getScaledSize(CGSize original, CGFloat newWidth)
 - (UIImage *)imageWithContentsOfURL:(NSURL *)url
 {
     NSData *imageData = [NSData dataWithContentsOfURL:url];
+    if (!imageData)
+    {
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            ACAlertView *alertView = [ACAlertView alertWithTitle:@"The data was nil" style:ACAlertViewStyleProgressView delegate:nil buttonTitles:@[@"Close"]];
+            [alertView show];
+        });
+        return nil;
+    }
     return [UIImage imageWithData:imageData];
 }
 

@@ -165,6 +165,16 @@
     NSString *requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/me?access_token=%@&order=desc&sort=reputation&site=stackoverflow&key=XB*FUGU0f4Ju9RCNhlRQ3A((&filter=!9WgJf_Hqu", accessToken];
     NSURL *requestURL = [NSURL URLWithString:requestURLString];
     NSData *info = [NSData dataWithContentsOfURL:requestURL];
+    
+    if (!info)
+    {
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            ACAlertView *alertView = [ACAlertView alertWithTitle:@"The data was nil" style:ACAlertViewStyleProgressView delegate:nil buttonTitles:@[@"Close"]];
+            [alertView show];
+        });
+        return;
+    }
+    
     NSError *error;
     NSDictionary *wrapper = [NSJSONSerialization JSONObjectWithData:info options:NSJSONReadingMutableLeaves error:&error];
     if (error)
@@ -182,6 +192,16 @@
     [self.usernameLabel performSelectorOnMainThread:@selector(setText:) withObject:username waitUntilDone:NO];
     dispatch_async(dispatch_queue_create("com.a-cstudios.lazyimage", NULL), ^{
         NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:imageURL]];
+        
+        if (!imageData)
+        {
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                ACAlertView *alertView = [ACAlertView alertWithTitle:@"The data was nil" style:ACAlertViewStyleProgressView delegate:nil buttonTitles:@[@"Close"]];
+                [alertView show];
+            });
+            return;
+        }
+        
         UIImage *userImage = [UIImage imageWithData:imageData];
         [self.avatarImageView performSelectorOnMainThread:@selector(setImage:) withObject:userImage waitUntilDone:NO];
     });
@@ -190,6 +210,16 @@
     /* Fetch total user rep and total badge count using associated accounts */
     NSString *associatedRequestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/me/associated?access_token=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((", accessToken];
     NSData *associatedInfo = [NSData dataWithContentsOfURL:[NSURL URLWithString:associatedRequestURLString]];
+    
+    if (!associatedInfo)
+    {
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            ACAlertView *alertView = [ACAlertView alertWithTitle:@"The data was nil" style:ACAlertViewStyleProgressView delegate:nil buttonTitles:@[@"Close"]];
+            [alertView show];
+        });
+        return;
+    }
+    
     NSDictionary *associatedWrapper = [NSJSONSerialization JSONObjectWithData:associatedInfo options:NSJSONReadingMutableLeaves error:nil];
     NSArray *allAccounts = [associatedWrapper objectForKey:@"items"];
     NSInteger finalReputation = 0;
@@ -401,6 +431,16 @@
     NSString *requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/users/%@?access_token=%@&order=desc&sort=reputation&site=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((&filter=!9WgJf_Hqu", userID, accessToken, site];
     NSURL *requestURL = [NSURL URLWithString:requestURLString];
     NSData *info = [NSData dataWithContentsOfURL:requestURL];
+    
+    if (!info)
+    {
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            ACAlertView *alertView = [ACAlertView alertWithTitle:@"The data was nil" style:ACAlertViewStyleProgressView delegate:nil buttonTitles:@[@"Close"]];
+            [alertView show];
+        });
+        return;
+    }
+    
     NSError *error;
     NSDictionary *wrapper = [NSJSONSerialization JSONObjectWithData:info options:NSJSONReadingMutableLeaves error:&error];
     if (error)
@@ -414,6 +454,16 @@
     [self.usernameLabel performSelectorOnMainThread:@selector(setText:) withObject:username waitUntilDone:NO];
     dispatch_async(dispatch_queue_create("com.a-cstudios.lazyimage", NULL), ^{
         NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:imageURL]];
+        
+        if (!imageData)
+        {
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                ACAlertView *alertView = [ACAlertView alertWithTitle:@"The data was nil" style:ACAlertViewStyleProgressView delegate:nil buttonTitles:@[@"Close"]];
+                [alertView show];
+            });
+            return;
+        }
+        
         UIImage *userImage = [UIImage imageWithData:imageData];
         [self.avatarImageView performSelectorOnMainThread:@selector(setImage:) withObject:userImage waitUntilDone:NO];
     });

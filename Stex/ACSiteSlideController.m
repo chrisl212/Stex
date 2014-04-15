@@ -38,6 +38,16 @@
         
         NSString *requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/tags?order=desc&sort=popular&site=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((", siteAPIName];
         NSData *requestData = [NSData dataWithContentsOfURL:[NSURL URLWithString:requestURLString]];
+        
+        if (!requestData)
+        {
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                ACAlertView *alertView = [ACAlertView alertWithTitle:@"The data was nil" style:ACAlertViewStyleProgressView delegate:nil buttonTitles:@[@"Close"]];
+                [alertView show];
+            });
+            return;
+        }
+        
         NSDictionary *wrapper = [NSJSONSerialization JSONObjectWithData:requestData options:NSJSONReadingMutableLeaves error:nil];
         NSMutableArray *items = [wrapper objectForKey:@"items"];
         for (NSDictionary *tagDictionary in items)
@@ -52,6 +62,16 @@
         NSString *accessToken = [(ACAppDelegate *)[UIApplication sharedApplication].delegate accessToken];
         requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/me?order=desc&sort=reputation&site=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((&access_token=%@", siteAPIName, accessToken];
         requestData = [NSData dataWithContentsOfURL:[NSURL URLWithString:requestURLString] options:kNilOptions error:nil];
+        
+        if (!requestData)
+        {
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                ACAlertView *alertView = [ACAlertView alertWithTitle:@"The data was nil" style:ACAlertViewStyleProgressView delegate:nil buttonTitles:@[@"Close"]];
+                [alertView show];
+            });
+            return;
+        }
+        
         wrapper = [NSJSONSerialization JSONObjectWithData:requestData options:NSJSONReadingMutableLeaves error:nil];
         items = [wrapper objectForKey:@"items"];
         if (!items.count == 0)

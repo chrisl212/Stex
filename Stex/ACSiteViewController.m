@@ -52,6 +52,14 @@
             else
                 requestData = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:wrapperCache]];
             
+            if (!requestData)
+            {
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    ACAlertView *alertView = [ACAlertView alertWithTitle:@"The data was nil" style:ACAlertViewStyleProgressView delegate:nil buttonTitles:@[@"Close"]];
+                    [alertView show];
+                });
+                return;
+            }
             
             NSDictionary *wrapper = [NSJSONSerialization JSONObjectWithData:requestData options:NSJSONReadingMutableLeaves error:nil];
             NSDictionary *infoDictionary = [[wrapper objectForKey:@"items"] objectAtIndex:0];
@@ -78,6 +86,16 @@
             
             NSString *questionsRequestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/questions?order=desc&sort=creation&site=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((", site];
             NSData *questionData = [NSData dataWithContentsOfURL:[NSURL URLWithString:questionsRequestURLString]];
+            
+            if (!questionData)
+            {
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    ACAlertView *alertView = [ACAlertView alertWithTitle:@"The data was nil" style:ACAlertViewStyleProgressView delegate:nil buttonTitles:@[@"Close"]];
+                    [alertView show];
+                });
+                return;
+            }
+            
             NSDictionary *questionsWrapper = [NSJSONSerialization JSONObjectWithData:questionData options:NSJSONReadingMutableLeaves error:nil];
             NSArray *questions = [questionsWrapper objectForKey:@"items"];
             for (NSDictionary *questionDictionary in questions)
@@ -99,6 +117,16 @@
             for (NSString *imageURLString in avatarURLSArray)
             {
                 NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:imageURLString]];
+                
+                if (!imageData)
+                {
+                    dispatch_sync(dispatch_get_main_queue(), ^{
+                        ACAlertView *alertView = [ACAlertView alertWithTitle:@"The data was nil" style:ACAlertViewStyleProgressView delegate:nil buttonTitles:@[@"Close"]];
+                        [alertView show];
+                    });
+                    return;
+                }
+                
                 UIImage *avatar = [UIImage imageWithData:imageData];
                 if (!avatar)
                     avatar = [UIImage imageNamed:@"Icon@2x.png"];
@@ -176,6 +204,16 @@
         questionsRequestURLString = [questionsRequestURLString stringByReplacingOccurrencesOfString:@"c++" withString:@"c%2b%2b"];
         
         NSData *questionData = [NSData dataWithContentsOfURL:[NSURL URLWithString:questionsRequestURLString]];
+        
+        if (!questionData)
+        {
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                ACAlertView *alertView = [ACAlertView alertWithTitle:@"The data was nil" style:ACAlertViewStyleProgressView delegate:nil buttonTitles:@[@"Close"]];
+                [alertView show];
+            });
+            return;
+        }
+        
         NSDictionary *questionsWrapper = [NSJSONSerialization JSONObjectWithData:questionData options:NSJSONReadingMutableLeaves error:nil];
         NSArray *questions = [questionsWrapper objectForKey:@"items"];
         for (NSDictionary *questionDictionary in questions)
@@ -195,6 +233,16 @@
         for (NSString *imageURLString in avatarURLSArray)
         {
             NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:imageURLString]];
+            
+            if (!imageData)
+            {
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    ACAlertView *alertView = [ACAlertView alertWithTitle:@"The data was nil" style:ACAlertViewStyleProgressView delegate:nil buttonTitles:@[@"Close"]];
+                    [alertView show];
+                });
+                return;
+            }
+            
             UIImage *avatar = [UIImage imageWithData:imageData];
             [avatarArray addObject:avatar];
         }
@@ -234,6 +282,14 @@
         else
             requestData = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:wrapperCache]];
         
+        if (!requestData)
+        {
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                ACAlertView *alertView = [ACAlertView alertWithTitle:@"The data was nil" style:ACAlertViewStyleProgressView delegate:nil buttonTitles:@[@"Close"]];
+                [alertView show];
+            });
+            return;
+        }
         
         NSDictionary *wrapper = [NSJSONSerialization JSONObjectWithData:requestData options:NSJSONReadingMutableLeaves error:nil];
         NSDictionary *infoDictionary = [[wrapper objectForKey:@"items"] objectAtIndex:0];
@@ -258,6 +314,16 @@
         
         NSString *questionsRequestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/questions?order=desc&sort=creation&site=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((", self.siteAPIName];
         NSData *questionData = [NSData dataWithContentsOfURL:[NSURL URLWithString:questionsRequestURLString]];
+        
+        if (!questionData)
+        {
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                ACAlertView *alertView = [ACAlertView alertWithTitle:@"The data was nil" style:ACAlertViewStyleProgressView delegate:nil buttonTitles:@[@"Close"]];
+                [alertView show];
+            });
+            return;
+        }
+        
         NSDictionary *questionsWrapper = [NSJSONSerialization JSONObjectWithData:questionData options:NSJSONReadingMutableLeaves error:nil];
         NSArray *questions = [questionsWrapper objectForKey:@"items"];
         for (NSDictionary *questionDictionary in questions)
@@ -277,6 +343,16 @@
         for (NSString *imageURLString in avatarURLSArray)
         {
             NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:imageURLString]];
+            
+            if (!imageData)
+            {
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    ACAlertView *alertView = [ACAlertView alertWithTitle:@"The data was nil" style:ACAlertViewStyleProgressView delegate:nil buttonTitles:@[@"Close"]];
+                    [alertView show];
+                });
+                return;
+            }
+            
             UIImage *avatar = [UIImage imageWithData:imageData];
             if (!avatar)
                 avatar = [UIImage imageNamed:@"Icon@2x.png"];
@@ -313,6 +389,16 @@
             questionsRequestURLString = [questionsRequestURLString stringByReplacingOccurrencesOfString:@"++" withString:@"%2b%2b"];
         
         NSData *questionData = [NSData dataWithContentsOfURL:[NSURL URLWithString:questionsRequestURLString]];
+        
+        if (!questionData)
+        {
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                ACAlertView *alertView = [ACAlertView alertWithTitle:@"The data was nil" style:ACAlertViewStyleProgressView delegate:nil buttonTitles:@[@"Close"]];
+                [alertView show];
+            });
+            return;
+        }
+        
         NSDictionary *questionsWrapper = [NSJSONSerialization JSONObjectWithData:questionData options:NSJSONReadingMutableLeaves error:nil];
         NSArray *questions = [questionsWrapper objectForKey:@"items"];
         for (NSDictionary *questionDictionary in questions)
@@ -332,6 +418,16 @@
         for (NSString *imageURLString in avatarURLSArray)
         {
             NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:imageURLString]];
+            
+            if (!imageData)
+            {
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    ACAlertView *alertView = [ACAlertView alertWithTitle:@"The data was nil" style:ACAlertViewStyleProgressView delegate:nil buttonTitles:@[@"Close"]];
+                    [alertView show];
+                });
+                return;
+            }
+            
             UIImage *avatar = [UIImage imageWithData:imageData];
             [avatarArray addObject:avatar];
         }
@@ -367,6 +463,16 @@
             NSMutableArray *avatarURLSArray = [NSMutableArray array];
             NSString *questionsRequestURLString = [[NSString stringWithFormat:@"https://api.stackexchange.com/2.2/me/questions?site=%@&order=desc&sort=creation&access_token=%@&key=XB*FUGU0f4Ju9RCNhlRQ3A((", self.siteAPIName, accessToken] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             NSData *questionData = [NSData dataWithContentsOfURL:[NSURL URLWithString:questionsRequestURLString]];
+            
+            if (!questionData)
+            {
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    ACAlertView *alertView = [ACAlertView alertWithTitle:@"The data was nil" style:ACAlertViewStyleProgressView delegate:nil buttonTitles:@[@"Close"]];
+                    [alertView show];
+                });
+                return;
+            }
+            
             NSDictionary *questionsWrapper = [NSJSONSerialization JSONObjectWithData:questionData options:NSJSONReadingMutableLeaves error:nil];
             NSArray *questions = [questionsWrapper objectForKey:@"items"];
             for (NSDictionary *questionDictionary in questions)
@@ -385,6 +491,16 @@
             for (NSString *imageURLString in avatarURLSArray)
             {
                 NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:imageURLString]];
+                
+                if (!imageData)
+                {
+                    dispatch_sync(dispatch_get_main_queue(), ^{
+                        ACAlertView *alertView = [ACAlertView alertWithTitle:@"The data was nil" style:ACAlertViewStyleProgressView delegate:nil buttonTitles:@[@"Close"]];
+                        [alertView show];
+                    });
+                    return;
+                }
+                
                 UIImage *avatar = [UIImage imageWithData:imageData];
                 [avatarArray addObject:avatar];
             }

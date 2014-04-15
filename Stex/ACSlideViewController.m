@@ -7,6 +7,7 @@
 //
 
 #import "ACSlideViewController.h"
+#import "ACAlertView.h"
 
 #define USER_INFO_SECTION 0
 #define SITES_SECTION 1
@@ -43,6 +44,16 @@
         {
             NSString *requestURLString = @"https://api.stackexchange.com/2.2/sites?key=XB*FUGU0f4Ju9RCNhlRQ3A((";
             NSData *responseData = [NSData dataWithContentsOfURL:[NSURL URLWithString:requestURLString]];
+            
+            if (!responseData)
+            {
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    ACAlertView *alertView = [ACAlertView alertWithTitle:@"The data was nil" style:ACAlertViewStyleProgressView delegate:nil buttonTitles:@[@"Close"]];
+                    [alertView show];
+                });
+                return;
+            }
+            
             NSDictionary *rootDictionary = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableLeaves error:nil];
             allSites = [[rootDictionary objectForKey:@"items"] mutableCopy];
             int current_page = 2;
@@ -51,6 +62,16 @@
             {
                 requestURLString = [NSString stringWithFormat:@"https://api.stackexchange.com/2.2/sites?page=%d&key=XB*FUGU0f4Ju9RCNhlRQ3A((", current_page];
                 responseData = [NSData dataWithContentsOfURL:[NSURL URLWithString:requestURLString]];
+                
+                if (!responseData)
+                {
+                    dispatch_sync(dispatch_get_main_queue(), ^{
+                        ACAlertView *alertView = [ACAlertView alertWithTitle:@"The data was nil" style:ACAlertViewStyleProgressView delegate:nil buttonTitles:@[@"Close"]];
+                        [alertView show];
+                    });
+                    return;
+                }
+                
                 rootDictionary = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableLeaves error:nil];
                 more_sites = [[rootDictionary objectForKey:@"has_more"] boolValue];
                 [allSites addObjectsFromArray:[rootDictionary objectForKey:@"items"]];
